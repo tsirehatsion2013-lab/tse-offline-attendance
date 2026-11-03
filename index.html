@@ -156,9 +156,20 @@ function getDate() {
   return p.year + '-' + p.month + '-' + p.day;
 }
 
+/* Ethiopian 12-hour clock */
 function getTime() {
   var p = ethiopiaParts();
-  return p.hour + ':' + p.minute + ':' + p.second;
+
+  var hour = Number(p.hour);
+  hour = (hour + 6) % 12;
+
+  if (hour === 0) {
+    hour = 12;
+  }
+
+  var formattedHour = String(hour).padStart(2, '0');
+
+  return formattedHour + ':' + p.minute + ':' + p.second;
 }
 
 function updateClock() {
