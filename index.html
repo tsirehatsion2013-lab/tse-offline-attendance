@@ -21,7 +21,7 @@ button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:9px;c
 button.secondary{background:#e5edf6;color:#12345a}
 input{border:1px solid #ccd5df;margin:5px 0}
 #reader{width:100%;margin-top:12px}
-.status{padding:10px;border-radius:8px;background:#edf3fa;margin-top:10px;font-size:13px}
+.status{padding:10px;border-radius:8px;background:#edf3fa;margin-top:10px;font-size:13px;overflow-wrap:anywhere}
 .good{color:#14733c}
 .bad{color:#b3261e}
 table{width:100%;border-collapse:collapse;font-size:12px}
@@ -396,39 +396,47 @@ async function manualAttendance() {
   document.getElementById('manualId').value = '';
 }
 
-/* READ BOTH QR FORMATS */
+/* READ QR CODE FORMATS */
 
 function getMemberIdFromQR(decodedText) {
   var text = String(decodedText || '').trim();
 
   if (!text) return '';
 
-  /* QR containing a URL such as .../exec?id=24 */
-  if (/^https?:\/\//i.test(text)) {
+  // Remove invisible characters and surrounding spaces
+  text = text.replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
+
+  // If QR contains a URL, extract its ID parameter
+  var urlMatch = text.match(/https?:\/\/[^\s]+/i);
+
+  if (urlMatch) {
     try {
-      var qrUrl = new URL(text);
+      var cleanUrl = urlMatch[0].replace(/[),.;]+$/, '');
+      var qrUrl = new URL(cleanUrl);
 
       var id = qrUrl.searchParams.get('id');
 
-      if (id) return id.trim();
+      if (!id) id = qrUrl.searchParams.get('memberId');
+      if (!id) id = qrUrl.searchParams.get('ID');
 
-      /* Also support URLs using other common ID parameter names */
-      id = qrUrl.searchParams.get('memberId');
+      if (id) return decodeURIComponent(id).trim();
 
-      if (id) return id.trim();
-
-      id = qrUrl.searchParams.get('ID');
-
-      if (id) return id.trim();
-
-      return '';
     } catch (error) {
-      return '';
+      // Continue checking other QR formats
     }
   }
 
-  /* QR containing ID|Name */
-  return text.split('|')[0].trim();
+  // QR containing ID|Name
+  if (text.indexOf('|') !== -1) {
+    return text.split('|')[0].trim();
+  }
+
+  // QR containing only a numeric ID
+  if (/^\d+$/.test(text)) {
+    return text;
+  }
+
+  return '';
 }
 
 /* QR SCANNER */
@@ -463,18 +471,30 @@ async function startScanner() {
         try {
           var id = getMemberIdFromQR(decodedText);
 
+          var member = findMember(id);
+
           if (!id) {
-            showMessage('QR code does not contain a valid member ID.', false);
+            showMessage(
+              'QR READ: ' + decodedText +
+              ' | Could not extract Member ID.',
+              false
+            );
             return;
           }
 
-          var member = findMember(id);
-
           if (member == null) {
-            showMessage('Member ID not found in saved list: ' + id, false);
+            showMessage(
+              'QR READ: ' + decodedText +
+              ' | Extracted ID: ' + id +
+              ' | Member ID not found in saved list.',
+              false
+            );
           } else {
             await registerMember(member);
           }
+
+        } catch (error) {
+          showMessage('Scanner error: ' + error.message, false);
 
         } finally {
           setTimeout(function() {
