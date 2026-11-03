@@ -12,11 +12,12 @@ body{margin:0;background:#f1f4f8;color:#172b45;font-family:Arial,sans-serif}
 header{background:#12345a;color:white;padding:22px 15px;text-align:center}
 header h1{margin:0;font-size:23px}
 header p{margin:8px 0 0;font-size:13px}
+#clock{margin-top:12px;font-size:15px;font-weight:bold}
 main{max-width:650px;margin:18px auto;padding:0 12px}
 .card{background:white;border-radius:13px;padding:17px;margin-bottom:14px;box-shadow:0 2px 9px #00000012}
 h2{font-size:17px;margin:0 0 13px}
 button,input{width:100%;padding:13px;border-radius:8px;font-size:15px}
-button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:9px}
+button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:9px;cursor:pointer}
 button.secondary{background:#e5edf6;color:#12345a}
 input{border:1px solid #ccd5df;margin:5px 0}
 #reader{width:100%;margin-top:12px}
@@ -130,6 +131,7 @@ function saveMembersLocal() {
   localStorage.setItem('tse_members', JSON.stringify(members));
 }
 
+/* Addis Ababa date and time */
 function ethiopiaParts() {
   var parts = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Africa/Addis_Ababa',
@@ -151,35 +153,53 @@ function ethiopiaParts() {
   return result;
 }
 
+/* Gregorian date in Ethiopia timezone */
 function getDate() {
   var p = ethiopiaParts();
   return p.year + '-' + p.month + '-' + p.day;
 }
 
-/* Ethiopian 12-hour clock */
-function getTime() {
+/* Correct Ethiopian 12-hour clock */
+function getEthiopianTimeParts() {
   var p = ethiopiaParts();
 
-  var hour = Number(p.hour);
-  hour = (hour + 6) % 12;
+  var internationalHour = Number(p.hour);
 
-  if (hour === 0) {
-    hour = 12;
+  var ethiopianHour = ((internationalHour + 5) % 12) + 1;
+
+  var period;
+
+  if (internationalHour >= 6 && internationalHour < 12) {
+    period = 'ጠዋት';
+  } else if (internationalHour >= 12 && internationalHour < 18) {
+    period = 'ቀን';
+  } else {
+    period = 'ማታ';
   }
 
-  var formattedHour = String(hour).padStart(2, '0');
+  return {
+    hour: String(ethiopianHour).padStart(2, '0'),
+    minute: p.minute,
+    second: p.second,
+    period: period
+  };
+}
 
-  return formattedHour + ':' + p.minute + ':' + p.second;
+function getTime() {
+  var t = getEthiopianTimeParts();
+
+  return t.hour + ':' + t.minute + ':' + t.second + ' ' + t.period;
 }
 
 function updateClock() {
   document.getElementById('clock').textContent =
-    'Ethiopia Time: ' + getDate() + ' ' + getTime();
+    'የኢትዮጵያ ሰዓት: ' + getDate() + ' | ' + getTime();
 }
 
 setInterval(updateClock, 1000);
 updateClock();
 
+/* JSONP connection to Google Apps Script */
 function jsonp(params) {
   return new Promise(function(resolve, reject) {
     var script = document.createElement('script');
@@ -220,6 +240,7 @@ function jsonp(params) {
   });
 }
 
+/* Member list */
 function showMemberStatus() {
   var box = document.getElementById('memberStatus');
 
@@ -261,6 +282,7 @@ async function loadMembers() {
   }
 }
 
+/* Internet connection */
 function updateConnection() {
   var box = document.getElementById('connection');
 
@@ -275,6 +297,7 @@ function updateConnection() {
 
 window.addEventListener('online', function() {
   updateConnection();
+
   loadMembers().then(function() {
     syncPending();
   });
@@ -284,6 +307,7 @@ window.addEventListener('offline', function() {
   updateConnection();
 });
 
+/* Member ID matching */
 function normalizeId(value) {
   var s = String(value || '').trim();
 
@@ -311,6 +335,7 @@ function makeEventId() {
     Math.floor(Math.random() * 1000000);
 }
 
+/* Duplicate protection on this device */
 function alreadyRegistered(id, date) {
   for (var i = 0; i < records.length; i++) {
     if (
@@ -324,6 +349,7 @@ function alreadyRegistered(id, date) {
   return false;
 }
 
+/* Register attendance */
 async function registerMember(member) {
   var date = getDate();
 
@@ -358,6 +384,7 @@ function showMessage(message, success) {
   box.className = success ? 'status good' : 'status bad';
 }
 
+/* Manual attendance */
 async function manualAttendance() {
   var id = document.getElementById('manualId').value.trim();
 
@@ -377,6 +404,7 @@ async function manualAttendance() {
   document.getElementById('manualId').value = '';
 }
 
+/* QR scanner */
 async function startScanner() {
   if (typeof Html5Qrcode === 'undefined') {
     showMessage('QR scanner library is not available. Check html5-qrcode.min.js.', false);
@@ -442,6 +470,7 @@ async function stopScanner() {
   }
 }
 
+/* Synchronize pending records */
 async function syncPending() {
   if (navigator.onLine === false) return;
 
@@ -504,6 +533,7 @@ async function syncPending() {
   renderRecords();
 }
 
+/* Display records */
 function renderRecords() {
   var body = document.getElementById('recordList');
   body.innerHTML = '';
@@ -542,6 +572,7 @@ function renderRecords() {
   }
 }
 
+/* CSV report */
 function downloadCSV() {
   var rows = [
     ['ID', 'Name', 'Date', 'Time', 'Sync Status']
@@ -563,13 +594,18 @@ function downloadCSV() {
   });
 
   var link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
+  var url = URL.createObjectURL(blob);
+
+  link.href = url;
   link.download = 'TSE_Attendance_' + getDate() + '.csv';
   link.click();
 
-  URL.revokeObjectURL(link.href);
+  setTimeout(function() {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }
 
+/* Offline support */
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
@@ -582,6 +618,7 @@ function registerServiceWorker() {
   }
 }
 
+/* Start system */
 updateConnection();
 renderRecords();
 showMemberStatus();
@@ -590,6 +627,7 @@ registerServiceWorker();
 loadMembers().then(function() {
   syncPending();
 });
+
 </script>
 
 </body>
