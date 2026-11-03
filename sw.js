@@ -1,8 +1,9 @@
-const CACHE_NAME = "tse-attendance-v1";
+const CACHE_NAME = "tse-attendance-v2";
 
 const FILES_TO_CACHE = [
   "./",
-  "./index.html"
+  "./index.html",
+  "./html5-qrcode.min.js"
 ];
 
 self.addEventListener("install", event => {
@@ -19,7 +20,7 @@ self.addEventListener("activate", event => {
     caches.keys().then(keys =>
       Promise.all(
         keys.filter(key => key !== CACHE_NAME)
-            .map(key => caches.delete(key))
+          .map(key => caches.delete(key))
       )
     )
   );
@@ -27,6 +28,8 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("fetch", event => {
+  if (event.request.method !== "GET") return;
+
   event.respondWith(
     caches.match(event.request).then(cached => {
       return cached || fetch(event.request);
