@@ -3,183 +3,497 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#174c80">
+<meta name="theme-color" content="#12345a">
 <title>TSE Smart Attendance</title>
 <style>
-body{font-family:Arial;background:#f2f5f9;margin:0;padding:20px;text-align:center}
-.card{background:white;padding:20px;border-radius:15px;max-width:500px;margin:auto}
-h2{color:#174c80}
-button{padding:13px 20px;border:0;border-radius:9px;background:#174c80;color:white;margin:6px;font-size:16px}
-input{box-sizing:border-box;padding:12px;width:90%;margin:8px;border:1px solid #ccc;border-radius:8px}
-#reader{width:100%;margin-top:15px}
-.item{padding:10px;border-bottom:1px solid #ddd;text-align:left}
-#status{color:#174c80;font-weight:bold}
+*{box-sizing:border-box}
+body{margin:0;background:#f1f4f8;color:#172b45;font-family:Arial,sans-serif}
+header{background:#12345a;color:white;padding:22px 15px;text-align:center}
+header h1{margin:0;font-size:23px}
+header p{margin:8px 0 0;font-size:13px}
+main{max-width:650px;margin:18px auto;padding:0 12px}
+.card{background:white;border-radius:13px;padding:17px;margin-bottom:14px;box-shadow:0 2px 9px #00000012}
+h2{font-size:17px;margin:0 0 13px}
+button,input{width:100%;padding:13px;border-radius:8px;font-size:15px}
+button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:9px}
+button.secondary{background:#e5edf6;color:#12345a}
+input{border:1px solid #ccd5df;margin:5px 0}
+#reader{width:100%;margin-top:12px}
+.status{padding:10px;border-radius:8px;background:#edf3fa;margin-top:10px;font-size:13px}
+.good{color:#14733c}
+.bad{color:#b3261e}
+table{width:100%;border-collapse:collapse;font-size:12px}
+td,th{padding:9px 5px;border-bottom:1px solid #e5e9ef;text-align:left}
+.small{font-size:12px;color:#68788b}
+.stat{font-size:25px;font-weight:bold;color:#12345a}
+footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 </style>
 </head>
 <body>
 
+<header>
+<h1>TSE Smart Attendance</h1>
+<p>ጽርሐ ጽዮን ሰንበት ትምህርት ቤት</p>
+<div id="clock"></div>
+</header>
+
+<main>
+
 <div class="card">
-<h2>TSE Smart Attendance</h2>
-<p>Offline QR Attendance System</p>
-
-<h3 id="clock">Loading...</h3>
-
-<div id="reader"></div>
-<button onclick="startScan()">Start Scanner</button>
-<button onclick="stopScan()">Stop Scanner</button>
-
-<p id="status">Ready to scan</p>
-
-<h3>Manual ID Entry</h3>
-<input id="memberID" placeholder="Enter Member ID">
-<input id="memberName" placeholder="Member Name">
-<button onclick="manualSave()">Save Attendance</button>
-
-<h3>Attendance Records</h3>
-<div id="records"></div>
-<button onclick="exportCSV()">Download Records</button>
+<h2>System Status</h2>
+<div id="connection" class="status">Checking connection...</div>
+<div id="memberStatus" class="status">Loading members...</div>
+<div id="syncStatus" class="status">Checking attendance records...</div>
 </div>
 
-<!-- LOCAL QR LIBRARY -->
+<div class="card">
+<h2>QR Attendance Scanner</h2>
+<p class="small">Scan the member's personal QR code using your phone camera.</p>
+<button onclick="startScanner()">Start Scanner</button>
+<button class="secondary" onclick="stopScanner()">Stop Scanner</button>
+<div id="reader"></div>
+<div id="scanMessage" class="status">Ready to scan.</div>
+</div>
+
+<div class="card">
+<h2>Manual Attendance</h2>
+<input id="manualId" placeholder="Enter Member ID">
+<button onclick="manualAttendance()">Register Attendance</button>
+</div>
+
+<div class="card">
+<h2>Today's Report</h2>
+<div class="stat" id="todayCount">0</div>
+<p class="small">Members registered today</p>
+<button class="secondary" onclick="downloadCSV()">Download CSV Report</button>
+</div>
+
+<div class="card">
+<h2>Attendance Records</h2>
+<div style="overflow-x:auto">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Date</th>
+<th>Time</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="recordList"></tbody>
+</table>
+</div>
+</div>
+
+</main>
+
+<footer>
+TSE Smart Attendance System<br>
+Information and Internal Communication Department
+</footer>
+
 <script src="./html5-qrcode.min.js"></script>
 
 <script>
-// OFFLINE SERVICE WORKER
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js")
-      .catch(error => console.log(error));
-  });
+var API_URL = 'https://script.google.com/macros/s/AKfycby2FG7enFwWUUlsvzAOfGE_G8HWErJ3ZQUHVxDuqWnwrEDCN39EpRkUOwyUpjj4Cn4B/exec';
+
+var ACCESS_KEY = 'TSE-CHANGE-THIS-KEY';
+var members = [];
+var scanner = null;
+var scannerRunning = false;
+var scanBusy = false;
+var records = JSON.parse(localStorage.getItem('tse_records') || '[]');
+
+function saveLocal() {
+  localStorage.setItem('tse_records', JSON.stringify(records));
 }
 
-let scanner;
-let records = JSON.parse(localStorage.getItem("tse_records") || "[]");
+function ethiopiaParts() {
+  var parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Africa/Addis_Ababa',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hourCycle: 'h23'
+  }).formatToParts(new Date());
 
-// ETHIOPIA TIME
-function ethiopianTime() {
-  return new Date().toLocaleString("en-US", {
-    timeZone: "Africa/Addis_Ababa",
-    dateStyle: "full",
-    timeStyle: "medium"
-  });
+  var result = {};
+  for (var i = 0; i < parts.length; i++) {
+    result[parts[i].type] = parts[i].value;
+  }
+  return result;
+}
+
+function getDate() {
+  var p = ethiopiaParts();
+  return p.year + '-' + p.month + '-' + p.day;
+}
+
+function getTime() {
+  var p = ethiopiaParts();
+  return p.hour + ':' + p.minute + ':' + p.second;
 }
 
 function updateClock() {
-  document.getElementById("clock").innerText = ethiopianTime();
+  document.getElementById('clock').textContent =
+    'Ethiopia Time: ' + getDate() + ' ' + getTime();
 }
+
 setInterval(updateClock, 1000);
 updateClock();
 
-// SAVE ATTENDANCE
-function save(id, name) {
-  let now = new Date();
+function jsonp(params) {
+  return new Promise(function(resolve, reject) {
+    var script = document.createElement('script');
+    var finished = false;
 
-  let day = now.toLocaleDateString("en-US", {
-    timeZone: "Africa/Addis_Ababa"
-  });
-
-  if (records.some(r => r.id === id && r.day === day)) {
-    document.getElementById("status").innerText =
-      "Already registered today!";
-    return;
-  }
-
-  records.push({
-    id: id,
-    name: name,
-    day: day,
-    time: now.toLocaleTimeString("en-US", {
-      timeZone: "Africa/Addis_Ababa"
-    }),
-    timestamp: now.toISOString(),
-    synced: false
-  });
-
-  localStorage.setItem("tse_records", JSON.stringify(records));
-  render();
-
-  document.getElementById("status").innerText =
-    "Attendance saved offline!";
-}
-
-// MANUAL ENTRY
-function manualSave() {
-  let id = document.getElementById("memberID").value.trim();
-  let name = document.getElementById("memberName").value.trim();
-
-  if (!id || !name) {
-    alert("Enter ID and Name");
-    return;
-  }
-
-  save(id, name);
-}
-
-// START SCANNER
-function startScan() {
-  if (!navigator.mediaDevices?.getUserMedia) {
-    alert("Camera requires HTTPS and permission");
-    return;
-  }
-
-  if (typeof Html5Qrcode === "undefined") {
-    alert("QR library not loaded. Check internet or library file.");
-    return;
-  }
-
-  scanner = new Html5Qrcode("reader");
-
-  scanner.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 250 },
-    text => {
-      let parts = text.split("|");
-
-      if (parts.length >= 2) {
-        save(parts[0].trim(), parts[1].trim());
-      } else {
-        document.getElementById("status").innerText =
-          "QR format needs checking";
+    var timer = setTimeout(function() {
+      if (finished === false) {
+        finished = true;
+        script.remove();
+        reject(new Error('Server response timeout'));
       }
-    },
-    () => {}
-  ).catch(error => alert("Camera error: " + error));
+    }, 15000);
+
+    window.tseCallback = function(data) {
+      if (finished === true) return;
+      finished = true;
+      clearTimeout(timer);
+      script.remove();
+      resolve(data);
+    };
+
+    params.callback = 'tseCallback';
+
+    var query = new URLSearchParams(params);
+    script.src = API_URL + '?' + query.toString();
+
+    script.onerror = function() {
+      if (finished === false) {
+        finished = true;
+        clearTimeout(timer);
+        script.remove();
+        reject(new Error('Connection failed'));
+      }
+    };
+
+    document.body.appendChild(script);
+  });
 }
 
-// STOP SCANNER
-function stopScan() {
-  if (scanner) {
-    scanner.stop().catch(() => {});
+async function loadMembers() {
+  var box = document.getElementById('memberStatus');
+
+  if (navigator.onLine === false) {
+    box.textContent = 'Offline. Previously saved members may not be available.';
+    return;
+  }
+
+  try {
+    var result = await jsonp({
+      action: 'members',
+      key: ACCESS_KEY
+    });
+
+    if (result.success === true) {
+      members = result.members || [];
+      box.textContent = 'Members loaded: ' + members.length;
+      box.className = 'status good';
+    } else {
+      box.textContent = result.message;
+      box.className = 'status bad';
+    }
+  } catch (error) {
+    box.textContent = 'Could not load members. Check internet connection.';
+    box.className = 'status bad';
   }
 }
 
-// DISPLAY RECORDS
-function render() {
-  document.getElementById("records").innerHTML =
-    records.map(r =>
-      <div class="item">
-        ${r.id} - ${r.name}<br>
-        ${r.day} | ${r.time} | ${r.synced ? "Synced" : "Offline"}
-      </div>
-    ).join("");
-}
-[11/3/2026 2:31 PM] Mickeyās: // EXPORT CSV
-function exportCSV() {
-  let csv = "ID,Name,Date,Time\n" +
-    records.map(r =>
-      [r.id, r.name, r.day, r.time].join(",")
-    ).join("\n");
+function updateConnection() {
+  var box = document.getElementById('connection');
 
-  let a = document.createElement("a");
-  a.href = URL.createObjectURL(
-    new Blob([csv], { type: "text/csv" })
-  );
-  a.download = "TSE_Attendance.csv";
-  a.click();
-  URL.revokeObjectURL(a.href);
+  if (navigator.onLine === true) {
+    box.textContent = 'Internet: Online';
+    box.className = 'status good';
+  } else {
+    box.textContent = 'Internet: Offline. Records will be saved on this device.';
+    box.className = 'status bad';
+  }
 }
 
-render();
+window.addEventListener('online', function() {
+  updateConnection();
+  loadMembers();
+  syncPending();
+});
+
+window.addEventListener('offline', updateConnection);
+
+function findMember(id) {
+  for (var i = 0; i < members.length; i++) {
+    if (String(members[i].id).trim() === String(id).trim()) {
+      return members[i];
+    }
+  }
+  return null;
+}
+
+function makeEventId() {
+  return 'TSE-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
+}
+
+function alreadyRegistered(id, date) {
+  for (var i = 0; i < records.length; i++) {
+    if (String(records[i].id) === String(id) &&
+        records[i].date === date) {
+      return true;
+    }
+  }
+  return false;
+}
+
+async function registerMember(member) {
+  var date = getDate();
+
+  if (alreadyRegistered(member.id, date)) {
+    showMessage(member.name + ' is already registered today.', false);
+    return;
+  }
+
+  var record = {
+    id: member.id,
+    name: member.name,
+    date: date,
+    time: getTime(),
+    eventId: makeEventId(),
+    status: 'Pending'
+  };
+
+  records.unshift(record);
+  saveLocal();
+  renderRecords();
+
+  showMessage('Attendance saved on this device: ' + member.name, true);
+
+  if (navigator.onLine === true) {
+    await syncPending();
+  }
+}
+
+function showMessage(message, success) {
+  var box = document.getElementById('scanMessage');
+  box.textContent = message;
+  box.className = success ? 'status good' : 'status bad';
+}
+
+async function manualAttendance() {
+  var id = document.getElementById('manualId').value.trim();
+
+  if (id === '') {
+    showMessage('Enter a member ID.', false);
+    return;
+  }
+
+  var member = findMember(id);
+
+  if (member == null) {
+    showMessage('Member ID not found. Connect to internet and load members.', false);
+    return;
+  }
+
+  await registerMember(member);
+  document.getElementById('manualId').value = '';
+}
+
+async function startScanner() {
+  if (typeof Html5Qrcode === 'undefined') {
+    showMessage('QR scanner library is not available. Check html5-qrcode.min.js.', false);
+    return;
+  }
+
+  if (scannerRunning === true) return;
+
+  try {
+    if (scanner == null) {
+      scanner = new Html5Qrcode('reader');
+    }
+
+    await scanner.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 240, height: 240 } },
+      async function(decodedText) {
+        if (scanBusy === true) return;
+        scanBusy = true;
+
+        try {
+          var parts = decodedText.split('|');
+          var id = parts[0].trim();
+          var member = findMember(id);
+
+          if (member == null) {
+            showMessage('Member ID not found in member list: ' + id, false);
+          } else {
+            await registerMember(member);
+          }
+        } finally {
+          setTimeout(function() {
+            scanBusy = false;
+          }, 2000);
+        }
+      }
+    );
+
+    scannerRunning = true;
+    showMessage('Camera started. Scan a member QR code.', true);
+
+  } catch (error) {
+    showMessage('Camera could not start. Allow camera permission and use HTTPS.', false);
+  }
+}
+
+async function stopScanner() {
+  if (scanner != null && scannerRunning === true) {
+    try {
+      await scanner.stop();
+      scannerRunning = false;
+      showMessage('Scanner stopped.', true);
+    } catch (error) {
+      showMessage('Scanner could not stop.', false);
+    }
+  }
+}
+
+async function syncPending() {
+  if (navigator.onLine === false) return;
+
+  var box = document.getElementById('syncStatus');
+  var pending = records.filter(function(record) {
+    return record.status === 'Pending';
+  });
+
+  if (pending.length === 0) {
+    box.textContent = 'All saved records are synchronized.';
+    box.className = 'status good';
+    return;
+  }
+
+  box.textContent = 'Synchronizing ' + pending.length + ' record(s)...';
+
+  for (var i = 0; i < pending.length; i++) {
+    var r = pending[i];
+
+    try {
+      var result = await jsonp({
+        action: 'save',
+        key: ACCESS_KEY,
+        id: r.id,
+        name: r.name,
+        date: r.date,
+        time: r.time,
+        eventId: r.eventId
+      });
+
+      if (result.success === true) {
+        for (var j = 0; j < records.length; j++) {
+          if (records[j].eventId === r.eventId) {
+            records[j].status = 'Synced';
+          }
+        }
+        saveLocal();
+      } else {
+        if (result.message === 'Already registered today') {
+          for (var k = 0; k < records.length; k++) {
+            if (records[k].eventId === r.eventId) {
+              records[k].status = 'Duplicate';
+            }
+          }
+          saveLocal();
+        }
+      }
+    } catch (error) {
+      box.textContent = 'Sync paused. Pending records remain on this device.';
+      box.className = 'status bad';
+      renderRecords();
+      return;
+    }
+  }
+
+  box.textContent = 'Synchronization finished.';
+  box.className = 'status good';
+  renderRecords();
+}
+
+function renderRecords() {
+  var body = document.getElementById('recordList');
+  body.innerHTML = '';
+
+  var today = getDate();
+  var count = 0;
+
+  for (var i = 0; i < records.length; i++) {
+    var r = records[i];
+
+    if (r.date === today) count++;
+
+    var tr = document.createElement('tr');
+    var values = [r.id, r.name, r.date, r.time, r.status];
+
+    for (var j = 0; j < values.length; j++) {
+      var td = document.createElement('td');
+      td.textContent = values[j];
+      tr.appendChild(td);
+    }
+
+    body.appendChild(tr);
+  }
+
+  document.getElementById('todayCount').textContent = count;
+
+  if (records.length === 0) {
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    td.colSpan = 5;
+    td.textContent = 'No attendance records yet.';
+    tr.appendChild(td);
+    body.appendChild(tr);
+  }
+}
+
+function downloadCSV() {
+  var rows = [['ID', 'Name', 'Date', 'Time', 'Sync Status']];
+
+  for (var i = 0; i < records.length; i++) {
+    var r = records[i];
+    rows.push([r.id, r.name, r.date, r.time, r.status]);
+  }
+
+  var csv = rows.map(function(row) {
+    return row.map(function(value) {
+      return '"' + String(value).replace(/"/g, '""') + '"';
+    }).join(',');
+  }).join('\n');
+
+  var blob = new Blob(['\uFEFF' + csv], {
+    type: 'text/csv;charset=utf-8;'
+  });
+
+  var link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'TSE_Attendance_' + getDate() + '.csv';
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+updateConnection();
+renderRecords();
+loadMembers().then(function() {
+  syncPending();
+});
 </script>
+
 </body>
 </html>
