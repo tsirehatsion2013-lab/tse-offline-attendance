@@ -131,7 +131,8 @@ function saveMembersLocal() {
   localStorage.setItem('tse_members', JSON.stringify(members));
 }
 
-/* Addis Ababa date and time */
+/* ETHIOPIA DATE AND TIME */
+
 function ethiopiaParts() {
   var parts = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Africa/Addis_Ababa',
@@ -153,18 +154,14 @@ function ethiopiaParts() {
   return result;
 }
 
-/* Gregorian date in Ethiopia timezone */
 function getDate() {
   var p = ethiopiaParts();
   return p.year + '-' + p.month + '-' + p.day;
 }
 
-/* Correct Ethiopian 12-hour clock */
-function getEthiopianTimeParts() {
+function getTime() {
   var p = ethiopiaParts();
-
   var internationalHour = Number(p.hour);
-
   var ethiopianHour = ((internationalHour + 5) % 12) + 1;
 
   var period;
@@ -177,18 +174,10 @@ function getEthiopianTimeParts() {
     period = 'ማታ';
   }
 
-  return {
-    hour: String(ethiopianHour).padStart(2, '0'),
-    minute: p.minute,
-    second: p.second,
-    period: period
-  };
-}
-
-function getTime() {
-  var t = getEthiopianTimeParts();
-
-  return t.hour + ':' + t.minute + ':' + t.second + ' ' + t.period;
+  return String(ethiopianHour).padStart(2, '0') +
+    ':' + p.minute +
+    ':' + p.second +
+    ' ' + period;
 }
 
 function updateClock() {
@@ -199,14 +188,15 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-/* JSONP connection to Google Apps Script */
+/* GOOGLE APPS SCRIPT CONNECTION */
+
 function jsonp(params) {
   return new Promise(function(resolve, reject) {
     var script = document.createElement('script');
     var finished = false;
 
     var timer = setTimeout(function() {
-      if (finished === false) {
+      if (!finished) {
         finished = true;
         script.remove();
         reject(new Error('Server response timeout'));
@@ -214,7 +204,7 @@ function jsonp(params) {
     }, 15000);
 
     window.tseCallback = function(data) {
-      if (finished === true) return;
+      if (finished) return;
 
       finished = true;
       clearTimeout(timer);
@@ -228,7 +218,7 @@ function jsonp(params) {
     script.src = API_URL + '?' + query.toString();
 
     script.onerror = function() {
-      if (finished === false) {
+      if (!finished) {
         finished = true;
         clearTimeout(timer);
         script.remove();
@@ -240,7 +230,8 @@ function jsonp(params) {
   });
 }
 
-/* Member list */
+/* MEMBERS */
+
 function showMemberStatus() {
   var box = document.getElementById('memberStatus');
 
@@ -256,9 +247,7 @@ function showMemberStatus() {
 async function loadMembers() {
   showMemberStatus();
 
-  if (navigator.onLine === false) {
-    return;
-  }
+  if (!navigator.onLine) return;
 
   var box = document.getElementById('memberStatus');
   box.textContent = 'Loading latest member list...';
@@ -282,11 +271,12 @@ async function loadMembers() {
   }
 }
 
-/* Internet connection */
+/* INTERNET STATUS */
+
 function updateConnection() {
   var box = document.getElementById('connection');
 
-  if (navigator.onLine === true) {
+  if (navigator.onLine) {
     box.textContent = 'Internet: Online';
     box.className = 'status good';
   } else {
@@ -303,11 +293,10 @@ window.addEventListener('online', function() {
   });
 });
 
-window.addEventListener('offline', function() {
-  updateConnection();
-});
+window.addEventListener('offline', updateConnection);
 
-/* Member ID matching */
+/* MEMBER ID */
+
 function normalizeId(value) {
   var s = String(value || '').trim();
 
@@ -335,7 +324,8 @@ function makeEventId() {
     Math.floor(Math.random() * 1000000);
 }
 
-/* Duplicate protection on this device */
+/* DUPLICATE CHECK */
+
 function alreadyRegistered(id, date) {
   for (var i = 0; i < records.length; i++) {
     if (
@@ -349,7 +339,8 @@ function alreadyRegistered(id, date) {
   return false;
 }
 
-/* Register attendance */
+/* ATTENDANCE REGISTRATION */
+
 async function registerMember(member) {
   var date = getDate();
 
@@ -373,7 +364,7 @@ async function registerMember(member) {
 
   showMessage('Attendance saved on this device: ' + member.name, true);
 
-  if (navigator.onLine === true) {
+  if (navigator.onLine) {
     await syncPending();
   }
 }
@@ -384,7 +375,8 @@ function showMessage(message, success) {
   box.className = success ? 'status good' : 'status bad';
 }
 
-/* Manual attendance */
+/* MANUAL ATTENDANCE */
+
 async function manualAttendance() {
   var id = document.getElementById('manualId').value.trim();
 
@@ -396,7 +388,7 @@ async function manualAttendance() {
   var member = findMember(id);
 
   if (member == null) {
-    showMessage('Member ID not found. Load the member list online first.', false);
+    showMessage('Member ID not found. Load members online first.', false);
     return;
   }
 
@@ -404,7 +396,43 @@ async function manualAttendance() {
   document.getElementById('manualId').value = '';
 }
 
-/* QR scanner */
+/* READ BOTH QR FORMATS */
+
+function getMemberIdFromQR(decodedText) {
+  var text = String(decodedText || '').trim();
+
+  if (!text) return '';
+
+  /* QR containing a URL such as .../exec?id=24 */
+  if (/^https?:\/\//i.test(text)) {
+    try {
+      var qrUrl = new URL(text);
+
+      var id = qrUrl.searchParams.get('id');
+
+      if (id) return id.trim();
+
+      /* Also support URLs using other common ID parameter names */
+      id = qrUrl.searchParams.get('memberId');
+
+      if (id) return id.trim();
+
+      id = qrUrl.searchParams.get('ID');
+
+      if (id) return id.trim();
+
+      return '';
+    } catch (error) {
+      return '';
+    }
+  }
+
+  /* QR containing ID|Name */
+  return text.split('|')[0].trim();
+}
+
+/* QR SCANNER */
+
 async function startScanner() {
   if (typeof Html5Qrcode === 'undefined') {
     showMessage('QR scanner library is not available. Check html5-qrcode.min.js.', false);
@@ -416,7 +444,7 @@ async function startScanner() {
     return;
   }
 
-  if (scannerRunning === true) return;
+  if (scannerRunning) return;
 
   try {
     if (scanner == null) {
@@ -428,13 +456,18 @@ async function startScanner() {
       { fps: 10, qrbox: { width: 240, height: 240 } },
 
       async function(decodedText) {
-        if (scanBusy === true) return;
+        if (scanBusy) return;
 
         scanBusy = true;
 
         try {
-          var parts = decodedText.split('|');
-          var id = parts[0].trim();
+          var id = getMemberIdFromQR(decodedText);
+
+          if (!id) {
+            showMessage('QR code does not contain a valid member ID.', false);
+            return;
+          }
+
           var member = findMember(id);
 
           if (member == null) {
@@ -442,6 +475,7 @@ async function startScanner() {
           } else {
             await registerMember(member);
           }
+
         } finally {
           setTimeout(function() {
             scanBusy = false;
@@ -459,7 +493,7 @@ async function startScanner() {
 }
 
 async function stopScanner() {
-  if (scanner != null && scannerRunning === true) {
+  if (scanner != null && scannerRunning) {
     try {
       await scanner.stop();
       scannerRunning = false;
@@ -470,9 +504,10 @@ async function stopScanner() {
   }
 }
 
-/* Synchronize pending records */
+/* SYNCHRONIZE PENDING RECORDS */
+
 async function syncPending() {
-  if (navigator.onLine === false) return;
+  if (!navigator.onLine) return;
 
   var box = document.getElementById('syncStatus');
 
@@ -519,7 +554,13 @@ async function syncPending() {
         }
 
         saveLocal();
+      } else {
+        box.textContent = result.message || 'Sync failed.';
+        box.className = 'status bad';
+        renderRecords();
+        return;
       }
+
     } catch (error) {
       box.textContent = 'Sync paused. Pending records remain on this device.';
       box.className = 'status bad';
@@ -533,7 +574,8 @@ async function syncPending() {
   renderRecords();
 }
 
-/* Display records */
+/* ATTENDANCE RECORDS */
+
 function renderRecords() {
   var body = document.getElementById('recordList');
   body.innerHTML = '';
@@ -572,7 +614,8 @@ function renderRecords() {
   }
 }
 
-/* CSV report */
+/* CSV REPORT */
+
 function downloadCSV() {
   var rows = [
     ['ID', 'Name', 'Date', 'Time', 'Sync Status']
@@ -605,7 +648,8 @@ function downloadCSV() {
   }, 1000);
 }
 
-/* Offline support */
+/* OFFLINE SUPPORT */
+
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
@@ -618,7 +662,8 @@ function registerServiceWorker() {
   }
 }
 
-/* Start system */
+/* START SYSTEM */
+
 updateConnection();
 renderRecords();
 showMemberStatus();
