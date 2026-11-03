@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#12345a">
 <title>TSE Smart Attendance</title>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f1f4f8;color:#172b45;font-family:Arial,sans-serif}
@@ -29,6 +30,7 @@ td,th{padding:9px 5px;border-bottom:1px solid #e5e9ef;text-align:left}
 footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -99,14 +101,33 @@ Information and Internal Communication Department
 var API_URL = 'https://script.google.com/macros/s/AKfycby2FG7enFwWUUlsvzAOfGE_G8HWErJ3ZQUHVxDuqWnwrEDCN39EpRkUOwyUpjj4Cn4B/exec';
 
 var ACCESS_KEY = 'TSE-CHANGE-THIS-KEY';
+
 var members = [];
+
+try {
+  members = JSON.parse(localStorage.getItem('tse_members') || '[]');
+} catch (error) {
+  members = [];
+}
+
 var scanner = null;
 var scannerRunning = false;
 var scanBusy = false;
-var records = JSON.parse(localStorage.getItem('tse_records') || '[]');
+
+var records = [];
+
+try {
+  records = JSON.parse(localStorage.getItem('tse_records') || '[]');
+} catch (error) {
+  records = [];
+}
 
 function saveLocal() {
   localStorage.setItem('tse_records', JSON.stringify(records));
+}
+
+function saveMembersLocal() {
+  localStorage.setItem('tse_members', JSON.stringify(members));
 }
 
 function ethiopiaParts() {
@@ -122,9 +143,11 @@ function ethiopiaParts() {
   }).formatToParts(new Date());
 
   var result = {};
+
   for (var i = 0; i < parts.length; i++) {
     result[parts[i].type] = parts[i].value;
   }
+
   return result;
 }
 
@@ -161,6 +184,7 @@ function jsonp(params) {
 
     window.tseCallback = function(data) {
       if (finished === true) return;
+
       finished = true;
       clearTimeout(timer);
       script.remove();
@@ -185,13 +209,27 @@ function jsonp(params) {
   });
 }
 
-async function loadMembers() {
+function showMemberStatus() {
   var box = document.getElementById('memberStatus');
 
+  if (members.length > 0) {
+    box.textContent = 'Saved members available: ' + members.length;
+    box.className = 'status good';
+  } else {
+    box.textContent = 'No saved member list. Connect to internet to load members.';
+    box.className = 'status bad';
+  }
+}
+
+async function loadMembers() {
+  showMemberStatus();
+
   if (navigator.onLine === false) {
-    box.textContent = 'Offline. Previously saved members may not be available.';
     return;
   }
+
+  var box = document.getElementById('memberStatus');
+  box.textContent = 'Loading latest member list...';
 
   try {
     var result = await jsonp({
@@ -201,15 +239,14 @@ async function loadMembers() {
 
     if (result.success === true) {
       members = result.members || [];
-      box.textContent = 'Members loaded: ' + members.length;
-      box.className = 'status good';
+      saveMembersLocal();
+      showMemberStatus();
     } else {
-      box.textContent = result.message;
+      box.textContent = result.message || 'Could not load members.';
       box.className = 'status bad';
     }
   } catch (error) {
-    box.textContent = 'Could not load members. Check internet connection.';
-    box.className = 'status bad';
+    showMemberStatus();
   }
 }
 
@@ -227,32 +264,52 @@ function updateConnection() {
 
 window.addEventListener('online', function() {
   updateConnection();
-  loadMembers();
-  syncPending();
+  loadMembers().then(function() {
+    syncPending();
+  });
 });
 
-window.addEventListener('offline', updateConnection);
+window.addEventListener('offline', function() {
+  updateConnection();
+});
+
+function normalizeId(value) {
+  var s = String(value || '').trim();
+
+  if (/^\d+$/.test(s)) {
+    return String(Number(s));
+  }
+
+  return s;
+}
 
 function findMember(id) {
+  var wanted = normalizeId(id);
+
   for (var i = 0; i < members.length; i++) {
-    if (String(members[i].id).trim() === String(id).trim()) {
+    if (normalizeId(members[i].id) === wanted) {
       return members[i];
     }
   }
+
   return null;
 }
 
 function makeEventId() {
-  return 'TSE-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
+  return 'TSE-' + Date.now() + '-' +
+    Math.floor(Math.random() * 1000000);
 }
 
 function alreadyRegistered(id, date) {
   for (var i = 0; i < records.length; i++) {
-    if (String(records[i].id) === String(id) &&
-        records[i].date === date) {
+    if (
+      normalizeId(records[i].id) === normalizeId(id) &&
+      records[i].date === date
+    ) {
       return true;
     }
   }
+
   return false;
 }
 
@@ -301,7 +358,7 @@ async function manualAttendance() {
   var member = findMember(id);
 
   if (member == null) {
-    showMessage('Member ID not found. Connect to internet and load members.', false);
+    showMessage('Member ID not found. Load the member list online first.', false);
     return;
   }
 
@@ -315,6 +372,11 @@ async function startScanner() {
     return;
   }
 
+  if (members.length === 0) {
+    showMessage('Member list is empty. Connect to internet and load members first.', false);
+    return;
+  }
+
   if (scannerRunning === true) return;
 
   try {
@@ -325,8 +387,10 @@ async function startScanner() {
     await scanner.start(
       { facingMode: 'environment' },
       { fps: 10, qrbox: { width: 240, height: 240 } },
+
       async function(decodedText) {
         if (scanBusy === true) return;
+
         scanBusy = true;
 
         try {
@@ -335,7 +399,7 @@ async function startScanner() {
           var member = findMember(id);
 
           if (member == null) {
-            showMessage('Member ID not found in member list: ' + id, false);
+            showMessage('Member ID not found in saved list: ' + id, false);
           } else {
             await registerMember(member);
           }
@@ -371,6 +435,7 @@ async function syncPending() {
   if (navigator.onLine === false) return;
 
   var box = document.getElementById('syncStatus');
+
   var pending = records.filter(function(record) {
     return record.status === 'Pending';
   });
@@ -403,16 +468,17 @@ async function syncPending() {
             records[j].status = 'Synced';
           }
         }
+
         saveLocal();
-      } else {
-        if (result.message === 'Already registered today') {
-          for (var k = 0; k < records.length; k++) {
-            if (records[k].eventId === r.eventId) {
-              records[k].status = 'Duplicate';
-            }
+
+      } else if (result.message === 'Already registered today') {
+        for (var k = 0; k < records.length; k++) {
+          if (records[k].eventId === r.eventId) {
+            records[k].status = 'Duplicate';
           }
-          saveLocal();
         }
+
+        saveLocal();
       }
     } catch (error) {
       box.textContent = 'Sync paused. Pending records remain on this device.';
@@ -456,15 +522,19 @@ function renderRecords() {
   if (records.length === 0) {
     var tr = document.createElement('tr');
     var td = document.createElement('td');
+
     td.colSpan = 5;
     td.textContent = 'No attendance records yet.';
+
     tr.appendChild(td);
     body.appendChild(tr);
   }
 }
 
 function downloadCSV() {
-  var rows = [['ID', 'Name', 'Date', 'Time', 'Sync Status']];
+  var rows = [
+    ['ID', 'Name', 'Date', 'Time', 'Sync Status']
+  ];
 
   for (var i = 0; i < records.length; i++) {
     var r = records[i];
@@ -485,11 +555,27 @@ function downloadCSV() {
   link.href = URL.createObjectURL(blob);
   link.download = 'TSE_Attendance_' + getDate() + '.csv';
   link.click();
+
   URL.revokeObjectURL(link.href);
+}
+
+function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(function() {
+        console.log('Service Worker registered.');
+      })
+      .catch(function(error) {
+        console.log('Service Worker error:', error);
+      });
+  }
 }
 
 updateConnection();
 renderRecords();
+showMemberStatus();
+registerServiceWorker();
+
 loadMembers().then(function() {
   syncPending();
 });
