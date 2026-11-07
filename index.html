@@ -12,13 +12,14 @@ body{margin:0;background:#f1f4f8;color:#172b45;font-family:Arial,sans-serif}
 header{background:#12345a;color:white;padding:22px 15px;text-align:center}
 header h1{margin:0;font-size:23px}
 header p{margin:8px 0 0;font-size:13px}
-#clock{margin-top:12px;font-size:15px;font-weight:bold}
-main{max-width:650px;margin:18px auto;padding:0 12px}
+#clock{margin-top:12px;font-size:14px;font-weight:bold}
+main{max-width:700px;margin:18px auto;padding:0 12px}
 .card{background:white;border-radius:13px;padding:17px;margin-bottom:14px;box-shadow:0 2px 9px #00000012}
 h2{font-size:17px;margin:0 0 13px}
-button,input{width:100%;padding:13px;border-radius:8px;font-size:15px}
-button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:9px;cursor:pointer}
+button,input{width:100%;padding:12px;border-radius:8px;font-size:14px}
+button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:8px;cursor:pointer}
 button.secondary{background:#e5edf6;color:#12345a}
+button:disabled{opacity:.4;cursor:not-allowed}
 input{border:1px solid #ccd5df;margin:5px 0}
 #reader{width:100%;margin-top:12px}
 .status{padding:10px;border-radius:8px;background:#edf3fa;margin-top:10px;font-size:13px;overflow-wrap:anywhere}
@@ -29,6 +30,16 @@ td,th{padding:9px 5px;border-bottom:1px solid #e5e9ef;text-align:left}
 .small{font-size:12px;color:#68788b}
 .stat{font-size:25px;font-weight:bold;color:#12345a}
 footer{text-align:center;color:#718096;font-size:12px;padding:20px}
+.calendar-head{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:center}
+.calendar-head button{margin:0;padding:10px 5px}
+#calendarTitle{text-align:center;font-weight:bold;font-size:15px}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
+.calendar-day{padding:10px 2px;margin:0;background:#edf3fa;color:#12345a;font-size:13px;min-height:40px}
+.calendar-day.selected{background:#12345a;color:white}
+.calendar-day.today{border:2px solid #25845a}
+.weekday{font-size:11px;text-align:center;color:#68788b;padding:7px 0;font-weight:bold}
+#selectedDateLabel{font-weight:bold;margin-top:12px}
+.table-wrap{overflow-x:auto}
 </style>
 </head>
 
@@ -46,7 +57,7 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 <h2>System Status</h2>
 <div id="connection" class="status">Checking connection...</div>
 <div id="memberStatus" class="status">Loading members...</div>
-<div id="syncStatus" class="status">Checking attendance records...</div>
+<div id="syncStatus" class="status">Checking records...</div>
 </div>
 
 <div class="card">
@@ -65,15 +76,32 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 </div>
 
 <div class="card">
-<h2>Today's Report</h2>
-<div class="stat" id="todayCount">0</div>
-<p class="small">Members registered today</p>
-<button class="secondary" onclick="downloadCSV()">Download CSV Report</button>
+<h2>Ethiopian Calendar</h2>
+<p class="small">Select an Ethiopian date to view attendance from all phones.</p>
+
+<div class="calendar-head">
+<button class="secondary" onclick="changeMonth(-1)">❮ Previous</button>
+<div id="calendarTitle">Calendar</div>
+<button class="secondary" onclick="changeMonth(1)">Next ❯</button>
+</div>
+
+<div class="calendar-grid" id="calendarGrid"></div>
+
+<button class="secondary" onclick="selectToday()">Go to Today</button>
+<div id="selectedDateLabel">Selected date:</div>
+<div id="historyStatus" class="status">Select a date.</div>
 </div>
 
 <div class="card">
+<h2>Selected Date Report</h2>
+<div class="stat" id="todayCount">0</div>
+<p class="small">Attendance records for selected date</p>
+<button onclick="downloadCSV()">Download Selected Date CSV</button>
+</div>
+[11/7/2026 5:26 PM] Mickeyās: <div class="card">
 <h2>Attendance Records</h2>
-<div style="overflow-x:auto">
+<p class="small">Records from all connected phones for the selected date.</p>
+<div class="table-wrap">
 <table>
 <thead>
 <tr>
@@ -81,6 +109,7 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 <th>Name</th>
 <th>Date</th>
 <th>Time</th>
+<th>Device</th>
 <th>Status</th>
 </tr>
 </thead>
@@ -103,25 +132,52 @@ var API_URL = 'https://script.google.com/macros/s/AKfycby2FG7enFwWUUlsvzAOfGE_G8
 
 var ACCESS_KEY = 'TSE-CHANGE-THIS-KEY';
 
+var MONTHS = [
+'መስከረም','ጥቅምት','ኅዳር','ታኅሣሥ',
+'ጥር','የካቲት','መጋቢት','ሚያዝያ',
+'ግንቦት','ሰኔ','ሐምሌ','ነሐሴ','ጳጉሜን'
+];
+
+var WEEKDAYS = ['እሑድ','ሰኞ','ማክሰኞ','ረቡዕ','ሐሙስ','ዓርብ','ቅዳሜ'];
+
 var members = [];
+var records = [];
+var selectedRecords = [];
 
 try {
   members = JSON.parse(localStorage.getItem('tse_members') || '[]');
-} catch (error) {
+} catch(e) {
   members = [];
+}
+
+try {
+  records = JSON.parse(localStorage.getItem('tse_records') || '[]');
+} catch(e) {
+  records = [];
 }
 
 var scanner = null;
 var scannerRunning = false;
 var scanBusy = false;
 
-var records = [];
+var deviceId = localStorage.getItem('tse_device_id');
 
-try {
-  records = JSON.parse(localStorage.getItem('tse_records') || '[]');
-} catch (error) {
-  records = [];
+if (!deviceId) {
+  deviceId = 'TSE-DEVICE-' +
+    Date.now() + '-' +
+    Math.floor(Math.random() * 1000000);
+
+  localStorage.setItem('tse_device_id', deviceId);
 }
+
+var deviceInfo = navigator.userAgent || 'Unknown device';
+var browserInfo = 'Web browser';
+
+var viewYear;
+var viewMonth;
+var selectedYear;
+var selectedMonth;
+var selectedDay;
 
 function saveLocal() {
   localStorage.setItem('tse_records', JSON.stringify(records));
@@ -131,67 +187,86 @@ function saveMembersLocal() {
   localStorage.setItem('tse_members', JSON.stringify(members));
 }
 
-/* ETHIOPIA DATE AND TIME */
 
-function ethiopiaParts() {
-  var parts = new Intl.DateTimeFormat('en-GB', {
-    timeZone: 'Africa/Addis_Ababa',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hourCycle: 'h23'
-  }).formatToParts(new Date());
+// ETHIOPIAN DATE FUNCTIONS
+
+function getEthParts(date) {
+  var parts = new Intl.DateTimeFormat('en-US-u-ca-ethiopic', {
+    timeZone:'Africa/Addis_Ababa',
+    year:'numeric',
+    month:'numeric',
+    day:'numeric'
+  }).formatToParts(date);
 
   var result = {};
 
-  for (var i = 0; i < parts.length; i++) {
-    result[parts[i].type] = parts[i].value;
-  }
+  parts.forEach(function(p) {
+    if (p.type === 'year') result.year = Number(p.value);
+    if (p.type === 'month') result.month = Number(p.value);
+    if (p.type === 'day') result.day = Number(p.value);
+  });
 
   return result;
 }
 
+function todayEth() {
+  return getEthParts(new Date());
+}
+
+function ethKey(y,m,d) {
+  return y + '/' + m + '/' + d;
+}
+
 function getDate() {
-  var p = ethiopiaParts();
-  return p.year + '-' + p.month + '-' + p.day;
+  var p = new Intl.DateTimeFormat('en-GB', {
+    timeZone:'Africa/Addis_Ababa',
+    year:'numeric',
+    month:'2-digit',
+    day:'2-digit'
+  }).formatToParts(new Date());
+
+  var v = {};
+  p.forEach(function(x) { v[x.type] = x.value; });
+
+  return v.year + '-' + v.month + '-' + v.day;
 }
 
 function getTime() {
-  var p = ethiopiaParts();
-  var internationalHour = Number(p.hour);
-  var ethiopianHour = ((internationalHour + 5) % 12) + 1;
+  var p = new Intl.DateTimeFormat('en-GB', {
+    timeZone:'Africa/Addis_Ababa',
+    hour:'2-digit',
+    minute:'2-digit',
+    second:'2-digit',
+    hourCycle:'h23'
+  }).formatToParts(new Date());
 
-  var period;
+  var v = {};
+  p.forEach(function(x) { v[x.type] = x.value; });
 
-  if (internationalHour >= 6 && internationalHour < 12) {
-    period = 'ጠዋት';
-  } else if (internationalHour >= 12 && internationalHour < 18) {
-    period = 'ቀን';
-  } else {
-    period = 'ማታ';
-  }
+  var hour = Number(v.hour);
+  var ethHour = ((hour + 5) % 12) + 1;
+  var period = (hour >= 6 && hour < 12) ? 'ጠዋት' :
+               (hour >= 12 && hour < 18) ? 'ቀን' : 'ማታ';
 
-  return String(ethiopianHour).padStart(2, '0') +
-    ':' + p.minute +
-    ':' + p.second +
-    ' ' + period;
+  return ethHour + ':' + v.minute + ':' + v.second + ' ' + period;
 }
 
 function updateClock() {
+  var p = todayEth();
+
   document.getElementById('clock').textContent =
-    'የኢትዮጵያ ሰዓት: ' + getDate() + ' | ' + getTime();
+    MONTHS[p.month - 1] + ' ' + p.day + ' ' + p.year +
+    ' ዓ.ም. | ' + getTime();
 }
 
-setInterval(updateClock, 1000);
+setInterval(updateClock,1000);
 updateClock();
 
-/* GOOGLE APPS SCRIPT CONNECTION */
+
+// JSONP CONNECTION
 
 function jsonp(params) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve,reject) {
     var script = document.createElement('script');
     var finished = false;
 
@@ -201,7 +276,7 @@ function jsonp(params) {
         script.remove();
         reject(new Error('Server response timeout'));
       }
-    }, 15000);
+    },15000);
 
     window.tseCallback = function(data) {
       if (finished) return;
@@ -213,8 +288,7 @@ function jsonp(params) {
     };
 
     params.callback = 'tseCallback';
-
-    var query = new URLSearchParams(params);
+[11/7/2026 5:26 PM] Mickeyās: var query = new URLSearchParams(params);
     script.src = API_URL + '?' + query.toString();
 
     script.onerror = function() {
@@ -230,7 +304,8 @@ function jsonp(params) {
   });
 }
 
-/* MEMBERS */
+
+// MEMBERS
 
 function showMemberStatus() {
   var box = document.getElementById('memberStatus');
@@ -239,7 +314,7 @@ function showMemberStatus() {
     box.textContent = 'Saved members available: ' + members.length;
     box.className = 'status good';
   } else {
-    box.textContent = 'No saved member list. Connect to internet to load members.';
+    box.textContent = 'No saved members. Connect to internet to load.';
     box.className = 'status bad';
   }
 }
@@ -249,29 +324,26 @@ async function loadMembers() {
 
   if (!navigator.onLine) return;
 
-  var box = document.getElementById('memberStatus');
-  box.textContent = 'Loading latest member list...';
-
   try {
     var result = await jsonp({
-      action: 'members',
-      key: ACCESS_KEY
+      action:'members',
+      key:ACCESS_KEY
     });
 
-    if (result.success === true) {
+    if (result.success) {
       members = result.members || [];
       saveMembersLocal();
       showMemberStatus();
     } else {
-      box.textContent = result.message || 'Could not load members.';
-      box.className = 'status bad';
+      document.getElementById('memberStatus').textContent = result.message;
     }
-  } catch (error) {
+  } catch(e) {
     showMemberStatus();
   }
 }
 
-/* INTERNET STATUS */
+
+// CONNECTION
 
 function updateConnection() {
   var box = document.getElementById('connection');
@@ -280,7 +352,7 @@ function updateConnection() {
     box.textContent = 'Internet: Online';
     box.className = 'status good';
   } else {
-    box.textContent = 'Internet: Offline. Records will be saved on this device.';
+    box.textContent = 'Internet: Offline. Records saved on this device.';
     box.className = 'status bad';
   }
 }
@@ -290,19 +362,19 @@ window.addEventListener('online', function() {
 
   loadMembers().then(function() {
     syncPending();
+    loadSelectedRecords();
   });
 });
 
 window.addEventListener('offline', updateConnection);
 
-/* MEMBER ID */
+
+// MEMBER ID
 
 function normalizeId(value) {
   var s = String(value || '').trim();
 
-  if (/^\d+$/.test(s)) {
-    return String(Number(s));
-  }
+  if (/^\d+$/.test(s)) return String(Number(s));
 
   return s;
 }
@@ -324,71 +396,73 @@ function makeEventId() {
     Math.floor(Math.random() * 1000000);
 }
 
-/* DUPLICATE CHECK */
-
-function alreadyRegistered(id, date) {
-  for (var i = 0; i < records.length; i++) {
-    if (
-      normalizeId(records[i].id) === normalizeId(id) &&
-      records[i].date === date
-    ) {
-      return true;
-    }
-  }
-
-  return false;
+function alreadyRegistered(id,date) {
+  return records.some(function(r) {
+    return normalizeId(r.id) === normalizeId(id) &&
+           r.date === date;
+  });
 }
 
-/* ATTENDANCE REGISTRATION */
+
+// ATTENDANCE REGISTRATION
 
 async function registerMember(member) {
   var date = getDate();
 
-  if (alreadyRegistered(member.id, date)) {
-    showMessage(member.name + ' is already registered today.', false);
+  if (alreadyRegistered(member.id,date)) {
+    showMessage(member.name + ' is already registered today.',false);
     return;
   }
 
+  var eth = todayEth();
+
   var record = {
-    id: member.id,
-    name: member.name,
-    date: date,
-    time: getTime(),
-    eventId: makeEventId(),
-    status: 'Pending'
+    id:member.id,
+    name:member.name,
+    date:date,
+    time:getTime(),
+    ethDate:ethKey(eth.year,eth.month,eth.day),
+    ethTime:getTime(),
+    eventId:makeEventId(),
+    deviceId:deviceId,
+    deviceInfo:deviceInfo,
+    browser:browserInfo,
+    status:'Pending'
   };
 
   records.unshift(record);
   saveLocal();
-  renderRecords();
 
-  showMessage('Attendance saved on this device: ' + member.name, true);
+  showMessage('Attendance saved: ' + member.name,true);
 
-  if (navigator.onLine) {
-    await syncPending();
+  await syncPending();
+
+  if (selectedDateKey() === record.ethDate) {
+    loadSelectedRecords();
   }
 }
 
-function showMessage(message, success) {
+function showMessage(message,success) {
   var box = document.getElementById('scanMessage');
   box.textContent = message;
   box.className = success ? 'status good' : 'status bad';
 }
 
-/* MANUAL ATTENDANCE */
+
+// MANUAL ATTENDANCE
 
 async function manualAttendance() {
   var id = document.getElementById('manualId').value.trim();
 
-  if (id === '') {
-    showMessage('Enter a member ID.', false);
+  if (!id) {
+    showMessage('Enter a member ID.',false);
     return;
   }
 
   var member = findMember(id);
 
-  if (member == null) {
-    showMessage('Member ID not found. Load members online first.', false);
+  if (!member) {
+    showMessage('Member ID not found. Load members online first.',false);
     return;
   }
 
@@ -396,72 +470,63 @@ async function manualAttendance() {
   document.getElementById('manualId').value = '';
 }
 
-/* READ QR CODE FORMATS */
+
+// QR READER
 
 function getMemberIdFromQR(decodedText) {
   var text = String(decodedText || '').trim();
 
   if (!text) return '';
 
-  // Remove invisible characters and surrounding spaces
-  text = text.replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
+  text = text.replace(/[\u200B-\u200D\uFEFF]/g,'').trim();
 
-  // If QR contains a URL, extract its ID parameter
   var urlMatch = text.match(/https?:\/\/[^\s]+/i);
 
   if (urlMatch) {
     try {
-      var cleanUrl = urlMatch[0].replace(/[),.;]+$/, '');
+      var cleanUrl = urlMatch[0].replace(/[),.;]+$/,'');
       var qrUrl = new URL(cleanUrl);
+[11/7/2026 5:26 PM] Mickeyās: var id = qrUrl.searchParams.get('id') ||
+               qrUrl.searchParams.get('memberId') ||
+               qrUrl.searchParams.get('ID');
 
-      var id = qrUrl.searchParams.get('id');
-
-      if (!id) id = qrUrl.searchParams.get('memberId');
-      if (!id) id = qrUrl.searchParams.get('ID');
-
-      if (id) return decodeURIComponent(id).trim();
-
-    } catch (error) {
-      // Continue checking other QR formats
-    }
+      if (id) return id.trim();
+    } catch(e) {}
   }
 
-  // QR containing ID|Name
   if (text.indexOf('|') !== -1) {
     return text.split('|')[0].trim();
   }
 
-  // QR containing only a numeric ID
-  if (/^\d+$/.test(text)) {
-    return text;
-  }
+  if (/^\d+$/.test(text)) return text;
 
   return '';
 }
 
-/* QR SCANNER */
+
+// QR SCANNER
 
 async function startScanner() {
   if (typeof Html5Qrcode === 'undefined') {
-    showMessage('QR scanner library is not available. Check html5-qrcode.min.js.', false);
+    showMessage('QR scanner library is missing.',false);
     return;
   }
 
   if (members.length === 0) {
-    showMessage('Member list is empty. Connect to internet and load members first.', false);
+    showMessage('Load members online first.',false);
     return;
   }
 
   if (scannerRunning) return;
 
   try {
-    if (scanner == null) {
+    if (scanner === null) {
       scanner = new Html5Qrcode('reader');
     }
 
     await scanner.start(
-      { facingMode: 'environment' },
-      { fps: 10, qrbox: { width: 240, height: 240 } },
+      {facingMode:'environment'},
+      {fps:10,qrbox:{width:240,height:240}},
 
       async function(decodedText) {
         if (scanBusy) return;
@@ -470,69 +535,55 @@ async function startScanner() {
 
         try {
           var id = getMemberIdFromQR(decodedText);
-
           var member = findMember(id);
 
           if (!id) {
-            showMessage(
-              'QR READ: ' + decodedText +
-              ' | Could not extract Member ID.',
-              false
-            );
-            return;
-          }
-
-          if (member == null) {
-            showMessage(
-              'QR READ: ' + decodedText +
-              ' | Extracted ID: ' + id +
-              ' | Member ID not found in saved list.',
-              false
-            );
+            showMessage('Could not extract Member ID from QR.',false);
+          } else if (!member) {
+            showMessage('Member ID not found: ' + id,false);
           } else {
             await registerMember(member);
           }
-
-        } catch (error) {
-          showMessage('Scanner error: ' + error.message, false);
-
+        } catch(e) {
+          showMessage('Scanner error: ' + e.message,false);
         } finally {
           setTimeout(function() {
             scanBusy = false;
-          }, 2000);
+          },2000);
         }
       }
     );
 
     scannerRunning = true;
-    showMessage('Camera started. Scan a member QR code.', true);
+    showMessage('Camera started. Scan a member QR code.',true);
 
-  } catch (error) {
-    showMessage('Camera could not start. Allow camera permission and use HTTPS.', false);
+  } catch(e) {
+    showMessage('Camera could not start. Allow camera permission.',false);
   }
 }
 
 async function stopScanner() {
-  if (scanner != null && scannerRunning) {
+  if (scanner && scannerRunning) {
     try {
       await scanner.stop();
       scannerRunning = false;
-      showMessage('Scanner stopped.', true);
-    } catch (error) {
-      showMessage('Scanner could not stop.', false);
+      showMessage('Scanner stopped.',true);
+    } catch(e) {
+      showMessage('Scanner could not stop.',false);
     }
   }
 }
 
-/* SYNCHRONIZE PENDING RECORDS */
+
+// SYNCHRONIZATION
 
 async function syncPending() {
   if (!navigator.onLine) return;
 
   var box = document.getElementById('syncStatus');
 
-  var pending = records.filter(function(record) {
-    return record.status === 'Pending';
+  var pending = records.filter(function(r) {
+    return r.status === 'Pending';
   });
 
   if (pending.length === 0) {
@@ -548,127 +599,339 @@ async function syncPending() {
 
     try {
       var result = await jsonp({
-        action: 'save',
-        key: ACCESS_KEY,
-        id: r.id,
-        name: r.name,
-        date: r.date,
-        time: r.time,
-        eventId: r.eventId
+        action:'save',
+        key:ACCESS_KEY,
+        id:r.id,
+        name:r.name,
+        date:r.date,
+        time:r.time,
+        ethDate:r.ethDate || '',
+        ethTime:r.ethTime || r.time,
+        eventId:r.eventId,
+        deviceId:r.deviceId || deviceId,
+        deviceInfo:r.deviceInfo || deviceInfo,
+        browser:r.browser || browserInfo
       });
 
       if (result.success === true) {
-        for (var j = 0; j < records.length; j++) {
-          if (records[j].eventId === r.eventId) {
-            records[j].status = 'Synced';
-          }
-        }
-
-        saveLocal();
-
+        r.status = 'Synced';
       } else if (result.message === 'Already registered today') {
-        for (var k = 0; k < records.length; k++) {
-          if (records[k].eventId === r.eventId) {
-            records[k].status = 'Duplicate';
-          }
-        }
-
-        saveLocal();
+        r.status = 'Duplicate';
       } else {
         box.textContent = result.message || 'Sync failed.';
         box.className = 'status bad';
-        renderRecords();
+        saveLocal();
         return;
       }
 
-    } catch (error) {
+      saveLocal();
+
+    } catch(e) {
       box.textContent = 'Sync paused. Pending records remain on this device.';
       box.className = 'status bad';
-      renderRecords();
+      saveLocal();
       return;
     }
   }
 
   box.textContent = 'Synchronization finished.';
   box.className = 'status good';
-  renderRecords();
+  saveLocal();
 }
 
-/* ATTENDANCE RECORDS */
 
-function renderRecords() {
+// ETHIOPIAN CALENDAR
+
+function findEthMonthStart(year,month) {
+  var start = Date.UTC(year + 7,0,1,12,0,0);
+
+  for (var i = 0; i < 400; i++) {
+    var date = new Date(start + i * 86400000);
+    var p = getEthParts(date);
+
+    if (p.year === year && p.month === month && p.day === 1) {
+      return date;
+    }
+  }
+
+  return null;
+}
+
+function selectedDateKey() {
+  return ethKey(selectedYear,selectedMonth,selectedDay);
+}
+[11/7/2026 5:26 PM] Mickeyās: function displaySelectedDate() {
+  document.getElementById('selectedDateLabel').textContent =
+    'Selected date: ' + selectedDay + ' ' +
+    MONTHS[selectedMonth - 1] + ' ' + selectedYear + ' ዓ.ም.';
+}
+
+function renderCalendar() {
+  var title = document.getElementById('calendarTitle');
+  var grid = document.getElementById('calendarGrid');
+
+  title.textContent = MONTHS[viewMonth - 1] + ' ' + viewYear + ' ዓ.ም.';
+
+  grid.innerHTML = '';
+
+  WEEKDAYS.forEach(function(day) {
+    var el = document.createElement('div');
+    el.className = 'weekday';
+    el.textContent = day;
+    grid.appendChild(el);
+  });
+
+  var first = findEthMonthStart(viewYear,viewMonth);
+
+  if (!first) {
+    grid.textContent = 'Calendar could not load.';
+    return;
+  }
+
+  var offset = first.getUTCDay();
+  var totalDays = viewMonth === 13 ? 5 : 30;
+
+  if (viewMonth === 13) {
+    var nextMonth = findEthMonthStart(viewYear + 1,1);
+    if (nextMonth) {
+      totalDays = Math.round((nextMonth.getTime() - first.getTime()) / 86400000);
+    }
+  }
+
+  for (var i = 0; i < offset; i++) {
+    var blank = document.createElement('div');
+    grid.appendChild(blank);
+  }
+
+  var today = todayEth();
+
+  for (var d = 1; d <= totalDays; d++) {
+    var btn = document.createElement('button');
+    btn.className = 'calendar-day';
+    btn.textContent = d;
+
+    if (d === selectedDay &&
+        viewYear === selectedYear &&
+        viewMonth === selectedMonth) {
+      btn.classList.add('selected');
+    }
+
+    if (today.year === viewYear &&
+        today.month === viewMonth &&
+        today.day === d) {
+      btn.classList.add('today');
+    }
+
+    (function(day) {
+      btn.onclick = function() {
+        selectedYear = viewYear;
+        selectedMonth = viewMonth;
+        selectedDay = day;
+
+        displaySelectedDate();
+        renderCalendar();
+        loadSelectedRecords();
+      };
+    })(d);
+
+    grid.appendChild(btn);
+  }
+}
+
+function changeMonth(direction) {
+  viewMonth += direction;
+
+  if (viewMonth > 13) {
+    viewMonth = 1;
+    viewYear++;
+  }
+
+  if (viewMonth < 1) {
+    viewMonth = 13;
+    viewYear--;
+  }
+
+  renderCalendar();
+}
+
+function selectToday() {
+  var p = todayEth();
+
+  viewYear = p.year;
+  viewMonth = p.month;
+  selectedYear = p.year;
+  selectedMonth = p.month;
+  selectedDay = p.day;
+
+  displaySelectedDate();
+  renderCalendar();
+  loadSelectedRecords();
+}
+
+
+// LOAD RECORDS FROM ALL PHONES
+
+async function loadSelectedRecords() {
+  var box = document.getElementById('historyStatus');
+  var key = selectedDateKey();
+
+  displaySelectedDate();
+
+  if (!navigator.onLine) {
+    selectedRecords = records.filter(function(r) {
+      if (r.ethDate) return r.ethDate === key;
+
+      var p = getEthParts(new Date(r.date + 'T12:00:00'));
+      return ethKey(p.year,p.month,p.day) === key;
+    });
+
+    box.textContent = 'Offline: showing records saved on this phone only.';
+    box.className = 'status bad';
+    renderSelectedRecords();
+    return;
+  }
+
+  box.textContent = 'Loading records from all phones...';
+  box.className = 'status';
+
+  try {
+    var result = await jsonp({
+      action:'records',
+      key:ACCESS_KEY,
+      ethDate:key
+    });
+
+    if (!result.success) {
+      throw new Error(result.message || 'Could not load records.');
+    }
+
+    selectedRecords = result.records || [];
+
+    // Include unsynced local records not yet present on server
+    records.forEach(function(r) {
+      if (r.ethDate === key && r.status === 'Pending') {
+        var exists = selectedRecords.some(function(serverRecord) {
+          return serverRecord.id === String(r.id) &&
+                 serverRecord.date === r.date;
+        });
+
+        if (!exists) {
+          selectedRecords.push(r);
+        }
+      }
+    });
+
+    box.textContent = 'Showing records from all connected phones.';
+    box.className = 'status good';
+
+    renderSelectedRecords();
+
+  } catch(e) {
+    box.textContent = 'Could not load server records: ' + e.message;
+    box.className = 'status bad';
+
+    selectedRecords = records.filter(function(r) {
+      return r.ethDate === key;
+    });
+
+    renderSelectedRecords();
+  }
+}
+[11/7/2026 5:26 PM] Mickeyās: // DISPLAY SELECTED RECORDS
+
+function renderSelectedRecords() {
   var body = document.getElementById('recordList');
   body.innerHTML = '';
 
-  var today = getDate();
-  var count = 0;
+  document.getElementById('todayCount').textContent =
+    selectedRecords.length;
 
-  for (var i = 0; i < records.length; i++) {
-    var r = records[i];
-
-    if (r.date === today) count++;
-
+  selectedRecords.forEach(function(r) {
     var tr = document.createElement('tr');
-    var values = [r.id, r.name, r.date, r.time, r.status];
 
-    for (var j = 0; j < values.length; j++) {
+    var values = [
+      r.id,
+      r.name,
+      r.ethDate || r.date,
+      r.ethTime || r.time,
+      r.deviceInfo || 'Not available',
+      r.status || 'Synced'
+    ];
+
+    values.forEach(function(value) {
       var td = document.createElement('td');
-      td.textContent = values[j];
+      td.textContent = value || '-';
       tr.appendChild(td);
-    }
+    });
 
     body.appendChild(tr);
-  }
+  });
 
-  document.getElementById('todayCount').textContent = count;
-
-  if (records.length === 0) {
+  if (selectedRecords.length === 0) {
     var tr = document.createElement('tr');
     var td = document.createElement('td');
 
-    td.colSpan = 5;
-    td.textContent = 'No attendance records yet.';
+    td.colSpan = 6;
+    td.textContent = 'No attendance records for this date.';
 
     tr.appendChild(td);
     body.appendChild(tr);
   }
 }
 
-/* CSV REPORT */
+
+// CSV FOR SELECTED DATE ONLY
 
 function downloadCSV() {
-  var rows = [
-    ['ID', 'Name', 'Date', 'Time', 'Sync Status']
-  ];
-
-  for (var i = 0; i < records.length; i++) {
-    var r = records[i];
-    rows.push([r.id, r.name, r.date, r.time, r.status]);
+  if (selectedRecords.length === 0) {
+    alert('No records available for this date.');
+    return;
   }
+
+  var rows = [[
+    'ID','Name','Ethiopian Date','Ethiopian Time',
+    'Device ID','Device Info','Browser','Status'
+  ]];
+
+  selectedRecords.forEach(function(r) {
+    rows.push([
+      r.id,
+      r.name,
+      r.ethDate || '',
+      r.ethTime || r.time,
+      r.deviceId || '',
+      r.deviceInfo || '',
+      r.browser || '',
+      r.status || 'Synced'
+    ]);
+  });
 
   var csv = rows.map(function(row) {
     return row.map(function(value) {
-      return '"' + String(value).replace(/"/g, '""') + '"';
+      return '"' + String(value || '').replace(/"/g,'""') + '"';
     }).join(',');
   }).join('\n');
 
   var blob = new Blob(['\uFEFF' + csv], {
-    type: 'text/csv;charset=utf-8;'
+    type:'text/csv;charset=utf-8;'
   });
 
   var link = document.createElement('a');
   var url = URL.createObjectURL(blob);
 
   link.href = url;
-  link.download = 'TSE_Attendance_' + getDate() + '.csv';
+  link.download = 'TSE_Attendance_' +
+    selectedDateKey().replace(/\//g,'-') + '.csv';
+
   link.click();
 
   setTimeout(function() {
     URL.revokeObjectURL(url);
-  }, 1000);
+  },1000);
 }
 
-/* OFFLINE SUPPORT */
+
+// SERVICE WORKER
 
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
@@ -677,23 +940,41 @@ function registerServiceWorker() {
         console.log('Service Worker registered.');
       })
       .catch(function(error) {
-        console.log('Service Worker error:', error);
+        console.log('Service Worker error:',error);
       });
   }
 }
 
-/* START SYSTEM */
 
+// START SYSTEM
+
+var initialDate = todayEth();
+
+viewYear = initialDate.year;
+viewMonth = initialDate.month;
+selectedYear = initialDate.year;
+selectedMonth = initialDate.month;
+selectedDay = initialDate.day;
+
+updateClock();
 updateConnection();
-renderRecords();
 showMemberStatus();
-registerServiceWorker();
+renderCalendar();
+displaySelectedDate();
+renderServiceWorkerPlaceholder();
+
+function renderServiceWorkerPlaceholder() {
+  registerServiceWorker();
+}
+
+renderSelectedRecords();
 
 loadMembers().then(function() {
   syncPending();
 });
 
-</script>
+loadSelectedRecords();
 
+</script>
 </body>
 </html>
