@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,7 +99,8 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 <p class="small">Attendance records for selected date</p>
 <button onclick="downloadCSV()">Download Selected Date CSV</button>
 </div>
-[11/7/2026 5:26 PM] Mickeyās: <div class="card">
+
+<div class="card">
 <h2>Attendance Records</h2>
 <p class="small">Records from all connected phones for the selected date.</p>
 <div class="table-wrap">
@@ -163,10 +165,8 @@ var scanBusy = false;
 var deviceId = localStorage.getItem('tse_device_id');
 
 if (!deviceId) {
-  deviceId = 'TSE-DEVICE-' +
-    Date.now() + '-' +
+  deviceId = 'TSE-DEVICE-' + Date.now() + '-' +
     Math.floor(Math.random() * 1000000);
-
   localStorage.setItem('tse_device_id', deviceId);
 }
 
@@ -178,6 +178,9 @@ var viewMonth;
 var selectedYear;
 var selectedMonth;
 var selectedDay;
+
+
+// LOCAL STORAGE
 
 function saveLocal() {
   localStorage.setItem('tse_records', JSON.stringify(records));
@@ -226,7 +229,9 @@ function getDate() {
   }).formatToParts(new Date());
 
   var v = {};
-  p.forEach(function(x) { v[x.type] = x.value; });
+  p.forEach(function(x) {
+    v[x.type] = x.value;
+  });
 
   return v.year + '-' + v.month + '-' + v.day;
 }
@@ -241,10 +246,13 @@ function getTime() {
   }).formatToParts(new Date());
 
   var v = {};
-  p.forEach(function(x) { v[x.type] = x.value; });
+  p.forEach(function(x) {
+    v[x.type] = x.value;
+  });
 
   var hour = Number(v.hour);
   var ethHour = ((hour + 5) % 12) + 1;
+
   var period = (hour >= 6 && hour < 12) ? 'ጠዋት' :
                (hour >= 12 && hour < 18) ? 'ቀን' : 'ማታ';
 
@@ -264,38 +272,52 @@ updateClock();
 
 
 // JSONP CONNECTION
+// Each request receives its own callback name.
+
+var jsonpCounter = 0;
 
 function jsonp(params) {
-  return new Promise(function(resolve,reject) {
+  return new Promise(function(resolve, reject) {
     var script = document.createElement('script');
     var finished = false;
 
-    var timer = setTimeout(function() {
+    var callbackName =
+      'tseCallback_' + Date.now() + '_' + (++jsonpCounter);
+
+    var timer;
+
+    function cleanup() {
+      clearTimeout(timer);
+      script.remove();
+      delete window[callbackName];
+    }
+
+    timer = setTimeout(function() {
       if (!finished) {
         finished = true;
-        script.remove();
+        cleanup();
         reject(new Error('Server response timeout'));
       }
-    },15000);
+    },20000);
 
-    window.tseCallback = function(data) {
+    window[callbackName] = function(data) {
       if (finished) return;
 
       finished = true;
-      clearTimeout(timer);
-      script.remove();
+      cleanup();
       resolve(data);
     };
 
-    params.callback = 'tseCallback';
-[11/7/2026 5:26 PM] Mickeyās: var query = new URLSearchParams(params);
+    var requestParams = Object.assign({},params);
+    requestParams.callback = callbackName;
+
+    var query = new URLSearchParams(requestParams);
     script.src = API_URL + '?' + query.toString();
 
     script.onerror = function() {
       if (!finished) {
         finished = true;
-        clearTimeout(timer);
-        script.remove();
+        cleanup();
         reject(new Error('Connection failed'));
       }
     };
@@ -324,21 +346,28 @@ async function loadMembers() {
 
   if (!navigator.onLine) return;
 
+  var box = document.getElementById('memberStatus');
+  box.textContent = 'Loading members from server...';
+  box.className = 'status';
+
   try {
     var result = await jsonp({
       action:'members',
       key:ACCESS_KEY
     });
 
-    if (result.success) {
+    if (result && result.success) {
       members = result.members || [];
       saveMembersLocal();
       showMemberStatus();
     } else {
-      document.getElementById('memberStatus').textContent = result.message;
+      box.textContent = (result && result.message) ||
+        'Could not load members.';
+      box.className = 'status bad';
     }
   } catch(e) {
-    showMemberStatus();
+    box.textContent = 'Member loading failed: ' + e.message;
+    box.className = 'status bad';
   }
 }
 
@@ -486,7 +515,8 @@ function getMemberIdFromQR(decodedText) {
     try {
       var cleanUrl = urlMatch[0].replace(/[),.;]+$/,'');
       var qrUrl = new URL(cleanUrl);
-[11/7/2026 5:26 PM] Mickeyās: var id = qrUrl.searchParams.get('id') ||
+
+      var id = qrUrl.searchParams.get('id') ||
                qrUrl.searchParams.get('memberId') ||
                qrUrl.searchParams.get('ID');
 
@@ -593,6 +623,7 @@ async function syncPending() {
   }
 
   box.textContent = 'Synchronizing ' + pending.length + ' record(s)...';
+  box.className = 'status';
 
   for (var i = 0; i < pending.length; i++) {
     var r = pending[i];
@@ -613,12 +644,14 @@ async function syncPending() {
         browser:r.browser || browserInfo
       });
 
-      if (result.success === true) {
+      if (result && result.success === true) {
         r.status = 'Synced';
-      } else if (result.message === 'Already registered today') {
+      } else if (result &&
+                 result.message === 'Already registered today') {
         r.status = 'Duplicate';
       } else {
-        box.textContent = result.message || 'Sync failed.';
+        box.textContent = (result && result.message) ||
+          'Sync failed.';
         box.className = 'status bad';
         saveLocal();
         return;
@@ -627,7 +660,8 @@ async function syncPending() {
       saveLocal();
 
     } catch(e) {
-      box.textContent = 'Sync paused. Pending records remain on this device.';
+      box.textContent =
+        'Sync paused. Pending records remain on this device.';
       box.className = 'status bad';
       saveLocal();
       return;
@@ -660,7 +694,8 @@ function findEthMonthStart(year,month) {
 function selectedDateKey() {
   return ethKey(selectedYear,selectedMonth,selectedDay);
 }
-[11/7/2026 5:26 PM] Mickeyās: function displaySelectedDate() {
+
+function displaySelectedDate() {
   document.getElementById('selectedDateLabel').textContent =
     'Selected date: ' + selectedDay + ' ' +
     MONTHS[selectedMonth - 1] + ' ' + selectedYear + ' ዓ.ም.';
@@ -670,7 +705,8 @@ function renderCalendar() {
   var title = document.getElementById('calendarTitle');
   var grid = document.getElementById('calendarGrid');
 
-  title.textContent = MONTHS[viewMonth - 1] + ' ' + viewYear + ' ዓ.ም.';
+  title.textContent =
+    MONTHS[viewMonth - 1] + ' ' + viewYear + ' ዓ.ም.';
 
   grid.innerHTML = '';
 
@@ -693,14 +729,16 @@ function renderCalendar() {
 
   if (viewMonth === 13) {
     var nextMonth = findEthMonthStart(viewYear + 1,1);
+
     if (nextMonth) {
-      totalDays = Math.round((nextMonth.getTime() - first.getTime()) / 86400000);
+      totalDays = Math.round(
+        (nextMonth.getTime() - first.getTime()) / 86400000
+      );
     }
   }
 
   for (var i = 0; i < offset; i++) {
-    var blank = document.createElement('div');
-    grid.appendChild(blank);
+    grid.appendChild(document.createElement('div'));
   }
 
   var today = todayEth();
@@ -785,8 +823,10 @@ async function loadSelectedRecords() {
       return ethKey(p.year,p.month,p.day) === key;
     });
 
-    box.textContent = 'Offline: showing records saved on this phone only.';
+    box.textContent =
+      'Offline: showing records saved on this phone only.';
     box.className = 'status bad';
+
     renderSelectedRecords();
     return;
   }
@@ -801,17 +841,18 @@ async function loadSelectedRecords() {
       ethDate:key
     });
 
-    if (!result.success) {
-      throw new Error(result.message || 'Could not load records.');
+    if (!result || !result.success) {
+      throw new Error(
+        (result && result.message) || 'Could not load records.'
+      );
     }
 
     selectedRecords = result.records || [];
 
-    // Include unsynced local records not yet present on server
     records.forEach(function(r) {
       if (r.ethDate === key && r.status === 'Pending') {
         var exists = selectedRecords.some(function(serverRecord) {
-          return serverRecord.id === String(r.id) &&
+          return normalizeId(serverRecord.id) === normalizeId(r.id) &&
                  serverRecord.date === r.date;
         });
 
@@ -827,7 +868,8 @@ async function loadSelectedRecords() {
     renderSelectedRecords();
 
   } catch(e) {
-    box.textContent = 'Could not load server records: ' + e.message;
+    box.textContent =
+      'Could not load server records: ' + e.message;
     box.className = 'status bad';
 
     selectedRecords = records.filter(function(r) {
@@ -837,7 +879,9 @@ async function loadSelectedRecords() {
     renderSelectedRecords();
   }
 }
-[11/7/2026 5:26 PM] Mickeyās: // DISPLAY SELECTED RECORDS
+
+
+// DISPLAY SELECTED RECORDS
 
 function renderSelectedRecords() {
   var body = document.getElementById('recordList');
@@ -961,13 +1005,9 @@ updateConnection();
 showMemberStatus();
 renderCalendar();
 displaySelectedDate();
-renderServiceWorkerPlaceholder();
-
-function renderServiceWorkerPlaceholder() {
-  registerServiceWorker();
-}
-
 renderSelectedRecords();
+
+registerServiceWorker();
 
 loadMembers().then(function() {
   syncPending();
@@ -978,3 +1018,4 @@ loadSelectedRecords();
 </script>
 </body>
 </html>
+
