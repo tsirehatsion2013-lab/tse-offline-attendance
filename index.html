@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,20 +13,19 @@ header{background:#12345a;color:white;padding:22px 15px;text-align:center}
 header h1{margin:0;font-size:23px}
 header p{margin:8px 0 0;font-size:13px}
 #clock{margin-top:12px;font-size:14px;font-weight:bold}
-main{max-width:700px;margin:18px auto;padding:0 12px}
+main{max-width:850px;margin:18px auto;padding:0 12px}
 .card{background:white;border-radius:13px;padding:17px;margin-bottom:14px;box-shadow:0 2px 9px #00000012}
 h2{font-size:17px;margin:0 0 13px}
-button,input{width:100%;padding:12px;border-radius:8px;font-size:14px}
+button,input,select{width:100%;padding:12px;border-radius:8px;font-size:14px}
 button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:8px;cursor:pointer}
 button.secondary{background:#e5edf6;color:#12345a}
 button:disabled{opacity:.4;cursor:not-allowed}
-input{border:1px solid #ccd5df;margin:5px 0}
-#reader{width:100%;margin-top:12px}
+input,select{border:1px solid #ccd5df;margin:5px 0;background:white}
 .status{padding:10px;border-radius:8px;background:#edf3fa;margin-top:10px;font-size:13px;overflow-wrap:anywhere}
 .good{color:#14733c}
 .bad{color:#b3261e}
 table{width:100%;border-collapse:collapse;font-size:12px}
-td,th{padding:9px 5px;border-bottom:1px solid #e5e9ef;text-align:left}
+td,th{padding:9px 5px;border-bottom:1px solid #e5e9ef;text-align:left;white-space:nowrap}
 .small{font-size:12px;color:#68788b}
 .stat{font-size:25px;font-weight:bold;color:#12345a}
 footer{text-align:center;color:#718096;font-size:12px;padding:20px}
@@ -41,6 +39,8 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 .weekday{font-size:11px;text-align:center;color:#68788b;padding:7px 0;font-weight:bold}
 #selectedDateLabel{font-weight:bold;margin-top:12px}
 .table-wrap{overflow-x:auto}
+.report-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.report-controls{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -59,6 +59,19 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 <div id="connection" class="status">Checking connection...</div>
 <div id="memberStatus" class="status">Loading members...</div>
 <div id="syncStatus" class="status">Checking records...</div>
+</div>
+
+<div class="card">
+<h2>Attendance Program</h2>
+<p class="small">Select the program before starting the scanner or registering attendance.</p>
+<select id="programSelect" onchange="updateProgramStatus()">
+<option value="">-- Select Program --</option>
+<option value="መዝሙር ጥናት">መዝሙር ጥናት</option>
+<option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option>
+<option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option>
+<option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option>
+</select>
+<div id="programStatus" class="status">Please select a program.</div>
 </div>
 
 <div class="card">
@@ -87,7 +100,6 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 </div>
 
 <div class="calendar-grid" id="calendarGrid"></div>
-
 <button class="secondary" onclick="selectToday()">Go to Today</button>
 <div id="selectedDateLabel">Selected date:</div>
 <div id="historyStatus" class="status">Select a date.</div>
@@ -107,17 +119,57 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 <table>
 <thead>
 <tr>
-<th>ID</th>
-<th>Name</th>
-<th>Date</th>
-<th>Time</th>
-<th>Device</th>
-<th>Status</th>
+<th>ID</th><th>Name</th><th>Date</th><th>Time</th>
+<th>Program</th><th>Device</th><th>Status</th>
 </tr>
 </thead>
 <tbody id="recordList"></tbody>
 </table>
 </div>
+</div>
+
+<div class="card">
+<h2>Daily, Monthly & 3 Months Reports</h2>
+<p class="small">Reports are generated using the Ethiopian calendar.</p>
+
+<div class="report-controls">
+<div>
+<label class="small">Report Type</label>
+<select id="reportType">
+<option value="daily">Daily Report</option>
+<option value="monthly">Monthly Report</option>
+<option value="threeMonths">3 Months Report</option>
+</select>
+</div>
+<div>
+<label class="small">Program</label>
+<select id="reportProgram">
+<option value="all">All Programs</option>
+<option value="መዝሙር ጥናት">መዝሙር ጥናት</option>
+<option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option>
+<option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option>
+<option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option>
+</select>
+</div>
+</div>
+
+<button onclick="loadReport()">Generate Report</button>
+<div id="reportStatus" class="status">Choose a report type and generate.</div>
+<div class="stat" id="reportCount">0</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>ID</th><th>Name</th><th>Ethiopian Date</th>
+<th>Time</th><th>Program</th><th>Device</th>
+</tr>
+</thead>
+<tbody id="reportList"></tbody>
+</table>
+</div>
+
+<button class="secondary" onclick="downloadReportCSV()">Download Report CSV</button>
 </div>
 
 </main>
@@ -145,18 +197,15 @@ var WEEKDAYS = ['እሑድ','ሰኞ','ማክሰኞ','ረቡዕ','ሐሙስ','ዓ
 var members = [];
 var records = [];
 var selectedRecords = [];
+var reportRecords = [];
 
 try {
   members = JSON.parse(localStorage.getItem('tse_members') || '[]');
-} catch(e) {
-  members = [];
-}
+} catch(e) { members = []; }
 
 try {
   records = JSON.parse(localStorage.getItem('tse_records') || '[]');
-} catch(e) {
-  records = [];
-}
+} catch(e) { records = []; }
 
 var scanner = null;
 var scannerRunning = false;
@@ -229,9 +278,7 @@ function getDate() {
   }).formatToParts(new Date());
 
   var v = {};
-  p.forEach(function(x) {
-    v[x.type] = x.value;
-  });
+  p.forEach(function(x) { v[x.type] = x.value; });
 
   return v.year + '-' + v.month + '-' + v.day;
 }
@@ -246,9 +293,7 @@ function getTime() {
   }).formatToParts(new Date());
 
   var v = {};
-  p.forEach(function(x) {
-    v[x.type] = x.value;
-  });
+  p.forEach(function(x) { v[x.type] = x.value; });
 
   var hour = Number(v.hour);
   var ethHour = ((hour + 5) % 12) + 1;
@@ -272,7 +317,6 @@ updateClock();
 
 
 // JSONP CONNECTION
-// Each request receives its own callback name.
 
 var jsonpCounter = 0;
 
@@ -302,7 +346,6 @@ function jsonp(params) {
 
     window[callbackName] = function(data) {
       if (finished) return;
-
       finished = true;
       cleanup();
       resolve(data);
@@ -324,6 +367,26 @@ function jsonp(params) {
 
     document.body.appendChild(script);
   });
+}
+
+
+// PROGRAM SELECTION
+
+function selectedProgram() {
+  return document.getElementById('programSelect').value;
+}
+
+function updateProgramStatus() {
+  var program = selectedProgram();
+  var box = document.getElementById('programStatus');
+
+  if (!program) {
+    box.textContent = 'Please select a program before attendance.';
+    box.className = 'status bad';
+  } else {
+    box.textContent = 'Selected program: ' + program;
+    box.className = 'status good';
+  }
 }
 
 
@@ -425,10 +488,11 @@ function makeEventId() {
     Math.floor(Math.random() * 1000000);
 }
 
-function alreadyRegistered(id,date) {
+function alreadyRegistered(id,date,program) {
   return records.some(function(r) {
     return normalizeId(r.id) === normalizeId(id) &&
-           r.date === date;
+           r.ethDate === date &&
+           r.program === program;
   });
 }
 
@@ -436,22 +500,29 @@ function alreadyRegistered(id,date) {
 // ATTENDANCE REGISTRATION
 
 async function registerMember(member) {
-  var date = getDate();
+  var program = selectedProgram();
 
-  if (alreadyRegistered(member.id,date)) {
-    showMessage(member.name + ' is already registered today.',false);
+  if (!program) {
+    showMessage('Select an attendance program first.',false);
     return;
   }
 
   var eth = todayEth();
+  var dateKey = ethKey(eth.year,eth.month,eth.day);
+
+  if (alreadyRegistered(member.id,dateKey,program)) {
+    showMessage(member.name + ' is already registered for ' + program + ' today.',false);
+    return;
+  }
 
   var record = {
     id:member.id,
     name:member.name,
-    date:date,
+    date:getDate(),
     time:getTime(),
-    ethDate:ethKey(eth.year,eth.month,eth.day),
+    ethDate:dateKey,
     ethTime:getTime(),
+    program:program,
     eventId:makeEventId(),
     deviceId:deviceId,
     deviceInfo:deviceInfo,
@@ -462,7 +533,7 @@ async function registerMember(member) {
   records.unshift(record);
   saveLocal();
 
-  showMessage('Attendance saved: ' + member.name,true);
+  showMessage('Attendance saved: ' + member.name + ' — ' + program,true);
 
   await syncPending();
 
@@ -481,6 +552,11 @@ function showMessage(message,success) {
 // MANUAL ATTENDANCE
 
 async function manualAttendance() {
+  if (!selectedProgram()) {
+    showMessage('Select a program first.',false);
+    return;
+  }
+
   var id = document.getElementById('manualId').value.trim();
 
   if (!id) {
@@ -537,6 +613,11 @@ function getMemberIdFromQR(decodedText) {
 // QR SCANNER
 
 async function startScanner() {
+  if (!selectedProgram()) {
+    showMessage('Select a program before starting the scanner.',false);
+    return;
+  }
+
   if (typeof Html5Qrcode === 'undefined') {
     showMessage('QR scanner library is missing.',false);
     return;
@@ -560,7 +641,6 @@ async function startScanner() {
 
       async function(decodedText) {
         if (scanBusy) return;
-
         scanBusy = true;
 
         try {
@@ -577,9 +657,7 @@ async function startScanner() {
         } catch(e) {
           showMessage('Scanner error: ' + e.message,false);
         } finally {
-          setTimeout(function() {
-            scanBusy = false;
-          },2000);
+          setTimeout(function() { scanBusy = false; },2000);
         }
       }
     );
@@ -613,12 +691,23 @@ async function syncPending() {
   var box = document.getElementById('syncStatus');
 
   var pending = records.filter(function(r) {
-    return r.status === 'Pending';
+    return r.status === 'Pending' && r.program;
+  });
+
+  var oldPending = records.filter(function(r) {
+    return r.status === 'Pending' && !r.program;
   });
 
   if (pending.length === 0) {
-    box.textContent = 'All saved records are synchronized.';
-    box.className = 'status good';
+    if (oldPending.length > 0) {
+      box.textContent =
+        'New records are synchronized. ' + oldPending.length +
+        ' older pending record(s) have no program and were not uploaded.';
+      box.className = 'status bad';
+    } else {
+      box.textContent = 'All saved records are synchronized.';
+      box.className = 'status good';
+    }
     return;
   }
 
@@ -638,6 +727,7 @@ async function syncPending() {
         time:r.time,
         ethDate:r.ethDate || '',
         ethTime:r.ethTime || r.time,
+        program:r.program,
         eventId:r.eventId,
         deviceId:r.deviceId || deviceId,
         deviceInfo:r.deviceInfo || deviceInfo,
@@ -647,11 +737,11 @@ async function syncPending() {
       if (result && result.success === true) {
         r.status = 'Synced';
       } else if (result &&
-                 result.message === 'Already registered today') {
+        (result.message === 'Already registered in this program today' ||
+         result.message === 'Already registered today')) {
         r.status = 'Duplicate';
       } else {
-        box.textContent = (result && result.message) ||
-          'Sync failed.';
+        box.textContent = (result && result.message) || 'Sync failed.';
         box.className = 'status bad';
         saveLocal();
         return;
@@ -668,8 +758,11 @@ async function syncPending() {
     }
   }
 
-  box.textContent = 'Synchronization finished.';
-  box.className = 'status good';
+  box.textContent = oldPending.length
+    ? 'New records synchronized. Older records without a program remain pending.'
+    : 'Synchronization finished.';
+  box.className = oldPending.length ? 'status bad' : 'status good';
+
   saveLocal();
 }
 
@@ -817,10 +910,7 @@ async function loadSelectedRecords() {
 
   if (!navigator.onLine) {
     selectedRecords = records.filter(function(r) {
-      if (r.ethDate) return r.ethDate === key;
-
-      var p = getEthParts(new Date(r.date + 'T12:00:00'));
-      return ethKey(p.year,p.month,p.day) === key;
+      return r.ethDate === key;
     });
 
     box.textContent =
@@ -853,12 +943,11 @@ async function loadSelectedRecords() {
       if (r.ethDate === key && r.status === 'Pending') {
         var exists = selectedRecords.some(function(serverRecord) {
           return normalizeId(serverRecord.id) === normalizeId(r.id) &&
-                 serverRecord.date === r.date;
+                 serverRecord.ethDate === r.ethDate &&
+                 serverRecord.program === r.program;
         });
 
-        if (!exists) {
-          selectedRecords.push(r);
-        }
+        if (!exists) selectedRecords.push(r);
       }
     });
 
@@ -898,6 +987,7 @@ function renderSelectedRecords() {
       r.name,
       r.ethDate || r.date,
       r.ethTime || r.time,
+      r.program || '-',
       r.deviceInfo || 'Not available',
       r.status || 'Synced'
     ];
@@ -915,7 +1005,7 @@ function renderSelectedRecords() {
     var tr = document.createElement('tr');
     var td = document.createElement('td');
 
-    td.colSpan = 6;
+    td.colSpan = 7;
     td.textContent = 'No attendance records for this date.';
 
     tr.appendChild(td);
@@ -924,7 +1014,7 @@ function renderSelectedRecords() {
 }
 
 
-// CSV FOR SELECTED DATE ONLY
+// SELECTED DATE CSV
 
 function downloadCSV() {
   if (selectedRecords.length === 0) {
@@ -934,7 +1024,7 @@ function downloadCSV() {
 
   var rows = [[
     'ID','Name','Ethiopian Date','Ethiopian Time',
-    'Device ID','Device Info','Browser','Status'
+    'Program','Device ID','Device Info','Browser','Status'
   ]];
 
   selectedRecords.forEach(function(r) {
@@ -943,6 +1033,7 @@ function downloadCSV() {
       r.name,
       r.ethDate || '',
       r.ethTime || r.time,
+      r.program || '',
       r.deviceId || '',
       r.deviceInfo || '',
       r.browser || '',
@@ -950,6 +1041,154 @@ function downloadCSV() {
     ]);
   });
 
+  downloadRowsCSV(rows,
+    'TSE_Attendance_' + selectedDateKey().replace(/\//g,'-') + '.csv');
+}
+
+
+// REPORTS
+
+async function loadReport() {
+  var box = document.getElementById('reportStatus');
+  var body = document.getElementById('reportList');
+  var type = document.getElementById('reportType').value;
+  var program = document.getElementById('reportProgram').value;
+  var dateKey = selectedDateKey();
+
+  body.innerHTML = '';
+  reportRecords = [];
+
+  if (!navigator.onLine) {
+    reportRecords = records.filter(function(r) {
+      if (!r.ethDate) return false;
+
+      var dateParts = r.ethDate.split('/');
+      var y = Number(dateParts[0]);
+      var m = Number(dateParts[1]);
+
+      var matchesPeriod = type === 'daily'
+        ? r.ethDate === dateKey
+        : type === 'monthly'
+          ? y === selectedYear && m === selectedMonth
+          : isInThreeMonths(y,m,selectedYear,selectedMonth);
+
+      var matchesProgram = program === 'all' || r.program === program;
+
+      return matchesPeriod && matchesProgram;
+    });
+
+    box.textContent =
+      'Offline: this report includes only records saved on this phone.';
+    box.className = 'status bad';
+
+    renderReport();
+    return;
+  }
+
+  box.textContent = 'Generating report...';
+  box.className = 'status';
+
+  try {
+    var result = await jsonp({
+      action:'report',
+      key:ACCESS_KEY,
+      reportType:type,
+      ethDate:dateKey,
+      program:program
+    });
+
+    if (!result || !result.success) {
+      throw new Error((result && result.message) || 'Report failed.');
+    }
+
+    reportRecords = result.records || [];
+
+    box.textContent = 'Report generated successfully.';
+    box.className = 'status good';
+
+    renderReport();
+
+  } catch(e) {
+    box.textContent = 'Could not generate report: ' + e.message;
+    box.className = 'status bad';
+  }
+}
+
+function isInThreeMonths(year,month,baseYear,baseMonth) {
+  var start = baseYear * 13 + (baseMonth - 1);
+  var current = year * 13 + (month - 1);
+
+  return current >= start && current < start + 3;
+}
+
+function renderReport() {
+  var body = document.getElementById('reportList');
+  body.innerHTML = '';
+
+  document.getElementById('reportCount').textContent =
+    reportRecords.length;
+
+  reportRecords.forEach(function(r) {
+    var tr = document.createElement('tr');
+
+    [
+      r.id,
+      r.name,
+      r.ethDate || r.date,
+      r.ethTime || r.time,
+      r.program || '-',
+      r.deviceInfo || '-'
+    ].forEach(function(value) {
+      var td = document.createElement('td');
+      td.textContent = value || '-';
+      tr.appendChild(td);
+    });
+
+    body.appendChild(tr);
+  });
+
+  if (reportRecords.length === 0) {
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+
+    td.colSpan = 6;
+    td.textContent = 'No records found for this report.';
+
+    tr.appendChild(td);
+    body.appendChild(tr);
+  }
+}
+
+function downloadReportCSV() {
+  if (reportRecords.length === 0) {
+    alert('Generate a report with records first.');
+    return;
+  }
+
+  var rows = [[
+    'ID','Name','Ethiopian Date','Ethiopian Time',
+    'Program','Device ID','Device Info','Browser'
+  ]];
+
+  reportRecords.forEach(function(r) {
+    rows.push([
+      r.id,
+      r.name,
+      r.ethDate || '',
+      r.ethTime || r.time,
+      r.program || '',
+      r.deviceId || '',
+      r.deviceInfo || '',
+      r.browser || ''
+    ]);
+  });
+
+  var type = document.getElementById('reportType').value;
+
+  downloadRowsCSV(rows,'TSE_' + type + '_Report.csv');
+}
+
+function downloadRowsCSV(rows,filename) {
   var csv = rows.map(function(row) {
     return row.map(function(value) {
       return '"' + String(value || '').replace(/"/g,'""') + '"';
@@ -964,9 +1203,7 @@ function downloadCSV() {
   var url = URL.createObjectURL(blob);
 
   link.href = url;
-  link.download = 'TSE_Attendance_' +
-    selectedDateKey().replace(/\//g,'-') + '.csv';
-
+  link.download = filename;
   link.click();
 
   setTimeout(function() {
@@ -1003,6 +1240,7 @@ selectedDay = initialDate.day;
 updateClock();
 updateConnection();
 showMemberStatus();
+updateProgramStatus();
 renderCalendar();
 displaySelectedDate();
 renderSelectedRecords();
@@ -1018,4 +1256,3 @@ loadSelectedRecords();
 </script>
 </body>
 </html>
-
