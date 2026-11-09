@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#12345a">
 <title>TSE Smart Attendance</title>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f1f4f8;color:#172b45;font-family:Arial,sans-serif}
@@ -45,7 +45,6 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 </head>
 
 <body>
-
 <header>
 <h1>TSE Smart Attendance</h1>
 <p>ጽርሐ ጽዮን ሰንበት ትምህርት ቤት</p>
@@ -92,13 +91,11 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 <div class="card">
 <h2>Ethiopian Calendar</h2>
 <p class="small">Select an Ethiopian date to view attendance from all phones.</p>
-
 <div class="calendar-head">
 <button class="secondary" onclick="changeMonth(-1)">❮ Previous</button>
 <div id="calendarTitle">Calendar</div>
 <button class="secondary" onclick="changeMonth(1)">Next ❯</button>
 </div>
-
 <div class="calendar-grid" id="calendarGrid"></div>
 <button class="secondary" onclick="selectToday()">Go to Today</button>
 <div id="selectedDateLabel">Selected date:</div>
@@ -119,8 +116,7 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 <table>
 <thead>
 <tr>
-<th>ID</th><th>Name</th><th>Date</th><th>Time</th>
-<th>Program</th><th>Device</th><th>Status</th>
+<th>ID</th><th>Name</th><th>Date</th><th>Time</th><th>Program</th><th>Status</th>
 </tr>
 </thead>
 <tbody id="recordList"></tbody>
@@ -131,7 +127,6 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 <div class="card">
 <h2>Daily, Monthly & 3 Months Reports</h2>
 <p class="small">Reports are generated using the Ethiopian calendar.</p>
-
 <div class="report-controls">
 <div>
 <label class="small">Report Type</label>
@@ -152,23 +147,19 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 </select>
 </div>
 </div>
-
 <button onclick="loadReport()">Generate Report</button>
 <div id="reportStatus" class="status">Choose a report type and generate.</div>
 <div class="stat" id="reportCount">0</div>
-
 <div class="table-wrap">
 <table>
 <thead>
 <tr>
-<th>ID</th><th>Name</th><th>Ethiopian Date</th>
-<th>Time</th><th>Program</th><th>Device</th>
+<th>ID</th><th>Name</th><th>Ethiopian Date</th><th>Time</th><th>Program</th>
 </tr>
 </thead>
 <tbody id="reportList"></tbody>
 </table>
 </div>
-
 <button class="secondary" onclick="downloadReportCSV()">Download Report CSV</button>
 </div>
 
@@ -180,10 +171,8 @@ Information and Internal Communication Department
 </footer>
 
 <script src="./html5-qrcode.min.js"></script>
-
 <script>
 var API_URL = 'https://script.google.com/macros/s/AKfycby2FG7enFwWUUlsvzAOfGE_G8HWErJ3ZQUHVxDuqWnwrEDCN39EpRkUOwyUpjj4Cn4B/exec';
-
 var ACCESS_KEY = 'TSE-CHANGE-THIS-KEY';
 
 var MONTHS = [
@@ -211,22 +200,7 @@ var scanner = null;
 var scannerRunning = false;
 var scanBusy = false;
 
-var deviceId = localStorage.getItem('tse_device_id');
-
-if (!deviceId) {
-  deviceId = 'TSE-DEVICE-' + Date.now() + '-' +
-    Math.floor(Math.random() * 1000000);
-  localStorage.setItem('tse_device_id', deviceId);
-}
-
-var deviceInfo = navigator.userAgent || 'Unknown device';
-var browserInfo = 'Web browser';
-
-var viewYear;
-var viewMonth;
-var selectedYear;
-var selectedMonth;
-var selectedDay;
+var viewYear, viewMonth, selectedYear, selectedMonth, selectedDay;
 
 
 // LOCAL STORAGE
@@ -251,13 +225,11 @@ function getEthParts(date) {
   }).formatToParts(date);
 
   var result = {};
-
   parts.forEach(function(p) {
     if (p.type === 'year') result.year = Number(p.value);
     if (p.type === 'month') result.month = Number(p.value);
     if (p.type === 'day') result.day = Number(p.value);
   });
-
   return result;
 }
 
@@ -279,7 +251,6 @@ function getDate() {
 
   var v = {};
   p.forEach(function(x) { v[x.type] = x.value; });
-
   return v.year + '-' + v.month + '-' + v.day;
 }
 
@@ -306,7 +277,6 @@ function getTime() {
 
 function updateClock() {
   var p = todayEth();
-
   document.getElementById('clock').textContent =
     MONTHS[p.month - 1] + ' ' + p.day + ' ' + p.year +
     ' ዓ.ም. | ' + getTime();
@@ -324,10 +294,7 @@ function jsonp(params) {
   return new Promise(function(resolve, reject) {
     var script = document.createElement('script');
     var finished = false;
-
-    var callbackName =
-      'tseCallback_' + Date.now() + '_' + (++jsonpCounter);
-
+    var callbackName = 'tseCallback_' + Date.now() + '_' + (++jsonpCounter);
     var timer;
 
     function cleanup() {
@@ -406,7 +373,6 @@ function showMemberStatus() {
 
 async function loadMembers() {
   showMemberStatus();
-
   if (!navigator.onLine) return;
 
   var box = document.getElementById('memberStatus');
@@ -424,8 +390,7 @@ async function loadMembers() {
       saveMembersLocal();
       showMemberStatus();
     } else {
-      box.textContent = (result && result.message) ||
-        'Could not load members.';
+      box.textContent = (result && result.message) || 'Could not load members.';
       box.className = 'status bad';
     }
   } catch(e) {
@@ -451,7 +416,6 @@ function updateConnection() {
 
 window.addEventListener('online', function() {
   updateConnection();
-
   loadMembers().then(function() {
     syncPending();
     loadSelectedRecords();
@@ -465,9 +429,7 @@ window.addEventListener('offline', updateConnection);
 
 function normalizeId(value) {
   var s = String(value || '').trim();
-
   if (/^\d+$/.test(s)) return String(Number(s));
-
   return s;
 }
 
@@ -475,17 +437,13 @@ function findMember(id) {
   var wanted = normalizeId(id);
 
   for (var i = 0; i < members.length; i++) {
-    if (normalizeId(members[i].id) === wanted) {
-      return members[i];
-    }
+    if (normalizeId(members[i].id) === wanted) return members[i];
   }
-
   return null;
 }
 
 function makeEventId() {
-  return 'TSE-' + Date.now() + '-' +
-    Math.floor(Math.random() * 1000000);
+  return 'TSE-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
 }
 
 function alreadyRegistered(id,date,program) {
@@ -524,9 +482,6 @@ async function registerMember(member) {
     ethTime:getTime(),
     program:program,
     eventId:makeEventId(),
-    deviceId:deviceId,
-    deviceInfo:deviceInfo,
-    browser:browserInfo,
     status:'Pending'
   };
 
@@ -580,7 +535,6 @@ async function manualAttendance() {
 
 function getMemberIdFromQR(decodedText) {
   var text = String(decodedText || '').trim();
-
   if (!text) return '';
 
   text = text.replace(/[\u200B-\u200D\uFEFF]/g,'').trim();
@@ -591,21 +545,15 @@ function getMemberIdFromQR(decodedText) {
     try {
       var cleanUrl = urlMatch[0].replace(/[),.;]+$/,'');
       var qrUrl = new URL(cleanUrl);
-
       var id = qrUrl.searchParams.get('id') ||
                qrUrl.searchParams.get('memberId') ||
                qrUrl.searchParams.get('ID');
-
       if (id) return id.trim();
     } catch(e) {}
   }
 
-  if (text.indexOf('|') !== -1) {
-    return text.split('|')[0].trim();
-  }
-
+  if (text.indexOf('|') !== -1) return text.split('|')[0].trim();
   if (/^\d+$/.test(text)) return text;
-
   return '';
 }
 
@@ -631,14 +579,11 @@ async function startScanner() {
   if (scannerRunning) return;
 
   try {
-    if (scanner === null) {
-      scanner = new Html5Qrcode('reader');
-    }
+    if (scanner === null) scanner = new Html5Qrcode('reader');
 
     await scanner.start(
       {facingMode:'environment'},
       {fps:10,qrbox:{width:240,height:240}},
-
       async function(decodedText) {
         if (scanBusy) return;
         scanBusy = true;
@@ -700,9 +645,8 @@ async function syncPending() {
 
   if (pending.length === 0) {
     if (oldPending.length > 0) {
-      box.textContent =
-        'New records are synchronized. ' + oldPending.length +
-        ' older pending record(s) have no program and were not uploaded.';
+      box.textContent = 'New records are synchronized. ' +
+        oldPending.length + ' older pending record(s) have no program and were not uploaded.';
       box.className = 'status bad';
     } else {
       box.textContent = 'All saved records are synchronized.';
@@ -728,10 +672,7 @@ async function syncPending() {
         ethDate:r.ethDate || '',
         ethTime:r.ethTime || r.time,
         program:r.program,
-        eventId:r.eventId,
-        deviceId:r.deviceId || deviceId,
-        deviceInfo:r.deviceInfo || deviceInfo,
-        browser:r.browser || browserInfo
+        eventId:r.eventId
       });
 
       if (result && result.success === true) {
@@ -750,8 +691,7 @@ async function syncPending() {
       saveLocal();
 
     } catch(e) {
-      box.textContent =
-        'Sync paused. Pending records remain on this device.';
+      box.textContent = 'Sync paused. Pending records remain on this device.';
       box.className = 'status bad';
       saveLocal();
       return;
@@ -762,7 +702,6 @@ async function syncPending() {
     ? 'New records synchronized. Older records without a program remain pending.'
     : 'Synchronization finished.';
   box.className = oldPending.length ? 'status bad' : 'status good';
-
   saveLocal();
 }
 
@@ -780,7 +719,6 @@ function findEthMonthStart(year,month) {
       return date;
     }
   }
-
   return null;
 }
 
@@ -798,9 +736,7 @@ function renderCalendar() {
   var title = document.getElementById('calendarTitle');
   var grid = document.getElementById('calendarGrid');
 
-  title.textContent =
-    MONTHS[viewMonth - 1] + ' ' + viewYear + ' ዓ.ም.';
-
+  title.textContent = MONTHS[viewMonth - 1] + ' ' + viewYear + ' ዓ.ም.';
   grid.innerHTML = '';
 
   WEEKDAYS.forEach(function(day) {
@@ -822,11 +758,8 @@ function renderCalendar() {
 
   if (viewMonth === 13) {
     var nextMonth = findEthMonthStart(viewYear + 1,1);
-
     if (nextMonth) {
-      totalDays = Math.round(
-        (nextMonth.getTime() - first.getTime()) / 86400000
-      );
+      totalDays = Math.round((nextMonth.getTime() - first.getTime()) / 86400000);
     }
   }
 
@@ -841,15 +774,11 @@ function renderCalendar() {
     btn.className = 'calendar-day';
     btn.textContent = d;
 
-    if (d === selectedDay &&
-        viewYear === selectedYear &&
-        viewMonth === selectedMonth) {
+    if (d === selectedDay && viewYear === selectedYear && viewMonth === selectedMonth) {
       btn.classList.add('selected');
     }
 
-    if (today.year === viewYear &&
-        today.month === viewMonth &&
-        today.day === d) {
+    if (today.year === viewYear && today.month === viewMonth && today.day === d) {
       btn.classList.add('today');
     }
 
@@ -858,7 +787,6 @@ function renderCalendar() {
         selectedYear = viewYear;
         selectedMonth = viewMonth;
         selectedDay = day;
-
         displaySelectedDate();
         renderCalendar();
         loadSelectedRecords();
@@ -913,10 +841,8 @@ async function loadSelectedRecords() {
       return r.ethDate === key;
     });
 
-    box.textContent =
-      'Offline: showing records saved on this phone only.';
+    box.textContent = 'Offline: showing records saved on this phone only.';
     box.className = 'status bad';
-
     renderSelectedRecords();
     return;
   }
@@ -932,9 +858,7 @@ async function loadSelectedRecords() {
     });
 
     if (!result || !result.success) {
-      throw new Error(
-        (result && result.message) || 'Could not load records.'
-      );
+      throw new Error((result && result.message) || 'Could not load records.');
     }
 
     selectedRecords = result.records || [];
@@ -953,12 +877,10 @@ async function loadSelectedRecords() {
 
     box.textContent = 'Showing records from all connected phones.';
     box.className = 'status good';
-
     renderSelectedRecords();
 
   } catch(e) {
-    box.textContent =
-      'Could not load server records: ' + e.message;
+    box.textContent = 'Could not load server records: ' + e.message;
     box.className = 'status bad';
 
     selectedRecords = records.filter(function(r) {
@@ -976,8 +898,7 @@ function renderSelectedRecords() {
   var body = document.getElementById('recordList');
   body.innerHTML = '';
 
-  document.getElementById('todayCount').textContent =
-    selectedRecords.length;
+  document.getElementById('todayCount').textContent = selectedRecords.length;
 
   selectedRecords.forEach(function(r) {
     var tr = document.createElement('tr');
@@ -988,7 +909,6 @@ function renderSelectedRecords() {
       r.ethDate || r.date,
       r.ethTime || r.time,
       r.program || '-',
-      r.deviceInfo || 'Not available',
       r.status || 'Synced'
     ];
 
@@ -1004,10 +924,8 @@ function renderSelectedRecords() {
   if (selectedRecords.length === 0) {
     var tr = document.createElement('tr');
     var td = document.createElement('td');
-
-    td.colSpan = 7;
+    td.colSpan = 6;
     td.textContent = 'No attendance records for this date.';
-
     tr.appendChild(td);
     body.appendChild(tr);
   }
@@ -1023,8 +941,7 @@ function downloadCSV() {
   }
 
   var rows = [[
-    'ID','Name','Ethiopian Date','Ethiopian Time',
-    'Program','Device ID','Device Info','Browser','Status'
+    'ID','Name','Ethiopian Date','Ethiopian Time','Program','Status'
   ]];
 
   selectedRecords.forEach(function(r) {
@@ -1034,9 +951,6 @@ function downloadCSV() {
       r.ethDate || '',
       r.ethTime || r.time,
       r.program || '',
-      r.deviceId || '',
-      r.deviceInfo || '',
-      r.browser || '',
       r.status || 'Synced'
     ]);
   });
@@ -1073,14 +987,11 @@ async function loadReport() {
           : isInThreeMonths(y,m,selectedYear,selectedMonth);
 
       var matchesProgram = program === 'all' || r.program === program;
-
       return matchesPeriod && matchesProgram;
     });
 
-    box.textContent =
-      'Offline: this report includes only records saved on this phone.';
+    box.textContent = 'Offline: this report includes only records saved on this phone.';
     box.className = 'status bad';
-
     renderReport();
     return;
   }
@@ -1102,10 +1013,8 @@ async function loadReport() {
     }
 
     reportRecords = result.records || [];
-
     box.textContent = 'Report generated successfully.';
     box.className = 'status good';
-
     renderReport();
 
   } catch(e) {
@@ -1117,7 +1026,6 @@ async function loadReport() {
 function isInThreeMonths(year,month,baseYear,baseMonth) {
   var start = baseYear * 13 + (baseMonth - 1);
   var current = year * 13 + (month - 1);
-
   return current >= start && current < start + 3;
 }
 
@@ -1125,8 +1033,7 @@ function renderReport() {
   var body = document.getElementById('reportList');
   body.innerHTML = '';
 
-  document.getElementById('reportCount').textContent =
-    reportRecords.length;
+  document.getElementById('reportCount').textContent = reportRecords.length;
 
   reportRecords.forEach(function(r) {
     var tr = document.createElement('tr');
@@ -1136,8 +1043,7 @@ function renderReport() {
       r.name,
       r.ethDate || r.date,
       r.ethTime || r.time,
-      r.program || '-',
-      r.deviceInfo || '-'
+      r.program || '-'
     ].forEach(function(value) {
       var td = document.createElement('td');
       td.textContent = value || '-';
@@ -1150,10 +1056,8 @@ function renderReport() {
   if (reportRecords.length === 0) {
     var tr = document.createElement('tr');
     var td = document.createElement('td');
-
-    td.colSpan = 6;
+    td.colSpan = 5;
     td.textContent = 'No records found for this report.';
-
     tr.appendChild(td);
     body.appendChild(tr);
   }
@@ -1166,8 +1070,7 @@ function downloadReportCSV() {
   }
 
   var rows = [[
-    'ID','Name','Ethiopian Date','Ethiopian Time',
-    'Program','Device ID','Device Info','Browser'
+    'ID','Name','Ethiopian Date','Ethiopian Time','Program'
   ]];
 
   reportRecords.forEach(function(r) {
@@ -1176,15 +1079,11 @@ function downloadReportCSV() {
       r.name,
       r.ethDate || '',
       r.ethTime || r.time,
-      r.program || '',
-      r.deviceId || '',
-      r.deviceInfo || '',
-      r.browser || ''
+      r.program || ''
     ]);
   });
 
   var type = document.getElementById('reportType').value;
-
   downloadRowsCSV(rows,'TSE_' + type + '_Report.csv');
 }
 
@@ -1252,7 +1151,7 @@ loadMembers().then(function() {
 });
 
 loadSelectedRecords();
-
 </script>
 </body>
 </html>
+
