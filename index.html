@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,43 +6,9 @@
 <meta name="theme-color" content="#12345a">
 <title>TSE Smart Attendance</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f1f4f8;color:#172b45;font-family:Arial,sans-serif}
-header{background:#12345a;color:white;padding:22px 15px;text-align:center}
-header h1{margin:0;font-size:23px}
-header p{margin:8px 0 0;font-size:13px}
-#clock{margin-top:12px;font-size:14px;font-weight:bold}
-main{max-width:850px;margin:18px auto;padding:0 12px}
-.card{background:white;border-radius:13px;padding:17px;margin-bottom:14px;box-shadow:0 2px 9px #00000012}
-h2{font-size:17px;margin:0 0 13px}
-button,input,select{width:100%;padding:12px;border-radius:8px;font-size:14px}
-button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:8px;cursor:pointer}
-button.secondary{background:#e5edf6;color:#12345a}
-button:disabled{opacity:.4;cursor:not-allowed}
-input,select{border:1px solid #ccd5df;margin:5px 0;background:white}
-.status{padding:10px;border-radius:8px;background:#edf3fa;margin-top:10px;font-size:13px;overflow-wrap:anywhere}
-.good{color:#14733c}
-.bad{color:#b3261e}
-table{width:100%;border-collapse:collapse;font-size:12px}
-td,th{padding:9px 5px;border-bottom:1px solid #e5e9ef;text-align:left;white-space:nowrap}
-.small{font-size:12px;color:#68788b}
-.stat{font-size:25px;font-weight:bold;color:#12345a}
-footer{text-align:center;color:#718096;font-size:12px;padding:20px}
-.calendar-head{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:center}
-.calendar-head button{margin:0;padding:10px 5px}
-#calendarTitle{text-align:center;font-weight:bold;font-size:15px}
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
-.calendar-day{padding:10px 2px;margin:0;background:#edf3fa;color:#12345a;font-size:13px;min-height:40px}
-.calendar-day.selected{background:#12345a;color:white}
-.calendar-day.today{border:2px solid #25845a}
-.weekday{font-size:11px;text-align:center;color:#68788b;padding:7px 0;font-weight:bold}
-#selectedDateLabel{font-weight:bold;margin-top:12px}
-.table-wrap{overflow-x:auto}
-.report-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:500px){.report-controls{grid-template-columns:1fr}}
+*{box-sizing:border-box}body{margin:0;background:#f1f4f8;color:#172b45;font-family:Arial,sans-serif}header{background:#12345a;color:white;padding:22px 15px;text-align:center}header h1{margin:0;font-size:23px}header p{margin:8px 0 0;font-size:13px}#clock{margin-top:12px;font-size:14px;font-weight:bold}main{max-width:850px;margin:18px auto;padding:0 12px}.card{background:white;border-radius:13px;padding:17px;margin-bottom:14px;box-shadow:0 2px 9px #00000012}h2{font-size:17px;margin:0 0 13px}button,input,select{width:100%;padding:12px;border-radius:8px;font-size:14px}button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:8px;cursor:pointer}button.secondary{background:#e5edf6;color:#12345a}button.danger{background:#a52828}button:disabled{opacity:.4;cursor:not-allowed}input,select{border:1px solid #ccd5df;margin:5px 0;background:white}.status{padding:10px;border-radius:8px;background:#edf3fa;margin-top:10px;font-size:13px;overflow-wrap:anywhere}.good{color:#14733c}.bad{color:#b3261e}table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:9px 5px;border-bottom:1px solid #e5e9ef;text-align:left;white-space:nowrap}.small{font-size:12px;color:#68788b}.stat{font-size:25px;font-weight:bold;color:#12345a}footer{text-align:center;color:#718096;font-size:12px;padding:20px}.calendar-head{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:center}.calendar-head button{margin:0;padding:10px 5px}#calendarTitle{text-align:center;font-weight:bold;font-size:15px}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}.calendar-day{padding:10px 2px;margin:0;background:#edf3fa;color:#12345a;font-size:13px;min-height:40px}.calendar-day.selected{background:#12345a;color:white}.calendar-day.today{border:2px solid #25845a}.weekday{font-size:11px;text-align:center;color:#68788b;padding:7px 0;font-weight:bold}#selectedDateLabel{font-weight:bold;margin-top:12px}.table-wrap{overflow-x:auto}.report-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.hidden{display:none!important}.login-wrap{max-width:430px;margin:24px auto;padding:0 12px}.muted{color:#6b7785;font-size:12px;line-height:1.5}.admin-account{border-bottom:1px solid #e5e9ef;padding:10px 0;font-size:13px}.admin-account button{width:auto;padding:7px 12px;margin:5px 5px 0 0}.topbar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}.topbar button{width:auto;margin:0;padding:9px 13px}@media(max-width:500px){.report-controls,.row2{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
 <header>
 <h1>TSE Smart Attendance</h1>
@@ -51,1107 +16,465 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 <div id="clock"></div>
 </header>
 
-<main>
-
-<div class="card">
-<h2>System Status</h2>
-<div id="connection" class="status">Checking connection...</div>
-<div id="memberStatus" class="status">Loading members...</div>
-<div id="syncStatus" class="status">Checking records...</div>
+<div id="loginScreen" class="login-wrap">
+  <div class="card">
+    <h2>Secure Login</h2>
+    <p class="small">Admin: enter your Firebase email. Scanner: enter your assigned username.</p>
+    <form id="loginForm">
+      <input id="loginUsername" autocomplete="username" placeholder="Email or scanner username" required>
+      <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password" required>
+      <button id="loginButton" type="submit">Login</button>
+    </form>
+    <div id="loginStatus" class="status">Internet connection is required for the first login on this device.</div>
+  </div>
 </div>
 
-<div class="card">
-<h2>Attendance Program</h2>
-<p class="small">Select the program before starting the scanner or registering attendance.</p>
-<select id="programSelect" onchange="updateProgramStatus()">
-<option value="">-- Select Program --</option>
-<option value="መዝሙር ጥናት">መዝሙር ጥናት</option>
-<option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option>
-<option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option>
-<option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option>
-</select>
-<div id="programStatus" class="status">Please select a program.</div>
-</div>
+<main id="appMain" class="hidden">
+  <div class="card">
+    <div class="topbar"><div><strong id="signedInLabel">Signed in</strong><div class="small" id="roleLabel"></div></div><button class="danger" onclick="logout()">Log Out</button></div>
+    <div id="connection" class="status">Checking connection...</div>
+    <div id="memberStatus" class="status">Loading members...</div>
+    <div id="syncStatus" class="status">Checking records...</div>
+  </div>
 
-<div class="card">
-<h2>QR Attendance Scanner</h2>
-<p class="small">Scan the member's personal QR code using your phone camera.</p>
-<button onclick="startScanner()">Start Scanner</button>
-<button class="secondary" onclick="stopScanner()">Stop Scanner</button>
-<div id="reader"></div>
-<div id="scanMessage" class="status">Ready to scan.</div>
-</div>
+  <section id="adminPanel" class="card hidden">
+    <h2>Admin – Scanner Accounts</h2>
+    <p class="small">Create scanner usernames and passwords. Only Admin can create or disable scanner accounts.</p>
+    <form id="createScannerForm">
+      <input id="newScannerUsername" placeholder="Scanner username (3–30 characters)" required>
+      <input id="newScannerName" placeholder="Scanner display name" required>
+      <input id="newScannerPassword" type="password" placeholder="Temporary password (at least 8 characters)" required>
+      <button id="createScannerButton" type="submit">Create Scanner Account</button>
+    </form>
+    <div id="adminStatus" class="status">Scanner account management</div>
+    <div id="scannerAccounts"></div>
+    <button class="secondary" onclick="loadScannerAccounts()">Refresh Scanner List</button>
+  </section>
 
-<div class="card">
-<h2>Manual Attendance</h2>
-<input id="manualId" placeholder="Enter Member ID">
-<button onclick="manualAttendance()">Register Attendance</button>
-</div>
+  <div class="card">
+    <h2>Attendance Program</h2>
+    <p class="small">Select the program before starting the scanner or registering attendance.</p>
+    <select id="programSelect" onchange="updateProgramStatus()">
+      <option value="">-- Select Program --</option>
+      <option value="መዝሙር ጥናት">መዝሙር ጥናት</option>
+      <option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option>
+      <option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option>
+      <option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option>
+    </select>
+    <div id="programStatus" class="status">Please select a program.</div>
+  </div>
 
-<div class="card">
-<h2>Ethiopian Calendar</h2>
-<p class="small">Select an Ethiopian date to view attendance from all phones.</p>
-<div class="calendar-head">
-<button class="secondary" onclick="changeMonth(-1)">❮ Previous</button>
-<div id="calendarTitle">Calendar</div>
-<button class="secondary" onclick="changeMonth(1)">Next ❯</button>
-</div>
-<div class="calendar-grid" id="calendarGrid"></div>
-<button class="secondary" onclick="selectToday()">Go to Today</button>
-<div id="selectedDateLabel">Selected date:</div>
-<div id="historyStatus" class="status">Select a date.</div>
-</div>
+  <div class="card">
+    <h2>QR Attendance Scanner</h2>
+    <p class="small">Scan the member's personal QR code using your phone camera.</p>
+    <button onclick="startScanner()">Start Scanner</button>
+    <button class="secondary" onclick="stopScanner()">Stop Scanner</button>
+    <div id="reader"></div>
+    <div id="scanMessage" class="status">Ready to scan.</div>
+  </div>
 
-<div class="card">
-<h2>Selected Date Report</h2>
-<div class="stat" id="todayCount">0</div>
-<p class="small">Attendance records for selected date</p>
-<button onclick="downloadCSV()">Download Selected Date CSV</button>
-</div>
+  <div class="card">
+    <h2>Manual Attendance</h2>
+    <input id="manualId" placeholder="Enter Member ID">
+    <button onclick="manualAttendance()">Register Attendance</button>
+  </div>
 
-<div class="card">
-<h2>Attendance Records</h2>
-<p class="small">Records from all connected phones for the selected date.</p>
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>ID</th><th>Name</th><th>Date</th><th>Time</th><th>Program</th><th>Status</th>
-</tr>
-</thead>
-<tbody id="recordList"></tbody>
-</table>
-</div>
-</div>
+  <div class="card">
+    <h2>Ethiopian Calendar</h2>
+    <p class="small">Select an Ethiopian date to view attendance from all phones.</p>
+    <div class="calendar-head"><button class="secondary" onclick="changeMonth(-1)">❮ Previous</button><div id="calendarTitle">Calendar</div><button class="secondary" onclick="changeMonth(1)">Next ❯</button></div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+    <button class="secondary" onclick="selectToday()">Go to Today</button>
+    <div id="selectedDateLabel">Selected date:</div>
+    <div id="historyStatus" class="status">Select a date.</div>
+  </div>
 
-<div class="card">
-<h2>Daily, Monthly & 3 Months Reports</h2>
-<p class="small">Reports are generated using the Ethiopian calendar.</p>
-<div class="report-controls">
-<div>
-<label class="small">Report Type</label>
-<select id="reportType">
-<option value="daily">Daily Report</option>
-<option value="monthly">Monthly Report</option>
-<option value="threeMonths">3 Months Report</option>
-</select>
-</div>
-<div>
-<label class="small">Program</label>
-<select id="reportProgram">
-<option value="all">All Programs</option>
-<option value="መዝሙር ጥናት">መዝሙር ጥናት</option>
-<option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option>
-<option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option>
-<option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option>
-</select>
-</div>
-</div>
-<button onclick="loadReport()">Generate Report</button>
-<div id="reportStatus" class="status">Choose a report type and generate.</div>
-<div class="stat" id="reportCount">0</div>
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-<th>ID</th><th>Name</th><th>Ethiopian Date</th><th>Time</th><th>Program</th>
-</tr>
-</thead>
-<tbody id="reportList"></tbody>
-</table>
-</div>
-<button class="secondary" onclick="downloadReportCSV()">Download Report CSV</button>
-</div>
+  <div class="card">
+    <h2>Selected Date Report</h2>
+    <div class="stat" id="todayCount">0</div>
+    <p class="small">Attendance records for selected date</p>
+    <button onclick="downloadCSV()">Download Selected Date CSV</button>
+  </div>
 
+  <div class="card">
+    <h2>Attendance Records</h2>
+    <p class="small">Records from all connected phones for the selected date.</p>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Date</th><th>Time</th><th>Program</th><th>Status</th></tr></thead><tbody id="recordList"></tbody></table></div>
+  </div>
+
+  <div class="card">
+    <h2>Daily, Monthly & 3 Months Reports</h2>
+    <p class="small">Reports are generated using the Ethiopian calendar.</p>
+    <div class="report-controls">
+      <div><label class="small">Report Type</label><select id="reportType"><option value="daily">Daily Report</option><option value="monthly">Monthly Report</option><option value="threeMonths">3 Months Report</option></select></div>
+      <div><label class="small">Program</label><select id="reportProgram"><option value="all">All Programs</option><option value="መዝሙር ጥናት">መዝሙር ጥናት</option><option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option><option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option><option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option></select></div>
+    </div>
+    <button onclick="loadReport()">Generate Report</button>
+    <div id="reportStatus" class="status">Choose a report type and generate.</div>
+    <div class="stat" id="reportCount">0</div>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Ethiopian Date</th><th>Time</th><th>Program</th></tr></thead><tbody id="reportList"></tbody></table></div>
+    <button class="secondary" onclick="downloadReportCSV()">Download Report CSV</button>
+  </div>
 </main>
 
-<footer>
-TSE Smart Attendance System<br>
-Information and Internal Communication Department
-</footer>
-
+<footer>TSE Smart Attendance System<br>Information and Internal Communication Department</footer>
+<iframe name="tseBridgeFrame" id="tseBridgeFrame" class="hidden" title="Secure server connection"></iframe>
 <script src="./html5-qrcode.min.js"></script>
 <script>
+'use strict';
+
+// ============================================
+// CONFIGURATION
+// ============================================
 var API_URL = 'https://script.google.com/macros/s/AKfycby2FG7enFwWUUlsvzAOfGE_G8HWErJ3ZQUHVxDuqWnwrEDCN39EpRkUOwyUpjj4Cn4B/exec';
-var ACCESS_KEY = 'TSE-CHANGE-THIS-KEY';
-
-var MONTHS = [
-'መስከረም','ጥቅምት','ኅዳር','ታኅሣሥ',
-'ጥር','የካቲት','መጋቢት','ሚያዝያ',
-'ግንቦት','ሰኔ','ሐምሌ','ነሐሴ','ጳጉሜን'
-];
-
+var FIREBASE_API_KEY = 'AIzaSyCsuzGQohbj8GX97dkBQMOSSouKSyq-1Ds';
+var FIREBASE_PROJECT_ID = 'tse-smart-attendance';
+var SESSION_KEY = 'tse_secure_session';
+var MONTHS = ['መስከረም','ጥቅምት','ኅዳር','ታኅሣሥ','ጥር','የካቲት','መጋቢት','ሚያዝያ','ግንቦት','ሰኔ','ሐምሌ','ነሐሴ','ጳጉሜን'];
 var WEEKDAYS = ['እሑድ','ሰኞ','ማክሰኞ','ረቡዕ','ሐሙስ','ዓርብ','ቅዳሜ'];
-
-var members = [];
-var records = [];
-var selectedRecords = [];
-var reportRecords = [];
-
-try {
-  members = JSON.parse(localStorage.getItem('tse_members') || '[]');
-} catch(e) { members = []; }
-
-try {
-  records = JSON.parse(localStorage.getItem('tse_records') || '[]');
-} catch(e) { records = []; }
-
-var scanner = null;
-var scannerRunning = false;
-var scanBusy = false;
-
+var members = [], records = [], selectedRecords = [], reportRecords = [];
+var scanner = null, scannerRunning = false, scanBusy = false;
 var viewYear, viewMonth, selectedYear, selectedMonth, selectedDay;
+var currentSession = null;
+var bridgeCounter = 0;
 
+try { members = JSON.parse(localStorage.getItem('tse_members') || '[]'); } catch(e) { members = []; }
+try { records = JSON.parse(localStorage.getItem('tse_records') || '[]'); } catch(e) { records = []; }
+try { currentSession = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e) { currentSession = null; }
 
-// LOCAL STORAGE
+function saveLocal(){ localStorage.setItem('tse_records', JSON.stringify(records)); }
+function saveMembersLocal(){ localStorage.setItem('tse_members', JSON.stringify(members)); }
+function saveSession(){ localStorage.setItem(SESSION_KEY, JSON.stringify(currentSession)); }
+function clearSession(){ currentSession = null; localStorage.removeItem(SESSION_KEY); }
+function setStatus(id, message, good){ var el=document.getElementById(id); if(!el)return; el.textContent=message; el.className='status '+(good===true?'good':good===false?'bad':''); }
 
-function saveLocal() {
-  localStorage.setItem('tse_records', JSON.stringify(records));
+// ============================================
+// FIREBASE REST LOGIN + TOKEN REFRESH
+// ============================================
+function firebaseEmail(value){
+  var v=String(value||'').trim().toLowerCase();
+  return v.indexOf('@')>=0 ? v : v+'@tseattendance.invalid';
+}
+async function firebaseLogin(username,password){
+  var url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+encodeURIComponent(FIREBASE_API_KEY);
+  var response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:firebaseEmail(username),password:password,returnSecureToken:true})});
+  var data=await response.json();
+  if(!response.ok) throw new Error((data.error&&data.error.message)||'Login failed.');
+  currentSession={uid:data.localId,email:data.email||'',idToken:data.idToken,refreshToken:data.refreshToken,expiresAt:Date.now()+(Number(data.expiresIn||3600)*1000),role:'',username:'',displayName:''};
+  saveSession();
+}
+async function refreshSessionToken(){
+  if(!currentSession||!currentSession.refreshToken) return false;
+  if(!navigator.onLine) return false;
+  if(currentSession.expiresAt>Date.now()+180000) return true;
+  var url='https://securetoken.googleapis.com/v1/token?key='+encodeURIComponent(FIREBASE_API_KEY);
+  var body=new URLSearchParams({grant_type:'refresh_token',refresh_token:currentSession.refreshToken});
+  var response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()});
+  var data=await response.json();
+  if(!response.ok) throw new Error((data.error&&data.error.message)||'Session refresh failed.');
+  currentSession.idToken=data.id_token;
+  currentSession.refreshToken=data.refresh_token||currentSession.refreshToken;
+  currentSession.expiresAt=Date.now()+(Number(data.expires_in||3600)*1000);
+  currentSession.uid=data.user_id||currentSession.uid;
+  saveSession();
+  return true;
 }
 
-function saveMembersLocal() {
-  localStorage.setItem('tse_members', JSON.stringify(members));
-}
-
-
-// ETHIOPIAN DATE FUNCTIONS
-
-function getEthParts(date) {
-  var parts = new Intl.DateTimeFormat('en-US-u-ca-ethiopic', {
-    timeZone:'Africa/Addis_Ababa',
-    year:'numeric',
-    month:'numeric',
-    day:'numeric'
-  }).formatToParts(date);
-
-  var result = {};
-  parts.forEach(function(p) {
-    if (p.type === 'year') result.year = Number(p.value);
-    if (p.type === 'month') result.month = Number(p.value);
-    if (p.type === 'day') result.day = Number(p.value);
+// ============================================
+// SECURE POST BRIDGE TO APPS SCRIPT
+// Token and payload are sent in POST body, not URL.
+// ============================================
+function securePost(action,params){
+  return new Promise(function(resolve,reject){
+    if(!currentSession||!currentSession.idToken){reject(new Error('Please sign in.'));return;}
+    var iframe=document.getElementById('tseBridgeFrame');
+    var nonce='tse_'+Date.now()+'_'+(++bridgeCounter)+'_'+Math.random().toString(36).slice(2);
+    var done=false;
+    var form=null;
+    var timer=setTimeout(function(){finish(new Error('Server response timed out.'));},30000);
+    function cleanup(){window.removeEventListener('message',onMessage);clearTimeout(timer);if(form&&form.parentNode)form.remove();}
+    function finish(error,value){if(done)return;done=true;cleanup();if(error)reject(error);else resolve(value);}
+    function onMessage(event){
+      if(event.source!==iframe.contentWindow)return;
+      var data=event.data;
+      if(!data||data.type!=='TSE_ATTENDANCE_RESPONSE'||data.nonce!==nonce)return;
+      finish(null,data.result);
+    }
+    window.addEventListener('message',onMessage);
+    form=document.createElement('form');
+    form.method='POST';form.action=API_URL;form.target='tseBridgeFrame';form.style.display='none';
+    var field=document.createElement('input');field.type='hidden';field.name='payload';
+    field.value=JSON.stringify({action:action,params:params||{},idToken:currentSession.idToken,nonce:nonce});
+    form.appendChild(field);document.body.appendChild(form);form.submit();
   });
+}
+async function api(action,params){
+  if(!navigator.onLine) throw new Error('You are offline.');
+  await refreshSessionToken();
+  var result=await securePost(action,params||{});
+  if(!result||result.success!==true){
+    var message=(result&&result.message)||'Server request failed.';
+    if(/authentication|token|authorized|disabled|session expired/i.test(message)){
+      throw new Error('AUTH: '+message);
+    }
+    throw new Error(message);
+  }
   return result;
 }
 
-function todayEth() {
-  return getEthParts(new Date());
-}
-
-function ethKey(y,m,d) {
-  return y + '/' + m + '/' + d;
-}
-
-function getDate() {
-  var p = new Intl.DateTimeFormat('en-GB', {
-    timeZone:'Africa/Addis_Ababa',
-    year:'numeric',
-    month:'2-digit',
-    day:'2-digit'
-  }).formatToParts(new Date());
-
-  var v = {};
-  p.forEach(function(x) { v[x.type] = x.value; });
-  return v.year + '-' + v.month + '-' + v.day;
-}
-
-function getTime() {
-  var p = new Intl.DateTimeFormat('en-GB', {
-    timeZone:'Africa/Addis_Ababa',
-    hour:'2-digit',
-    minute:'2-digit',
-    second:'2-digit',
-    hourCycle:'h23'
-  }).formatToParts(new Date());
-
-  var v = {};
-  p.forEach(function(x) { v[x.type] = x.value; });
-
-  var hour = Number(v.hour);
-  var ethHour = ((hour + 5) % 12) + 1;
-
-  var period = (hour >= 6 && hour < 12) ? 'ጠዋት' :
-               (hour >= 12 && hour < 18) ? 'ቀን' : 'ማታ';
-
-  return ethHour + ':' + v.minute + ':' + v.second + ' ' + period;
-}
-
-function updateClock() {
-  var p = todayEth();
-  document.getElementById('clock').textContent =
-    MONTHS[p.month - 1] + ' ' + p.day + ' ' + p.year +
-    ' ዓ.ም. | ' + getTime();
-}
-
-setInterval(updateClock,1000);
-updateClock();
-
-
-// JSONP CONNECTION
-
-var jsonpCounter = 0;
-
-function jsonp(params) {
-  return new Promise(function(resolve, reject) {
-    var script = document.createElement('script');
-    var finished = false;
-    var callbackName = 'tseCallback_' + Date.now() + '_' + (++jsonpCounter);
-    var timer;
-
-    function cleanup() {
-      clearTimeout(timer);
-      script.remove();
-      delete window[callbackName];
-    }
-
-    timer = setTimeout(function() {
-      if (!finished) {
-        finished = true;
-        cleanup();
-        reject(new Error('Server response timeout'));
-      }
-    },20000);
-
-    window[callbackName] = function(data) {
-      if (finished) return;
-      finished = true;
-      cleanup();
-      resolve(data);
-    };
-
-    var requestParams = Object.assign({},params);
-    requestParams.callback = callbackName;
-
-    var query = new URLSearchParams(requestParams);
-    script.src = API_URL + '?' + query.toString();
-
-    script.onerror = function() {
-      if (!finished) {
-        finished = true;
-        cleanup();
-        reject(new Error('Connection failed'));
-      }
-    };
-
-    document.body.appendChild(script);
-  });
-}
-
-
-// PROGRAM SELECTION
-
-function selectedProgram() {
-  return document.getElementById('programSelect').value;
-}
-
-function updateProgramStatus() {
-  var program = selectedProgram();
-  var box = document.getElementById('programStatus');
-
-  if (!program) {
-    box.textContent = 'Please select a program before attendance.';
-    box.className = 'status bad';
-  } else {
-    box.textContent = 'Selected program: ' + program;
-    box.className = 'status good';
-  }
-}
-
-
-// MEMBERS
-
-function showMemberStatus() {
-  var box = document.getElementById('memberStatus');
-
-  if (members.length > 0) {
-    box.textContent = 'Saved members available: ' + members.length;
-    box.className = 'status good';
-  } else {
-    box.textContent = 'No saved members. Connect to internet to load.';
-    box.className = 'status bad';
-  }
-}
-
-async function loadMembers() {
-  showMemberStatus();
-  if (!navigator.onLine) return;
-
-  var box = document.getElementById('memberStatus');
-  box.textContent = 'Loading members from server...';
-  box.className = 'status';
-
-  try {
-    var result = await jsonp({
-      action:'members',
-      key:ACCESS_KEY
-    });
-
-    if (result && result.success) {
-      members = result.members || [];
-      saveMembersLocal();
-      showMemberStatus();
-    } else {
-      box.textContent = (result && result.message) || 'Could not load members.';
-      box.className = 'status bad';
-    }
-  } catch(e) {
-    box.textContent = 'Member loading failed: ' + e.message;
-    box.className = 'status bad';
-  }
-}
-
-
-// CONNECTION
-
-function updateConnection() {
-  var box = document.getElementById('connection');
-
-  if (navigator.onLine) {
-    box.textContent = 'Internet: Online';
-    box.className = 'status good';
-  } else {
-    box.textContent = 'Internet: Offline. Records saved on this device.';
-    box.className = 'status bad';
-  }
-}
-
-window.addEventListener('online', function() {
-  updateConnection();
-  loadMembers().then(function() {
-    syncPending();
-    loadSelectedRecords();
-  });
+// ============================================
+// LOGIN / LOGOUT / SESSION RESTORE
+// ============================================
+document.getElementById('loginForm').addEventListener('submit',async function(event){
+  event.preventDefault();
+  var button=document.getElementById('loginButton');button.disabled=true;
+  setStatus('loginStatus','Signing in...',null);
+  try{
+    if(!navigator.onLine) throw new Error('First login on this device requires internet.');
+    await firebaseLogin(document.getElementById('loginUsername').value,document.getElementById('loginPassword').value);
+    var session=await api('session',{});
+    currentSession.role=session.role;currentSession.username=session.username||'';currentSession.displayName=session.displayName||'';saveSession();
+    document.getElementById('loginPassword').value='';
+    enterApp();
+  }catch(error){clearSession();setStatus('loginStatus',error.message.replace(/^AUTH:\s*/,''),false);}
+  finally{button.disabled=false;}
 });
 
-window.addEventListener('offline', updateConnection);
-
-
-// MEMBER ID
-
-function normalizeId(value) {
-  var s = String(value || '').trim();
-  if (/^\d+$/.test(s)) return String(Number(s));
-  return s;
-}
-
-function findMember(id) {
-  var wanted = normalizeId(id);
-
-  for (var i = 0; i < members.length; i++) {
-    if (normalizeId(members[i].id) === wanted) return members[i];
-  }
-  return null;
-}
-
-function makeEventId() {
-  return 'TSE-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
-}
-
-function alreadyRegistered(id,date,program) {
-  return records.some(function(r) {
-    return normalizeId(r.id) === normalizeId(id) &&
-           r.ethDate === date &&
-           r.program === program;
-  });
-}
-
-
-// ATTENDANCE REGISTRATION
-
-async function registerMember(member) {
-  var program = selectedProgram();
-
-  if (!program) {
-    showMessage('Select an attendance program first.',false);
-    return;
-  }
-
-  var eth = todayEth();
-  var dateKey = ethKey(eth.year,eth.month,eth.day);
-
-  if (alreadyRegistered(member.id,dateKey,program)) {
-    showMessage(member.name + ' is already registered for ' + program + ' today.',false);
-    return;
-  }
-
-  var record = {
-    id:member.id,
-    name:member.name,
-    date:getDate(),
-    time:getTime(),
-    ethDate:dateKey,
-    ethTime:getTime(),
-    program:program,
-    eventId:makeEventId(),
-    status:'Pending'
-  };
-
-  records.unshift(record);
-  saveLocal();
-
-  showMessage('Attendance saved: ' + member.name + ' — ' + program,true);
-
-  await syncPending();
-
-  if (selectedDateKey() === record.ethDate) {
-    loadSelectedRecords();
-  }
-}
-
-function showMessage(message,success) {
-  var box = document.getElementById('scanMessage');
-  box.textContent = message;
-  box.className = success ? 'status good' : 'status bad';
-}
-
-
-// MANUAL ATTENDANCE
-
-async function manualAttendance() {
-  if (!selectedProgram()) {
-    showMessage('Select a program first.',false);
-    return;
-  }
-
-  var id = document.getElementById('manualId').value.trim();
-
-  if (!id) {
-    showMessage('Enter a member ID.',false);
-    return;
-  }
-
-  var member = findMember(id);
-
-  if (!member) {
-    showMessage('Member ID not found. Load members online first.',false);
-    return;
-  }
-
-  await registerMember(member);
-  document.getElementById('manualId').value = '';
-}
-
-
-// QR READER
-
-function getMemberIdFromQR(decodedText) {
-  var text = String(decodedText || '').trim();
-  if (!text) return '';
-
-  text = text.replace(/[\u200B-\u200D\uFEFF]/g,'').trim();
-
-  var urlMatch = text.match(/https?:\/\/[^\s]+/i);
-
-  if (urlMatch) {
-    try {
-      var cleanUrl = urlMatch[0].replace(/[),.;]+$/,'');
-      var qrUrl = new URL(cleanUrl);
-      var id = qrUrl.searchParams.get('id') ||
-               qrUrl.searchParams.get('memberId') ||
-               qrUrl.searchParams.get('ID');
-      if (id) return id.trim();
-    } catch(e) {}
-  }
-
-  if (text.indexOf('|') !== -1) return text.split('|')[0].trim();
-  if (/^\d+$/.test(text)) return text;
-  return '';
-}
-
-
-// QR SCANNER
-
-async function startScanner() {
-  if (!selectedProgram()) {
-    showMessage('Select a program before starting the scanner.',false);
-    return;
-  }
-
-  if (typeof Html5Qrcode === 'undefined') {
-    showMessage('QR scanner library is missing.',false);
-    return;
-  }
-
-  if (members.length === 0) {
-    showMessage('Load members online first.',false);
-    return;
-  }
-
-  if (scannerRunning) return;
-
-  try {
-    if (scanner === null) scanner = new Html5Qrcode('reader');
-
-    await scanner.start(
-      {facingMode:'environment'},
-      {fps:10,qrbox:{width:240,height:240}},
-      async function(decodedText) {
-        if (scanBusy) return;
-        scanBusy = true;
-
-        try {
-          var id = getMemberIdFromQR(decodedText);
-          var member = findMember(id);
-
-          if (!id) {
-            showMessage('Could not extract Member ID from QR.',false);
-          } else if (!member) {
-            showMessage('Member ID not found: ' + id,false);
-          } else {
-            await registerMember(member);
-          }
-        } catch(e) {
-          showMessage('Scanner error: ' + e.message,false);
-        } finally {
-          setTimeout(function() { scanBusy = false; },2000);
-        }
-      }
-    );
-
-    scannerRunning = true;
-    showMessage('Camera started. Scan a member QR code.',true);
-
-  } catch(e) {
-    showMessage('Camera could not start. Allow camera permission.',false);
-  }
-}
-
-async function stopScanner() {
-  if (scanner && scannerRunning) {
-    try {
-      await scanner.stop();
-      scannerRunning = false;
-      showMessage('Scanner stopped.',true);
-    } catch(e) {
-      showMessage('Scanner could not stop.',false);
-    }
-  }
-}
-
-
-// SYNCHRONIZATION
-
-async function syncPending() {
-  if (!navigator.onLine) return;
-
-  var box = document.getElementById('syncStatus');
-
-  var pending = records.filter(function(r) {
-    return r.status === 'Pending' && r.program;
-  });
-
-  var oldPending = records.filter(function(r) {
-    return r.status === 'Pending' && !r.program;
-  });
-
-  if (pending.length === 0) {
-    if (oldPending.length > 0) {
-      box.textContent = 'New records are synchronized. ' +
-        oldPending.length + ' older pending record(s) have no program and were not uploaded.';
-      box.className = 'status bad';
-    } else {
-      box.textContent = 'All saved records are synchronized.';
-      box.className = 'status good';
-    }
-    return;
-  }
-
-  box.textContent = 'Synchronizing ' + pending.length + ' record(s)...';
-  box.className = 'status';
-
-  for (var i = 0; i < pending.length; i++) {
-    var r = pending[i];
-
-    try {
-      var result = await jsonp({
-        action:'save',
-        key:ACCESS_KEY,
-        id:r.id,
-        name:r.name,
-        date:r.date,
-        time:r.time,
-        ethDate:r.ethDate || '',
-        ethTime:r.ethTime || r.time,
-        program:r.program,
-        eventId:r.eventId
-      });
-
-      if (result && result.success === true) {
-        r.status = 'Synced';
-      } else if (result &&
-        (result.message === 'Already registered in this program today' ||
-         result.message === 'Already registered today')) {
-        r.status = 'Duplicate';
-      } else {
-        box.textContent = (result && result.message) || 'Sync failed.';
-        box.className = 'status bad';
-        saveLocal();
-        return;
-      }
-
-      saveLocal();
-
-    } catch(e) {
-      box.textContent = 'Sync paused. Pending records remain on this device.';
-      box.className = 'status bad';
-      saveLocal();
-      return;
-    }
-  }
-
-  box.textContent = oldPending.length
-    ? 'New records synchronized. Older records without a program remain pending.'
-    : 'Synchronization finished.';
-  box.className = oldPending.length ? 'status bad' : 'status good';
-  saveLocal();
-}
-
-
-// ETHIOPIAN CALENDAR
-
-function findEthMonthStart(year,month) {
-  var start = Date.UTC(year + 7,0,1,12,0,0);
-
-  for (var i = 0; i < 400; i++) {
-    var date = new Date(start + i * 86400000);
-    var p = getEthParts(date);
-
-    if (p.year === year && p.month === month && p.day === 1) {
-      return date;
-    }
-  }
-  return null;
-}
-
-function selectedDateKey() {
-  return ethKey(selectedYear,selectedMonth,selectedDay);
-}
-
-function displaySelectedDate() {
-  document.getElementById('selectedDateLabel').textContent =
-    'Selected date: ' + selectedDay + ' ' +
-    MONTHS[selectedMonth - 1] + ' ' + selectedYear + ' ዓ.ም.';
-}
-
-function renderCalendar() {
-  var title = document.getElementById('calendarTitle');
-  var grid = document.getElementById('calendarGrid');
-
-  title.textContent = MONTHS[viewMonth - 1] + ' ' + viewYear + ' ዓ.ም.';
-  grid.innerHTML = '';
-
-  WEEKDAYS.forEach(function(day) {
-    var el = document.createElement('div');
-    el.className = 'weekday';
-    el.textContent = day;
-    grid.appendChild(el);
-  });
-
-  var first = findEthMonthStart(viewYear,viewMonth);
-
-  if (!first) {
-    grid.textContent = 'Calendar could not load.';
-    return;
-  }
-
-  var offset = first.getUTCDay();
-  var totalDays = viewMonth === 13 ? 5 : 30;
-
-  if (viewMonth === 13) {
-    var nextMonth = findEthMonthStart(viewYear + 1,1);
-    if (nextMonth) {
-      totalDays = Math.round((nextMonth.getTime() - first.getTime()) / 86400000);
-    }
-  }
-
-  for (var i = 0; i < offset; i++) {
-    grid.appendChild(document.createElement('div'));
-  }
-
-  var today = todayEth();
-
-  for (var d = 1; d <= totalDays; d++) {
-    var btn = document.createElement('button');
-    btn.className = 'calendar-day';
-    btn.textContent = d;
-
-    if (d === selectedDay && viewYear === selectedYear && viewMonth === selectedMonth) {
-      btn.classList.add('selected');
-    }
-
-    if (today.year === viewYear && today.month === viewMonth && today.day === d) {
-      btn.classList.add('today');
-    }
-
-    (function(day) {
-      btn.onclick = function() {
-        selectedYear = viewYear;
-        selectedMonth = viewMonth;
-        selectedDay = day;
-        displaySelectedDate();
-        renderCalendar();
-        loadSelectedRecords();
-      };
-    })(d);
-
-    grid.appendChild(btn);
-  }
-}
-
-function changeMonth(direction) {
-  viewMonth += direction;
-
-  if (viewMonth > 13) {
-    viewMonth = 1;
-    viewYear++;
-  }
-
-  if (viewMonth < 1) {
-    viewMonth = 13;
-    viewYear--;
-  }
-
-  renderCalendar();
-}
-
-function selectToday() {
-  var p = todayEth();
-
-  viewYear = p.year;
-  viewMonth = p.month;
-  selectedYear = p.year;
-  selectedMonth = p.month;
-  selectedDay = p.day;
-
-  displaySelectedDate();
-  renderCalendar();
+function enterApp(){
+  if(!currentSession)return;
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('appMain').classList.remove('hidden');
+  var label=currentSession.displayName||currentSession.username||currentSession.email||'User';
+  document.getElementById('signedInLabel').textContent='Signed in: '+label;
+  document.getElementById('roleLabel').textContent=currentSession.role==='admin'?'Administrator': 'Scanner account';
+  document.getElementById('adminPanel').classList.toggle('hidden',currentSession.role!=='admin');
+  showMemberStatus();updateConnection();updateProgramStatus();renderCalendar();displaySelectedDate();renderSelectedRecords();
+  loadMembers().then(function(){syncPending();});
   loadSelectedRecords();
+  if(currentSession.role==='admin')loadScannerAccounts();
 }
-
-
-// LOAD RECORDS FROM ALL PHONES
-
-async function loadSelectedRecords() {
-  var box = document.getElementById('historyStatus');
-  var key = selectedDateKey();
-
-  displaySelectedDate();
-
-  if (!navigator.onLine) {
-    selectedRecords = records.filter(function(r) {
-      return r.ethDate === key;
-    });
-
-    box.textContent = 'Offline: showing records saved on this phone only.';
-    box.className = 'status bad';
-    renderSelectedRecords();
+async function restoreSession(){
+  if(!currentSession||!currentSession.refreshToken){clearSession();return;}
+  if(!navigator.onLine){
+    if(currentSession.role){enterApp();setStatus('connection','Offline mode: cached login. New records will sync when internet returns.',false);}
+    else setStatus('loginStatus','Connect to the internet and sign in once on this device.',false);
     return;
   }
+  try{
+    await refreshSessionToken();
+    var result=await securePost('session',{});
+    if(!result||!result.success)throw new Error((result&&result.message)||'Session not authorized.');
+    currentSession.role=result.role;currentSession.username=result.username||'';currentSession.displayName=result.displayName||'';saveSession();enterApp();
+  }catch(error){
+    if(/AUTH:|not authorized|disabled|expired|invalid|USER_DISABLED|TOKEN_EXPIRED/i.test(error.message)){
+      clearSession();setStatus('loginStatus','Your session is no longer valid. Please sign in again.',false);
+    }else if(currentSession.role){enterApp();setStatus('connection','Could not contact server. Cached offline access is available.',false);}
+    else setStatus('loginStatus','Could not verify your login. Please sign in again.',false);
+  }
+}
+async function logout(){
+  await stopScanner();clearSession();
+  document.getElementById('appMain').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  setStatus('loginStatus','You have signed out.',true);
+}
 
-  box.textContent = 'Loading records from all phones...';
-  box.className = 'status';
-
-  try {
-    var result = await jsonp({
-      action:'records',
-      key:ACCESS_KEY,
-      ethDate:key
+// ============================================
+// ADMIN SCANNER MANAGEMENT
+// ============================================
+document.getElementById('createScannerForm').addEventListener('submit',async function(event){
+  event.preventDefault();
+  var button=document.getElementById('createScannerButton');button.disabled=true;
+  setStatus('adminStatus','Creating scanner account...',null);
+  try{
+    var result=await api('createScanner',{
+      username:document.getElementById('newScannerUsername').value,
+      displayName:document.getElementById('newScannerName').value,
+      password:document.getElementById('newScannerPassword').value
     });
-
-    if (!result || !result.success) {
-      throw new Error((result && result.message) || 'Could not load records.');
-    }
-
-    selectedRecords = result.records || [];
-
-    records.forEach(function(r) {
-      if (r.ethDate === key && r.status === 'Pending') {
-        var exists = selectedRecords.some(function(serverRecord) {
-          return normalizeId(serverRecord.id) === normalizeId(r.id) &&
-                 serverRecord.ethDate === r.ethDate &&
-                 serverRecord.program === r.program;
-        });
-
-        if (!exists) selectedRecords.push(r);
-      }
-    });
-
-    box.textContent = 'Showing records from all connected phones.';
-    box.className = 'status good';
-    renderSelectedRecords();
-
-  } catch(e) {
-    box.textContent = 'Could not load server records: ' + e.message;
-    box.className = 'status bad';
-
-    selectedRecords = records.filter(function(r) {
-      return r.ethDate === key;
-    });
-
-    renderSelectedRecords();
-  }
-}
-
-
-// DISPLAY SELECTED RECORDS
-
-function renderSelectedRecords() {
-  var body = document.getElementById('recordList');
-  body.innerHTML = '';
-
-  document.getElementById('todayCount').textContent = selectedRecords.length;
-
-  selectedRecords.forEach(function(r) {
-    var tr = document.createElement('tr');
-
-    var values = [
-      r.id,
-      r.name,
-      r.ethDate || r.date,
-      r.ethTime || r.time,
-      r.program || '-',
-      r.status || 'Synced'
-    ];
-
-    values.forEach(function(value) {
-      var td = document.createElement('td');
-      td.textContent = value || '-';
-      tr.appendChild(td);
-    });
-
-    body.appendChild(tr);
-  });
-
-  if (selectedRecords.length === 0) {
-    var tr = document.createElement('tr');
-    var td = document.createElement('td');
-    td.colSpan = 6;
-    td.textContent = 'No attendance records for this date.';
-    tr.appendChild(td);
-    body.appendChild(tr);
-  }
-}
-
-
-// SELECTED DATE CSV
-
-function downloadCSV() {
-  if (selectedRecords.length === 0) {
-    alert('No records available for this date.');
-    return;
-  }
-
-  var rows = [[
-    'ID','Name','Ethiopian Date','Ethiopian Time','Program','Status'
-  ]];
-
-  selectedRecords.forEach(function(r) {
-    rows.push([
-      r.id,
-      r.name,
-      r.ethDate || '',
-      r.ethTime || r.time,
-      r.program || '',
-      r.status || 'Synced'
-    ]);
-  });
-
-  downloadRowsCSV(rows,
-    'TSE_Attendance_' + selectedDateKey().replace(/\//g,'-') + '.csv');
-}
-
-
-// REPORTS
-
-async function loadReport() {
-  var box = document.getElementById('reportStatus');
-  var body = document.getElementById('reportList');
-  var type = document.getElementById('reportType').value;
-  var program = document.getElementById('reportProgram').value;
-  var dateKey = selectedDateKey();
-
-  body.innerHTML = '';
-  reportRecords = [];
-
-  if (!navigator.onLine) {
-    reportRecords = records.filter(function(r) {
-      if (!r.ethDate) return false;
-
-      var dateParts = r.ethDate.split('/');
-      var y = Number(dateParts[0]);
-      var m = Number(dateParts[1]);
-
-      var matchesPeriod = type === 'daily'
-        ? r.ethDate === dateKey
-        : type === 'monthly'
-          ? y === selectedYear && m === selectedMonth
-          : isInThreeMonths(y,m,selectedYear,selectedMonth);
-
-      var matchesProgram = program === 'all' || r.program === program;
-      return matchesPeriod && matchesProgram;
-    });
-
-    box.textContent = 'Offline: this report includes only records saved on this phone.';
-    box.className = 'status bad';
-    renderReport();
-    return;
-  }
-
-  box.textContent = 'Generating report...';
-  box.className = 'status';
-
-  try {
-    var result = await jsonp({
-      action:'report',
-      key:ACCESS_KEY,
-      reportType:type,
-      ethDate:dateKey,
-      program:program
-    });
-
-    if (!result || !result.success) {
-      throw new Error((result && result.message) || 'Report failed.');
-    }
-
-    reportRecords = result.records || [];
-    box.textContent = 'Report generated successfully.';
-    box.className = 'status good';
-    renderReport();
-
-  } catch(e) {
-    box.textContent = 'Could not generate report: ' + e.message;
-    box.className = 'status bad';
-  }
-}
-
-function isInThreeMonths(year,month,baseYear,baseMonth) {
-  var start = baseYear * 13 + (baseMonth - 1);
-  var current = year * 13 + (month - 1);
-  return current >= start && current < start + 3;
-}
-
-function renderReport() {
-  var body = document.getElementById('reportList');
-  body.innerHTML = '';
-
-  document.getElementById('reportCount').textContent = reportRecords.length;
-
-  reportRecords.forEach(function(r) {
-    var tr = document.createElement('tr');
-
-    [
-      r.id,
-      r.name,
-      r.ethDate || r.date,
-      r.ethTime || r.time,
-      r.program || '-'
-    ].forEach(function(value) {
-      var td = document.createElement('td');
-      td.textContent = value || '-';
-      tr.appendChild(td);
-    });
-
-    body.appendChild(tr);
-  });
-
-  if (reportRecords.length === 0) {
-    var tr = document.createElement('tr');
-    var td = document.createElement('td');
-    td.colSpan = 5;
-    td.textContent = 'No records found for this report.';
-    tr.appendChild(td);
-    body.appendChild(tr);
-  }
-}
-
-function downloadReportCSV() {
-  if (reportRecords.length === 0) {
-    alert('Generate a report with records first.');
-    return;
-  }
-
-  var rows = [[
-    'ID','Name','Ethiopian Date','Ethiopian Time','Program'
-  ]];
-
-  reportRecords.forEach(function(r) {
-    rows.push([
-      r.id,
-      r.name,
-      r.ethDate || '',
-      r.ethTime || r.time,
-      r.program || ''
-    ]);
-  });
-
-  var type = document.getElementById('reportType').value;
-  downloadRowsCSV(rows,'TSE_' + type + '_Report.csv');
-}
-
-function downloadRowsCSV(rows,filename) {
-  var csv = rows.map(function(row) {
-    return row.map(function(value) {
-      return '"' + String(value || '').replace(/"/g,'""') + '"';
-    }).join(',');
-  }).join('\n');
-
-  var blob = new Blob(['\uFEFF' + csv], {
-    type:'text/csv;charset=utf-8;'
-  });
-
-  var link = document.createElement('a');
-  var url = URL.createObjectURL(blob);
-
-  link.href = url;
-  link.download = filename;
-  link.click();
-
-  setTimeout(function() {
-    URL.revokeObjectURL(url);
-  },1000);
-}
-
-
-// SERVICE WORKER
-
-function registerServiceWorker() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then(function() {
-        console.log('Service Worker registered.');
-      })
-      .catch(function(error) {
-        console.log('Service Worker error:',error);
-      });
-  }
-}
-
-
-// START SYSTEM
-
-var initialDate = todayEth();
-
-viewYear = initialDate.year;
-viewMonth = initialDate.month;
-selectedYear = initialDate.year;
-selectedMonth = initialDate.month;
-selectedDay = initialDate.day;
-
-updateClock();
-updateConnection();
-showMemberStatus();
-updateProgramStatus();
-renderCalendar();
-displaySelectedDate();
-renderSelectedRecords();
-
-registerServiceWorker();
-
-loadMembers().then(function() {
-  syncPending();
+    setStatus('adminStatus',result.message||'Scanner account created.',true);
+    document.getElementById('createScannerForm').reset();
+    await loadScannerAccounts();
+  }catch(error){setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);}
+  finally{button.disabled=false;}
 });
+async function loadScannerAccounts(){
+  if(!currentSession||currentSession.role!=='admin')return;
+  try{
+    var result=await api('scannerList',{});
+    var box=document.getElementById('scannerAccounts');box.innerHTML='';
+    (result.accounts||[]).forEach(function(account){
+      var div=document.createElement('div');div.className='admin-account';
+      var title=document.createElement('strong');title.textContent=account.displayName+' ('+account.username+')';div.appendChild(title);
+      var status=document.createElement('div');status.className='small';status.textContent='Status: '+account.status;div.appendChild(status);
+      var button=document.createElement('button');button.textContent=account.status==='ACTIVE'?'Disable':'Activate';button.className=account.status==='ACTIVE'?'danger':'secondary';
+      button.onclick=function(){changeScannerStatus(account.uid,account.status==='ACTIVE'?'DISABLED':'ACTIVE');};div.appendChild(button);box.appendChild(div);
+    });
+    if(!(result.accounts||[]).length)box.textContent='No scanner accounts created yet.';
+  }catch(error){setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);}
+}
+async function changeScannerStatus(uid,status){
+  if(!confirm(status==='DISABLED'?'Disable this scanner account?':'Activate this scanner account?'))return;
+  try{var result=await api('setScannerStatus',{uid:uid,status:status});setStatus('adminStatus',result.message,true);await loadScannerAccounts();}
+  catch(error){setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);}
+}
 
-loadSelectedRecords();
+// ============================================
+// ETHIOPIAN DATE AND TIME
+// ============================================
+function getEthParts(date){
+  var parts=new Intl.DateTimeFormat('en-US-u-ca-ethiopic',{timeZone:'Africa/Addis_Ababa',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(date);var result={};
+  parts.forEach(function(p){if(p.type==='year')result.year=Number(p.value);if(p.type==='month')result.month=Number(p.value);if(p.type==='day')result.day=Number(p.value);});return result;
+}
+function todayEth(){return getEthParts(new Date());}
+function ethKey(y,m,d){return y+'/'+m+'/'+d;}
+function getDate(){var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Addis_Ababa',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());var v={};p.forEach(function(x){v[x.type]=x.value;});return v.year+'-'+v.month+'-'+v.day;}
+function getTime(){var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Addis_Ababa',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date());var v={};p.forEach(function(x){v[x.type]=x.value;});var hour=Number(v.hour);var ethHour=((hour+5)%12)+1;var period=(hour>=6&&hour<12)?'ጠዋት':(hour>=12&&hour<18)?'ቀን':'ማታ';return ethHour+':'+v.minute+':'+v.second+' '+period;}
+function updateClock(){var p=todayEth();document.getElementById('clock').textContent=MONTHS[p.month-1]+' '+p.day+' '+p.year+' ዓ.ም. | '+getTime();}
+setInterval(updateClock,1000);updateClock();
+
+// ============================================
+// PROGRAM / MEMBER CACHE / CONNECTION
+// ============================================
+function selectedProgram(){return document.getElementById('programSelect').value;}
+function updateProgramStatus(){var program=selectedProgram();setStatus('programStatus',program?'Selected program: '+program:'Please select a program before attendance.',!!program);}
+function showMemberStatus(){setStatus('memberStatus',members.length?'Saved members available: '+members.length:'No saved members. Connect to internet to load.',members.length>0);}
+async function loadMembers(){showMemberStatus();if(!navigator.onLine||!currentSession)return;try{var result=await api('members',{});members=result.members||[];saveMembersLocal();showMemberStatus();}catch(error){setStatus('memberStatus','Member loading: '+error.message.replace(/^AUTH:\s*/,''),false);}}
+function updateConnection(){setStatus('connection',navigator.onLine?'Internet: Online':'Internet: Offline. Records are saved on this device.',navigator.onLine);}
+window.addEventListener('online',function(){updateConnection();if(currentSession){refreshSessionToken().then(function(){return loadMembers();}).then(function(){return syncPending();}).then(function(){loadSelectedRecords();}).catch(function(e){setStatus('syncStatus','Reconnect/login required: '+e.message,false);});}});
+window.addEventListener('offline',function(){updateConnection();});
+
+// ============================================
+// MEMBER LOOKUP AND ATTENDANCE
+// ============================================
+function normalizeId(value){var s=String(value||'').trim();if(/^\d+$/.test(s))return String(Number(s));return s;}
+function findMember(id){var wanted=normalizeId(id);for(var i=0;i<members.length;i++){if(normalizeId(members[i].id)===wanted)return members[i];}return null;}
+function makeEventId(){return 'TSE-'+Date.now()+'-'+Math.floor(Math.random()*1000000);}
+function alreadyRegistered(id,date,program){return records.some(function(r){return normalizeId(r.id)===normalizeId(id)&&r.ethDate===date&&r.program===program;});}
+function getDeviceModel(){return navigator.userAgent||'Unknown device';}
+async function registerMember(member){
+  var program=selectedProgram();if(!program){setStatus('scanMessage','Select an attendance program first.',false);return;}
+  var eth=todayEth();var dateKey=ethKey(eth.year,eth.month,eth.day);
+  if(alreadyRegistered(member.id,dateKey,program)){setStatus('scanMessage',member.name+' is already registered for '+program+' today.',false);return;}
+  var record={id:member.id,name:member.name,date:getDate(),time:getTime(),ethDate:dateKey,ethTime:getTime(),program:program,eventId:makeEventId(),deviceModel:getDeviceModel(),status:'Pending'};
+  records.unshift(record);saveLocal();setStatus('scanMessage','Attendance saved on this device: '+member.name+' — '+program,true);
+  await syncPending();if(selectedDateKey()===record.ethDate)loadSelectedRecords();
+}
+async function manualAttendance(){if(!selectedProgram()){setStatus('scanMessage','Select a program first.',false);return;}var id=document.getElementById('manualId').value.trim();if(!id){setStatus('scanMessage','Enter a member ID.',false);return;}var member=findMember(id);if(!member){setStatus('scanMessage','Member ID not found. Load members online first.',false);return;}await registerMember(member);document.getElementById('manualId').value='';}
+function getMemberIdFromQR(decodedText){var text=String(decodedText||'').trim();if(!text)return '';text=text.replace(/[\u200B-\u200D\uFEFF]/g,'').trim();var urlMatch=text.match(/https?:\/\/[^\s]+/i);if(urlMatch){try{var qrUrl=new URL(urlMatch[0].replace(/[),.;]+$/,''));var id=qrUrl.searchParams.get('id')||qrUrl.searchParams.get('memberId')||qrUrl.searchParams.get('ID');if(id)return id.trim();}catch(e){}}if(text.indexOf('|')!==-1)return text.split('|')[0].trim();if(/^\d+$/.test(text))return text;return '';}
+
+// ============================================
+// QR SCANNER
+// ============================================
+async function startScanner(){
+  if(!currentSession){setStatus('scanMessage','Please sign in first.',false);return;}
+  if(!selectedProgram()){setStatus('scanMessage','Select a program before starting the scanner.',false);return;}
+  if(typeof Html5Qrcode==='undefined'){setStatus('scanMessage','QR scanner library is missing.',false);return;}
+  if(members.length===0){setStatus('scanMessage','Load members online first.',false);return;}
+  if(scannerRunning)return;
+  try{
+    if(scanner===null)scanner=new Html5Qrcode('reader');
+    await scanner.start({facingMode:'environment'},{fps:10,qrbox:{width:240,height:240}},async function(decodedText){
+      if(scanBusy)return;scanBusy=true;
+      try{var id=getMemberIdFromQR(decodedText);var member=findMember(id);if(!id)setStatus('scanMessage','Could not extract Member ID from QR.',false);else if(!member)setStatus('scanMessage','Member ID not found: '+id,false);else await registerMember(member);}
+      catch(e){setStatus('scanMessage','Scanner error: '+e.message,false);}
+      finally{setTimeout(function(){scanBusy=false;},2000);}
+    });
+    scannerRunning=true;setStatus('scanMessage','Camera started. Scan a member QR code.',true);
+  }catch(e){setStatus('scanMessage','Camera could not start. Allow camera permission.',false);}
+}
+async function stopScanner(){if(scanner&&scannerRunning){try{await scanner.stop();scannerRunning=false;setStatus('scanMessage','Scanner stopped.',true);}catch(e){setStatus('scanMessage','Scanner could not stop.',false);}}}
+
+// ============================================
+// OFFLINE-FIRST SYNCHRONIZATION
+// ============================================
+async function syncPending(){
+  if(!navigator.onLine||!currentSession)return;
+  var box=document.getElementById('syncStatus');var pending=records.filter(function(r){return r.status==='Pending'&&r.program;});
+  var oldPending=records.filter(function(r){return r.status==='Pending'&&!r.program;});
+  if(!pending.length){setStatus('syncStatus',oldPending.length?'Older pending record(s) without a program were not uploaded.':'All saved records are synchronized.',!oldPending.length);return;}
+  setStatus('syncStatus','Synchronizing '+pending.length+' record(s)...',null);
+  for(var i=0;i<pending.length;i++){
+    var r=pending[i];
+    try{
+      var result=await api('save',{id:r.id,name:r.name,date:r.date,time:r.time,ethDate:r.ethDate||'',ethTime:r.ethTime||r.time,program:r.program,eventId:r.eventId,deviceModel:r.deviceModel||getDeviceModel()});
+      if(result&&result.success){r.status='Synced';}
+      else{setStatus('syncStatus',(result&&result.message)||'Sync failed.',false);saveLocal();return;}
+      saveLocal();
+    }catch(error){setStatus('syncStatus','Sync paused. Pending records remain on this device. '+error.message.replace(/^AUTH:\s*/,''),false);saveLocal();return;}
+  }
+  setStatus('syncStatus',oldPending.length?'New records synchronized. Older records without a program remain pending.':'Synchronization finished.',!oldPending.length);saveLocal();
+}
+
+// ============================================
+// ETHIOPIAN CALENDAR
+// ============================================
+function findEthMonthStart(year,month){var start=Date.UTC(year+7,0,1,12,0,0);for(var i=0;i<400;i++){var date=new Date(start+i*86400000);var p=getEthParts(date);if(p.year===year&&p.month===month&&p.day===1)return date;}return null;}
+function selectedDateKey(){return ethKey(selectedYear,selectedMonth,selectedDay);}
+function displaySelectedDate(){document.getElementById('selectedDateLabel').textContent='Selected date: '+selectedDay+' '+MONTHS[selectedMonth-1]+' '+selectedYear+' ዓ.ም.';}
+function renderCalendar(){
+  var title=document.getElementById('calendarTitle');var grid=document.getElementById('calendarGrid');title.textContent=MONTHS[viewMonth-1]+' '+viewYear+' ዓ.ም.';grid.innerHTML='';
+  WEEKDAYS.forEach(function(day){var el=document.createElement('div');el.className='weekday';el.textContent=day;grid.appendChild(el);});
+  var first=findEthMonthStart(viewYear,viewMonth);if(!first){grid.textContent='Calendar could not load.';return;}
+  var offset=first.getUTCDay();var totalDays=viewMonth===13?5:30;if(viewMonth===13){var nextMonth=findEthMonthStart(viewYear+1,1);if(nextMonth)totalDays=Math.round((nextMonth.getTime()-first.getTime())/86400000);}
+  for(var i=0;i<offset;i++)grid.appendChild(document.createElement('div'));
+  var today=todayEth();
+  for(var d=1;d<=totalDays;d++){
+    var btn=document.createElement('button');btn.className='calendar-day';btn.textContent=d;
+    if(d===selectedDay&&viewYear===selectedYear&&viewMonth===selectedMonth)btn.classList.add('selected');
+    if(today.year===viewYear&&today.month===viewMonth&&today.day===d)btn.classList.add('today');
+    (function(day){btn.onclick=function(){selectedYear=viewYear;selectedMonth=viewMonth;selectedDay=day;displaySelectedDate();renderCalendar();loadSelectedRecords();};})(d);grid.appendChild(btn);
+  }
+}
+function changeMonth(direction){viewMonth+=direction;if(viewMonth>13){viewMonth=1;viewYear++;}if(viewMonth<1){viewMonth=13;viewYear--;}renderCalendar();}
+function selectToday(){var p=todayEth();viewYear=p.year;viewMonth=p.month;selectedYear=p.year;selectedMonth=p.month;selectedDay=p.day;displaySelectedDate();renderCalendar();loadSelectedRecords();}
+
+// ============================================
+// LOAD RECORDS FROM SERVER / LOCAL CACHE
+// ============================================
+async function loadSelectedRecords(){
+  if(!currentSession)return;
+  var box=document.getElementById('historyStatus');var key=selectedDateKey();displaySelectedDate();
+  if(!navigator.onLine){selectedRecords=records.filter(function(r){return r.ethDate===key;});setStatus('historyStatus','Offline: showing records saved on this phone only.',false);renderSelectedRecords();return;}
+  setStatus('historyStatus','Loading records from all phones...',null);
+  try{
+    var result=await api('records',{ethDate:key,program:'all'});selectedRecords=result.records||[];
+    records.forEach(function(r){if(r.ethDate===key&&r.status==='Pending'){var exists=selectedRecords.some(function(s){return normalizeId(s.id)===normalizeId(r.id)&&s.ethDate===r.ethDate&&s.program===r.program;});if(!exists)selectedRecords.push(r);}});
+    setStatus('historyStatus','Showing records from all connected phones.',true);renderSelectedRecords();
+  }catch(e){setStatus('historyStatus','Could not load server records: '+e.message.replace(/^AUTH:\s*/,''),false);selectedRecords=records.filter(function(r){return r.ethDate===key;});renderSelectedRecords();}
+}
+function renderSelectedRecords(){
+  var body=document.getElementById('recordList');body.innerHTML='';document.getElementById('todayCount').textContent=selectedRecords.length;
+  selectedRecords.forEach(function(r){var tr=document.createElement('tr');[r.id,r.name,r.ethDate||r.date,r.ethTime||r.time,r.program||'-',r.status||'Synced'].forEach(function(value){var td=document.createElement('td');td.textContent=value||'-';tr.appendChild(td);});body.appendChild(tr);});
+  if(!selectedRecords.length){var tr=document.createElement('tr');var td=document.createElement('td');td.colSpan=6;td.textContent='No attendance records for this date.';tr.appendChild(td);body.appendChild(tr);}
+}
+
+// ============================================
+// CSV EXPORT
+// ============================================
+function downloadCSV(){if(!selectedRecords.length){alert('No records available for this date.');return;}var rows=[['ID','Name','Ethiopian Date','Ethiopian Time','Program','Status']];selectedRecords.forEach(function(r){rows.push([r.id,r.name,r.ethDate||'',r.ethTime||r.time,r.program||'',r.status||'Synced']);});downloadRowsCSV(rows,'TSE_Attendance_'+selectedDateKey().replace(/\//g,'-')+'.csv');}
+function downloadRowsCSV(rows,filename){var csv=rows.map(function(row){return row.map(function(value){return '"'+String(value||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');var blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});var link=document.createElement('a');var url=URL.createObjectURL(blob);link.href=url;link.download=filename;link.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);}
+
+// ============================================
+// REPORTS
+// ============================================
+async function loadReport(){
+  var box=document.getElementById('reportStatus');var type=document.getElementById('reportType').value;var program=document.getElementById('reportProgram').value;var dateKey=selectedDateKey();reportRecords=[];document.getElementById('reportList').innerHTML='';
+  if(!navigator.onLine){reportRecords=records.filter(function(r){if(!r.ethDate)return false;var parts=r.ethDate.split('/');var y=Number(parts[0]),m=Number(parts[1]);var matches=type==='daily'?r.ethDate===dateKey:type==='monthly'?(y===selectedYear&&m===selectedMonth):isInThreeMonths(y,m,selectedYear,selectedMonth);return matches&&(program==='all'||r.program===program);});setStatus('reportStatus','Offline: this report includes only records saved on this phone.',false);renderReport();return;}
+  setStatus('reportStatus','Generating report...',null);
+  try{var result=await api('report',{reportType:type,ethDate:dateKey,program:program});reportRecords=result.records||[];setStatus('reportStatus','Report generated successfully.',true);renderReport();}
+  catch(e){setStatus('reportStatus','Could not generate report: '+e.message.replace(/^AUTH:\s*/,''),false);}
+}
+function isInThreeMonths(year,month,baseYear,baseMonth){var start=baseYear*13+(baseMonth-1);var current=year*13+(month-1);return current>=start&&current<start+3;}
+function renderReport(){var body=document.getElementById('reportList');body.innerHTML='';document.getElementById('reportCount').textContent=reportRecords.length;reportRecords.forEach(function(r){var tr=document.createElement('tr');[r.id,r.name,r.ethDate||r.date,r.ethTime||r.time,r.program||'-'].forEach(function(value){var td=document.createElement('td');td.textContent=value||'-';tr.appendChild(td);});body.appendChild(tr);});if(!reportRecords.length){var tr=document.createElement('tr');var td=document.createElement('td');td.colSpan=5;td.textContent='No records found for this report.';tr.appendChild(td);body.appendChild(tr);}}
+function downloadReportCSV(){if(!reportRecords.length){alert('Generate a report with records first.');return;}var rows=[['ID','Name','Ethiopian Date','Ethiopian Time','Program']];reportRecords.forEach(function(r){rows.push([r.id,r.name,r.ethDate||'',r.ethTime||r.time,r.program||'']);});downloadRowsCSV(rows,'TSE_'+document.getElementById('reportType').value+'_Report.csv');}
+
+// ============================================
+// SERVICE WORKER + STARTUP
+// ============================================
+function registerServiceWorker(){if('serviceWorker'in navigator){navigator.serviceWorker.register('./sw.js').then(function(){console.log('Service Worker registered.');}).catch(function(error){console.log('Service Worker error:',error);});}}
+var initialDate=todayEth();viewYear=initialDate.year;viewMonth=initialDate.month;selectedYear=initialDate.year;selectedMonth=initialDate.month;selectedDay=initialDate.day;
+updateClock();updateConnection();registerServiceWorker();restoreSession();
 </script>
 </body>
 </html>
-
