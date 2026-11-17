@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +6,51 @@
 <meta name="theme-color" content="#12345a">
 <title>TSE Smart Attendance</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f1f4f8;color:#172b45;font-family:Arial,sans-serif}header{background:#12345a;color:white;padding:22px 15px;text-align:center}header h1{margin:0;font-size:23px}header p{margin:8px 0 0;font-size:13px}#clock{margin-top:12px;font-size:14px;font-weight:bold}main{max-width:850px;margin:18px auto;padding:0 12px}.card{background:white;border-radius:13px;padding:17px;margin-bottom:14px;box-shadow:0 2px 9px #00000012}h2{font-size:17px;margin:0 0 13px}button,input,select{width:100%;padding:12px;border-radius:8px;font-size:14px}button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:8px;cursor:pointer}button.secondary{background:#e5edf6;color:#12345a}button.danger{background:#a52828}button:disabled{opacity:.4;cursor:not-allowed}input,select{border:1px solid #ccd5df;margin:5px 0;background:white}.status{padding:10px;border-radius:8px;background:#edf3fa;margin-top:10px;font-size:13px;overflow-wrap:anywhere}.good{color:#14733c}.bad{color:#b3261e}table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:9px 5px;border-bottom:1px solid #e5e9ef;text-align:left;white-space:nowrap}.small{font-size:12px;color:#68788b}.stat{font-size:25px;font-weight:bold;color:#12345a}footer{text-align:center;color:#718096;font-size:12px;padding:20px}.calendar-head{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:center}.calendar-head button{margin:0;padding:10px 5px}#calendarTitle{text-align:center;font-weight:bold;font-size:15px}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}.calendar-day{padding:10px 2px;margin:0;background:#edf3fa;color:#12345a;font-size:13px;min-height:40px}.calendar-day.selected{background:#12345a;color:white}.calendar-day.today{border:2px solid #25845a}.weekday{font-size:11px;text-align:center;color:#68788b;padding:7px 0;font-weight:bold}#selectedDateLabel{font-weight:bold;margin-top:12px}.table-wrap{overflow-x:auto}.report-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.hidden{display:none!important}.login-wrap{max-width:430px;margin:24px auto;padding:0 12px}.muted{color:#6b7785;font-size:12px;line-height:1.5}.admin-account{border-bottom:1px solid #e5e9ef;padding:10px 0;font-size:13px}.admin-account button{width:auto;padding:7px 12px;margin:5px 5px 0 0}.admin-subprogram{border-bottom:1px solid #e5e9ef;padding:9px 0;font-size:13px}.admin-subprogram button{width:auto;padding:7px 12px;margin:5px 5px 0 0}.topbar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}.topbar button{width:auto;margin:0;padding:9px 13px}@media(max-width:500px){.report-controls,.row2{grid-template-columns:1fr}}
+*{box-sizing:border-box}
+body{margin:0;background:#f1f4f8;color:#172b45;font-family:Arial,sans-serif}
+header{background:#12345a;color:white;padding:22px 15px;text-align:center}
+header h1{margin:0;font-size:23px}
+header p{margin:8px 0 0;font-size:13px}
+#clock{margin-top:12px;font-size:14px;font-weight:bold}
+main{max-width:850px;margin:18px auto;padding:0 12px}
+.card{background:white;border-radius:13px;padding:17px;margin-bottom:14px;box-shadow:0 2px 9px #00000012}
+h2{font-size:17px;margin:0 0 13px}
+button,input,select{width:100%;padding:12px;border-radius:8px;font-size:14px}
+button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:8px;cursor:pointer}
+button.secondary{background:#e5edf6;color:#12345a}
+button.danger{background:#a52828}
+button:disabled{opacity:.4;cursor:not-allowed}
+input,select{border:1px solid #ccd5df;margin:5px 0;background:white}
+.status{padding:10px;border-radius:8px;background:#edf3fa;margin-top:10px;font-size:13px;overflow-wrap:anywhere}
+.good{color:#14733c}
+.bad{color:#b3261e}
+table{width:100%;border-collapse:collapse;font-size:12px}
+td,th{padding:9px 5px;border-bottom:1px solid #e5e9ef;text-align:left;white-space:nowrap}
+.small{font-size:12px;color:#68788b}
+.stat{font-size:25px;font-weight:bold;color:#12345a}
+footer{text-align:center;color:#718096;font-size:12px;padding:20px}
+.calendar-head{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:center}
+.calendar-head button{margin:0;padding:10px 5px}
+#calendarTitle{text-align:center;font-weight:bold;font-size:15px}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
+.calendar-day{padding:10px 2px;margin:0;background:#edf3fa;color:#12345a;font-size:13px;min-height:40px}
+.calendar-day.selected{background:#12345a;color:white}
+.calendar-day.today{border:2px solid #25845a}
+.weekday{font-size:11px;text-align:center;color:#68788b;padding:7px 0;font-weight:bold}
+#selectedDateLabel{font-weight:bold;margin-top:12px}
+.table-wrap{overflow-x:auto}
+.report-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hidden{display:none!important}
+.login-wrap{max-width:430px;margin:24px auto;padding:0 12px}
+.muted{color:#6b7785;font-size:12px;line-height:1.5}
+.admin-account{border-bottom:1px solid #e5e9ef;padding:10px 0;font-size:13px}
+.admin-account button{width:auto;padding:7px 12px;margin:5px 5px 0 0}
+.admin-subprogram{border-bottom:1px solid #e5e9ef;padding:9px 0;font-size:13px}
+.admin-subprogram button{width:auto;padding:7px 12px;margin:5px 5px 0 0}
+.topbar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.topbar button{width:auto;margin:0;padding:9px 13px}
+@media(max-width:500px){.report-controls,.row2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -32,7 +75,10 @@
 
 <main id="appMain" class="hidden">
   <div class="card">
-    <div class="topbar"><div><strong id="signedInLabel">Signed in</strong><div class="small" id="roleLabel"></div></div><button class="danger" onclick="logout()">Log Out</button></div>
+    <div class="topbar">
+      <div><strong id="signedInLabel">Signed in</strong><div class="small" id="roleLabel"></div></div>
+      <button class="danger" onclick="logout()">Log Out</button>
+    </div>
     <div id="connection" class="status">Checking connection...</div>
     <div id="memberStatus" class="status">Loading members...</div>
     <div id="syncStatus" class="status">Checking records...</div>
@@ -71,7 +117,7 @@
 
   <div class="card">
     <h2>Attendance Program</h2>
-    <p class="small">Select the program before starting the scanner or registering attendance.</p>
+    <p class="small">Select the program and its subprogram before starting the scanner or registering attendance.</p>
     <select id="programSelect" onchange="updateProgramStatus()">
       <option value="">-- Select Program --</option>
       <option value="መዝሙር ጥናት">መዝሙር ጥናት</option>
@@ -80,7 +126,7 @@
       <option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option>
     </select>
     <div id="subprogramWrap" class="hidden">
-      <label class="small" for="subprogramSelect">Subprogram</label>
+      <label class="small" for="subprogramSelect">Subprogram (Required when applicable)</label>
       <select id="subprogramSelect" onchange="updateProgramStatus()">
         <option value="">-- Select Subprogram --</option>
       </select>
@@ -106,7 +152,11 @@
   <div class="card">
     <h2>Ethiopian Calendar</h2>
     <p class="small">Select an Ethiopian date to view attendance from all phones.</p>
-    <div class="calendar-head"><button class="secondary" onclick="changeMonth(-1)">❮ Previous</button><div id="calendarTitle">Calendar</div><button class="secondary" onclick="changeMonth(1)">Next ❯</button></div>
+    <div class="calendar-head">
+      <button class="secondary" onclick="changeMonth(-1)">❮ Previous</button>
+      <div id="calendarTitle">Calendar</div>
+      <button class="secondary" onclick="changeMonth(1)">Next ❯</button>
+    </div>
     <div class="calendar-grid" id="calendarGrid"></div>
     <button class="secondary" onclick="selectToday()">Go to Today</button>
     <div id="selectedDateLabel">Selected date:</div>
@@ -123,21 +173,52 @@
   <div class="card">
     <h2>Attendance Records</h2>
     <p class="small">Records from all connected phones for the selected date.</p>
-    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Date</th><th>Time</th><th>Program</th><th>Subprogram</th><th>Status</th></tr></thead><tbody id="recordList"></tbody></table></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Date</th><th>Time</th><th>Program</th><th>Subprogram</th><th>Status</th></tr></thead>
+        <tbody id="recordList"></tbody>
+      </table>
+    </div>
   </div>
 
   <div class="card">
     <h2>Daily, Monthly & 3 Months Reports</h2>
     <p class="small">Reports are generated using the Ethiopian calendar.</p>
     <div class="report-controls">
-      <div><label class="small">Report Type</label><select id="reportType"><option value="daily">Daily Report</option><option value="monthly">Monthly Report</option><option value="threeMonths">3 Months Report</option></select></div>
-      <div><label class="small">Program</label><select id="reportProgram" onchange="updateReportSubprogramOptions()"><option value="all">All Programs</option><option value="መዝሙር ጥናት">መዝሙር ጥናት</option><option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option><option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option><option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option></select></div>
-      <div><label class="small">Subprogram</label><select id="reportSubprogram"><option value="all">All Subprograms</option></select></div>
+      <div>
+        <label class="small">Report Type</label>
+        <select id="reportType">
+          <option value="daily">Daily Report</option>
+          <option value="monthly">Monthly Report</option>
+          <option value="threeMonths">3 Months Report</option>
+        </select>
+      </div>
+      <div>
+        <label class="small">Program</label>
+        <select id="reportProgram" onchange="updateReportSubprogramOptions()">
+          <option value="all">All Programs</option>
+          <option value="መዝሙር ጥናት">መዝሙር ጥናት</option>
+          <option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option>
+          <option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option>
+          <option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option>
+        </select>
+      </div>
+      <div>
+        <label class="small">Subprogram</label>
+        <select id="reportSubprogram">
+          <option value="all">All Subprograms</option>
+        </select>
+      </div>
     </div>
     <button onclick="loadReport()">Generate Report</button>
     <div id="reportStatus" class="status">Choose a report type and generate.</div>
     <div class="stat" id="reportCount">0</div>
-    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Ethiopian Date</th><th>Time</th><th>Program</th><th>Subprogram</th></tr></thead><tbody id="reportList"></tbody></table></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Ethiopian Date</th><th>Time</th><th>Program</th><th>Subprogram</th></tr></thead>
+        <tbody id="reportList"></tbody>
+      </table>
+    </div>
     <button class="secondary" onclick="downloadReportCSV()">Download Report CSV</button>
   </div>
 </main>
@@ -145,6 +226,7 @@
 <footer>TSE Smart Attendance System<br>Information and Internal Communication Department</footer>
 <iframe name="tseBridgeFrame" id="tseBridgeFrame" class="hidden" title="Secure server connection"></iframe>
 <script src="./html5-qrcode.min.js"></script>
+
 <script>
 'use strict';
 
@@ -155,50 +237,138 @@ var API_URL = 'https://script.google.com/macros/s/AKfycby2FG7enFwWUUlsvzAOfGE_G8
 var FIREBASE_API_KEY = 'AIzaSyCsuzgQOhbj8GX97dkBQMOSSouCSyq-1Ds';
 var FIREBASE_PROJECT_ID = 'tse-smart-attendance';
 var SESSION_KEY = 'tse_secure_session';
+
 var MONTHS = ['መስከረም','ጥቅምት','ኅዳር','ታኅሣሥ','ጥር','የካቲት','መጋቢት','ሚያዝያ','ግንቦት','ሰኔ','ሐምሌ','ነሐሴ','ጳጉሜን'];
 var WEEKDAYS = ['እሑድ','ሰኞ','ማክሰኞ','ረቡዕ','ሐሙስ','ዓርብ','ቅዳሜ'];
-var members = [], records = [], selectedRecords = [], reportRecords = [];
-var scanner = null, scannerRunning = false, scanBusy = false;
+
+// Fixed subprogram choices
+var FIXED_SUBPROGRAMS = {
+  'መዝሙር ጥናት': ['ወረብ','ዝማሬ'],
+  'የትምህርት መርሐ ግብር': [
+    '1ኛ ክፍል','2ኛ ክፍል','3ኛ ክፍል','4ኛ ክፍል',
+    '5ኛ ክፍል','6ኛ ክፍል','7ኛ ክፍል','8ኛ ክፍል',
+    '9ኛ ክፍል','10ኛ ክፍል','11ኛ ክፍል','12ኛ ክፍል'
+  ]
+};
+
+var members = [];
+var records = [];
+var selectedRecords = [];
+var reportRecords = [];
+
+var scanner = null;
+var scannerRunning = false;
+var scanBusy = false;
+
 var viewYear, viewMonth, selectedYear, selectedMonth, selectedDay;
 var currentSession = null;
 var bridgeCounter = 0;
+
 var programConfig = {programs:[],subprograms:{},allSubprograms:[]};
-try { programConfig = JSON.parse(localStorage.getItem('tse_program_config') || 'null') || programConfig; } catch(e) {}
+
+try {
+  programConfig = JSON.parse(localStorage.getItem('tse_program_config') || 'null') || programConfig;
+} catch(e) {}
 
 try { members = JSON.parse(localStorage.getItem('tse_members') || '[]'); } catch(e) { members = []; }
 try { records = JSON.parse(localStorage.getItem('tse_records') || '[]'); } catch(e) { records = []; }
 try { currentSession = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e) { currentSession = null; }
 
-function saveLocal(){ localStorage.setItem('tse_records', JSON.stringify(records)); }
-function saveMembersLocal(){ localStorage.setItem('tse_members', JSON.stringify(members)); }
-function saveSession(){ localStorage.setItem(SESSION_KEY, JSON.stringify(currentSession)); }
-function clearSession(){ currentSession = null; localStorage.removeItem(SESSION_KEY); }
-function setStatus(id, message, good){ var el=document.getElementById(id); if(!el)return; el.textContent=message; el.className='status '+(good===true?'good':good===false?'bad':''); }
+function saveLocal(){localStorage.setItem('tse_records',JSON.stringify(records));}
+function saveMembersLocal(){localStorage.setItem('tse_members',JSON.stringify(members));}
+function saveSession(){localStorage.setItem(SESSION_KEY,JSON.stringify(currentSession));}
+function clearSession(){currentSession=null;localStorage.removeItem(SESSION_KEY);}
+
+function setStatus(id,message,good){
+  var el=document.getElementById(id);
+  if(!el)return;
+  el.textContent=message;
+  el.className='status '+(good===true?'good':good===false?'bad':'');
+}
+
+// ============================================
+// SUBPROGRAM RULES
+// ============================================
+function getSubprogramOptions(program){
+  if(FIXED_SUBPROGRAMS[program]){
+    return FIXED_SUBPROGRAMS[program].slice();
+  }
+
+  var list=(programConfig.subprograms&&programConfig.subprograms[program])||[];
+  return list.slice();
+}
+
+function requiresSubprogram(program){
+  return !!FIXED_SUBPROGRAMS[program] ||
+    getSubprogramOptions(program).length>0;
+}
+
+function validateProgramSelection(){
+  var program=selectedProgram();
+  var subprogram=selectedSubprogram();
+
+  if(!program){
+    setStatus('programStatus','Please select a program before attendance.',false);
+    return false;
+  }
+
+  if(requiresSubprogram(program)&&!subprogram){
+    setStatus('programStatus','Select a subprogram for '+program+'.',false);
+    return false;
+  }
+
+  setStatus('programStatus','Selected: '+program+(subprogram?' — '+subprogram:''),true);
+  return true;
+}
 
 // ============================================
 // FIREBASE REST LOGIN + TOKEN REFRESH
 // ============================================
 function firebaseEmail(value){
   var v=String(value||'').trim().toLowerCase();
-  return v.indexOf('@')>=0 ? v : v+'@tseattendance.invalid';
+  return v.indexOf('@')>=0?v:v+'@tseattendance.invalid';
 }
+
 async function firebaseLogin(username,password){
   var url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+encodeURIComponent(FIREBASE_API_KEY);
-  var response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:firebaseEmail(username),password:password,returnSecureToken:true})});
+  var response=await fetch(url,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:firebaseEmail(username),password:password,returnSecureToken:true})
+  });
   var data=await response.json();
-  if(!response.ok) throw new Error((data.error&&data.error.message)||'Login failed.');
-  currentSession={uid:data.localId,email:data.email||'',idToken:data.idToken,refreshToken:data.refreshToken,expiresAt:Date.now()+(Number(data.expiresIn||3600)*1000),role:'',username:'',displayName:''};
+  if(!response.ok)throw new Error((data.error&&data.error.message)||'Login failed.');
+
+  currentSession={
+    uid:data.localId,
+    email:data.email||'',
+    idToken:data.idToken,
+    refreshToken:data.refreshToken,
+    expiresAt:Date.now()+(Number(data.expiresIn||3600)*1000),
+    role:'',
+    username:'',
+    displayName:''
+  };
   saveSession();
 }
+
 async function refreshSessionToken(){
-  if(!currentSession||!currentSession.refreshToken) return false;
-  if(!navigator.onLine) return false;
-  if(currentSession.expiresAt>Date.now()+180000) return true;
+  if(!currentSession||!currentSession.refreshToken)return false;
+  if(!navigator.onLine)return false;
+  if(currentSession.expiresAt>Date.now()+180000)return true;
+
   var url='https://securetoken.googleapis.com/v1/token?key='+encodeURIComponent(FIREBASE_API_KEY);
   var body=new URLSearchParams({grant_type:'refresh_token',refresh_token:currentSession.refreshToken});
-  var response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()});
+
+  var response=await fetch(url,{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:body.toString()
+  });
+
   var data=await response.json();
-  if(!response.ok) throw new Error((data.error&&data.error.message)||'Session refresh failed.');
+  if(!response.ok)throw new Error((data.error&&data.error.message)||'Session refresh failed.');
+
   currentSession.idToken=data.id_token;
   currentSession.refreshToken=data.refresh_token||currentSession.refreshToken;
   currentSession.expiresAt=Date.now()+(Number(data.expires_in||3600)*1000);
@@ -206,37 +376,75 @@ async function refreshSessionToken(){
   saveSession();
   return true;
 }
+
 // ============================================
 // SECURE POST BRIDGE TO APPS SCRIPT
-// Token and payload are sent in POST body, not URL.
 // ============================================
 function securePost(action,params){
   return new Promise(function(resolve,reject){
-    if(!currentSession||!currentSession.idToken){reject(new Error('Please sign in.'));return;}
-    var iframe=document.getElementById('tseBridgeFrame');
+    if(!currentSession||!currentSession.idToken){
+      reject(new Error('Please sign in.'));
+      return;
+    }
+
     var nonce='tse_'+Date.now()+'_'+(++bridgeCounter)+'_'+Math.random().toString(36).slice(2);
     var done=false;
     var form=null;
-    var timer=setTimeout(function(){finish(new Error('Server response timed out.'));},30000);
-    function cleanup(){window.removeEventListener('message',onMessage);clearTimeout(timer);if(form&&form.parentNode)form.remove();}
-    function finish(error,value){if(done)return;done=true;cleanup();if(error)reject(error);else resolve(value);}
+
+    var timer=setTimeout(function(){
+      finish(new Error('Server response timed out.'));
+    },30000);
+
+    function cleanup(){
+      window.removeEventListener('message',onMessage);
+      clearTimeout(timer);
+      if(form&&form.parentNode)form.remove();
+    }
+
+    function finish(error,value){
+      if(done)return;
+      done=true;
+      cleanup();
+      if(error)reject(error);
+      else resolve(value);
+    }
+
     function onMessage(event){
       var data=event.data;
       if(!data||data.type!=='TSE_ATTENDANCE_RESPONSE'||data.nonce!==nonce)return;
       finish(null,data.result);
     }
+
     window.addEventListener('message',onMessage);
+
     form=document.createElement('form');
-    form.method='POST';form.action=API_URL;form.target='tseBridgeFrame';form.style.display='none';
-    var field=document.createElement('input');field.type='hidden';field.name='payload';
-    field.value=JSON.stringify({action:action,params:params||{},idToken:currentSession.idToken,nonce:nonce});
-    form.appendChild(field);document.body.appendChild(form);form.submit();
+    form.method='POST';
+    form.action=API_URL;
+    form.target='tseBridgeFrame';
+    form.style.display='none';
+
+    var field=document.createElement('input');
+    field.type='hidden';
+    field.name='payload';
+    field.value=JSON.stringify({
+      action:action,
+      params:params||{},
+      idToken:currentSession.idToken,
+      nonce:nonce
+    });
+
+    form.appendChild(field);
+    document.body.appendChild(form);
+    form.submit();
   });
 }
+
 async function api(action,params){
-  if(!navigator.onLine) throw new Error('You are offline.');
+  if(!navigator.onLine)throw new Error('You are offline.');
   await refreshSessionToken();
+
   var result=await securePost(action,params||{});
+
   if(!result||result.success!==true){
     var message=(result&&result.message)||'Server request failed.';
     if(/authentication|token|authorized|disabled|session expired/i.test(message)){
@@ -252,54 +460,108 @@ async function api(action,params){
 // ============================================
 document.getElementById('loginForm').addEventListener('submit',async function(event){
   event.preventDefault();
-  var button=document.getElementById('loginButton');button.disabled=true;
+
+  var button=document.getElementById('loginButton');
+  button.disabled=true;
   setStatus('loginStatus','Signing in...',null);
+
   try{
-    if(!navigator.onLine) throw new Error('First login on this device requires internet.');
-    await firebaseLogin(document.getElementById('loginUsername').value,document.getElementById('loginPassword').value);
+    if(!navigator.onLine)throw new Error('First login on this device requires internet.');
+
+    await firebaseLogin(
+      document.getElementById('loginUsername').value,
+      document.getElementById('loginPassword').value
+    );
+
     var session=await api('session',{});
-    currentSession.role=session.role;currentSession.username=session.username||'';currentSession.displayName=session.displayName||'';saveSession();
+    currentSession.role=session.role;
+    currentSession.username=session.username||'';
+    currentSession.displayName=session.displayName||'';
+    saveSession();
+
     document.getElementById('loginPassword').value='';
     enterApp();
-  }catch(error){clearSession();setStatus('loginStatus',error.message.replace(/^AUTH:\s*/,''),false);}
-  finally{button.disabled=false;}
+  }catch(error){
+    clearSession();
+    setStatus('loginStatus',error.message.replace(/^AUTH:\s*/,''),false);
+  }finally{
+    button.disabled=false;
+  }
 });
 
 function enterApp(){
   if(!currentSession)return;
+
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('appMain').classList.remove('hidden');
+
   var label=currentSession.displayName||currentSession.username||currentSession.email||'User';
   document.getElementById('signedInLabel').textContent='Signed in: '+label;
-  document.getElementById('roleLabel').textContent=currentSession.role==='admin'?'Administrator': 'Scanner account';
+  document.getElementById('roleLabel').textContent=currentSession.role==='admin'?'Administrator':'Scanner account';
+
   document.getElementById('adminPanel').classList.toggle('hidden',currentSession.role!=='admin');
-  showMemberStatus();updateConnection();populateSubprogramOptions();updateProgramStatus();renderCalendar();displaySelectedDate();renderSelectedRecords();
+
+  showMemberStatus();
+  updateConnection();
+  populateSubprogramOptions();
+  updateProgramStatus();
+  updateReportSubprogramOptions();
+  renderCalendar();
+  displaySelectedDate();
+  renderSelectedRecords();
+
   loadMembers().then(function(){syncPending();});
   loadProgramConfig();
   loadSelectedRecords();
-  if(currentSession.role==='admin'){loadScannerAccounts();}
+
+  if(currentSession.role==='admin')loadScannerAccounts();
 }
+
 async function restoreSession(){
-  if(!currentSession||!currentSession.refreshToken){clearSession();return;}
-  if(!navigator.onLine){
-    if(currentSession.role){enterApp();setStatus('connection','Offline mode: cached login. New records will sync when internet returns.',false);}
-    else setStatus('loginStatus','Connect to the internet and sign in once on this device.',false);
+  if(!currentSession||!currentSession.refreshToken){
+    clearSession();
     return;
   }
+
+  if(!navigator.onLine){
+    if(currentSession.role){
+      enterApp();
+      setStatus('connection','Offline mode: cached login. New records will sync when internet returns.',false);
+    }else{
+      setStatus('loginStatus','Connect to the internet and sign in once on this device.',false);
+    }
+    return;
+  }
+
   try{
     await refreshSessionToken();
     var result=await securePost('session',{});
-    if(!result||!result.success)throw new Error((result&&result.message)||'Session not authorized.');
-    currentSession.role=result.role;currentSession.username=result.username||'';currentSession.displayName=result.displayName||'';saveSession();enterApp();
+
+    if(!result||!result.success){
+      throw new Error((result&&result.message)||'Session not authorized.');
+    }
+
+    currentSession.role=result.role;
+    currentSession.username=result.username||'';
+    currentSession.displayName=result.displayName||'';
+    saveSession();
+    enterApp();
   }catch(error){
     if(/AUTH:|not authorized|disabled|expired|invalid|USER_DISABLED|TOKEN_EXPIRED/i.test(error.message)){
-      clearSession();setStatus('loginStatus','Your session is no longer valid. Please sign in again.',false);
-    }else if(currentSession.role){enterApp();setStatus('connection','Could not contact server. Cached offline access is available.',false);}
-    else setStatus('loginStatus','Could not verify your login. Please sign in again.',false);
+      clearSession();
+      setStatus('loginStatus','Your session is no longer valid. Please sign in again.',false);
+    }else if(currentSession.role){
+      enterApp();
+      setStatus('connection','Could not contact server. Cached offline access is available.',false);
+    }else{
+      setStatus('loginStatus','Could not verify your login. Please sign in again.',false);
+    }
   }
 }
+
 async function logout(){
-  await stopScanner();clearSession();
+  await stopScanner();
+  clearSession();
   document.getElementById('appMain').classList.add('hidden');
   document.getElementById('loginScreen').classList.remove('hidden');
   setStatus('loginStatus','You have signed out.',true);
@@ -310,286 +572,760 @@ async function logout(){
 // ============================================
 document.getElementById('createScannerForm').addEventListener('submit',async function(event){
   event.preventDefault();
-  var button=document.getElementById('createScannerButton');button.disabled=true;
+
+  var button=document.getElementById('createScannerButton');
+  button.disabled=true;
   setStatus('adminStatus','Creating scanner account...',null);
+
   try{
     var result=await api('createScanner',{
       username:document.getElementById('newScannerUsername').value,
       displayName:document.getElementById('newScannerName').value,
       password:document.getElementById('newScannerPassword').value
     });
+
     setStatus('adminStatus',result.message||'Scanner account created.',true);
     document.getElementById('createScannerForm').reset();
     await loadScannerAccounts();
-  }catch(error){setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);}
-  finally{button.disabled=false;}
+  }catch(error){
+    setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);
+  }finally{
+    button.disabled=false;
+  }
 });
+
 async function loadScannerAccounts(){
   if(!currentSession||currentSession.role!=='admin')return;
+
   try{
     var result=await api('scannerList',{});
-    var box=document.getElementById('scannerAccounts');box.innerHTML='';
+    var box=document.getElementById('scannerAccounts');
+    box.innerHTML='';
+
     (result.accounts||[]).forEach(function(account){
-      var div=document.createElement('div');div.className='admin-account';
-      var title=document.createElement('strong');title.textContent=account.displayName+' ('+account.username+')';div.appendChild(title);
-      var status=document.createElement('div');status.className='small';status.textContent='Status: '+account.status;div.appendChild(status);
-      var button=document.createElement('button');button.textContent=account.status==='ACTIVE'?'Disable':'Activate';button.className=account.status==='ACTIVE'?'danger':'secondary';
-      button.onclick=function(){changeScannerStatus(account.uid,account.status==='ACTIVE'?'DISABLED':'ACTIVE');};div.appendChild(button);box.appendChild(div);
+      var div=document.createElement('div');
+      div.className='admin-account';
+
+      var title=document.createElement('strong');
+      title.textContent=account.displayName+' ('+account.username+')';
+      div.appendChild(title);
+
+      var status=document.createElement('div');
+      status.className='small';
+      status.textContent='Status: '+account.status;
+      div.appendChild(status);
+
+      var button=document.createElement('button');
+      button.textContent=account.status==='ACTIVE'?'Disable':'Activate';
+      button.className=account.status==='ACTIVE'?'danger':'secondary';
+      button.onclick=function(){
+        changeScannerStatus(account.uid,account.status==='ACTIVE'?'DISABLED':'ACTIVE');
+      };
+
+      div.appendChild(button);
+      box.appendChild(div);
     });
+
     if(!(result.accounts||[]).length)box.textContent='No scanner accounts created yet.';
-  }catch(error){setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);}
-}
-async function changeScannerStatus(uid,status){
-  if(!confirm(status==='DISABLED'?'Disable this scanner account?':'Activate this scanner account?'))return;
-  try{var result=await api('setScannerStatus',{uid:uid,status:status});setStatus('adminStatus',result.message,true);await loadScannerAccounts();}
-  catch(error){setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);}
+  }catch(error){
+    setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);
+  }
 }
 
+async function changeScannerStatus(uid,status){
+  if(!confirm(status==='DISABLED'?'Disable this scanner account?':'Activate this scanner account?'))return;
+
+  try{
+    var result=await api('setScannerStatus',{uid:uid,status:status});
+    setStatus('adminStatus',result.message,true);
+    await loadScannerAccounts();
+  }catch(error){
+    setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);
+  }
+}
+
+// ============================================
+// ADMIN SUBPROGRAM MANAGEMENT
+// ============================================
 document.getElementById('subprogramForm').addEventListener('submit',async function(event){
   event.preventDefault();
   if(!currentSession||currentSession.role!=='admin')return;
-  var button=document.getElementById('saveSubprogramButton');button.disabled=true;
+
+  var button=document.getElementById('saveSubprogramButton');
+  button.disabled=true;
   setStatus('programAdminStatus','Saving subprogram...',null);
+
   try{
-    var result=await api('saveSubprogram',{program:document.getElementById('manageSubprogramProgram').value,subprogram:document.getElementById('newSubprogramName').value});
+    var result=await api('saveSubprogram',{
+      program:document.getElementById('manageSubprogramProgram').value,
+      subprogram:document.getElementById('newSubprogramName').value
+    });
+
     setStatus('programAdminStatus',result.message||'Subprogram saved.',true);
     document.getElementById('newSubprogramName').value='';
     await loadProgramConfig();
-  }catch(error){setStatus('programAdminStatus',error.message.replace(/^AUTH:\s*/,''),false);}
-  finally{button.disabled=false;}
+  }catch(error){
+    setStatus('programAdminStatus',error.message.replace(/^AUTH:\s*/,''),false);
+  }finally{
+    button.disabled=false;
+  }
 });
+
 async function editSubprogram(program,oldName){
   var newName=prompt('Enter the new subprogram name:',oldName);
-  if(newName===null)return;newName=newName.trim();if(!newName)return;
-  try{var result=await api('saveSubprogram',{program:program,subprogram:newName,originalSubprogram:oldName});setStatus('programAdminStatus',result.message||'Subprogram updated.',true);await loadProgramConfig();}
-  catch(error){setStatus('programAdminStatus',error.message.replace(/^AUTH:\s*/,''),false);}
+  if(newName===null)return;
+
+  newName=newName.trim();
+  if(!newName)return;
+
+  try{
+    var result=await api('saveSubprogram',{
+      program:program,
+      subprogram:newName,
+      originalSubprogram:oldName
+    });
+
+    setStatus('programAdminStatus',result.message||'Subprogram updated.',true);
+    await loadProgramConfig();
+  }catch(error){
+    setStatus('programAdminStatus',error.message.replace(/^AUTH:\s*/,''),false);
+  }
 }
+
 async function changeSubprogramStatus(program,name,status){
-  var promptText=status==='DISABLED'?'Disable this subprogram?':'Activate this subprogram?';if(!confirm(promptText))return;
-  try{var result=await api('setSubprogramStatus',{program:program,subprogram:name,status:status});setStatus('programAdminStatus',result.message||'Subprogram status updated.',true);await loadProgramConfig();}
-  catch(error){setStatus('programAdminStatus',error.message.replace(/^AUTH:\s*/,''),false);}
+  var promptText=status==='DISABLED'?'Disable this subprogram?':'Activate this subprogram?';
+  if(!confirm(promptText))return;
+
+  try{
+    var result=await api('setSubprogramStatus',{
+      program:program,
+      subprogram:name,
+      status:status
+    });
+
+    setStatus('programAdminStatus',result.message||'Subprogram status updated.',true);
+    await loadProgramConfig();
+  }catch(error){
+    setStatus('programAdminStatus',error.message.replace(/^AUTH:\s*/,''),false);
+  }
 }
 
 // ============================================
 // ETHIOPIAN DATE AND TIME
 // ============================================
 function getEthParts(date){
-  var parts=new Intl.DateTimeFormat('en-US-u-ca-ethiopic',{timeZone:'Africa/Addis_Ababa',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(date);var result={};
-  parts.forEach(function(p){if(p.type==='year')result.year=Number(p.value);if(p.type==='month')result.month=Number(p.value);if(p.type==='day')result.day=Number(p.value);});return result;
+  var parts=new Intl.DateTimeFormat('en-US-u-ca-ethiopic',{
+    timeZone:'Africa/Addis_Ababa',
+    year:'numeric',
+    month:'numeric',
+    day:'numeric'
+  }).formatToParts(date);
+
+  var result={};
+  parts.forEach(function(p){
+    if(p.type==='year')result.year=Number(p.value);
+    if(p.type==='month')result.month=Number(p.value);
+    if(p.type==='day')result.day=Number(p.value);
+  });
+  return result;
 }
+
 function todayEth(){return getEthParts(new Date());}
 function ethKey(y,m,d){return y+'/'+m+'/'+d;}
-function getDate(){var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Addis_Ababa',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());var v={};p.forEach(function(x){v[x.type]=x.value;});return v.year+'-'+v.month+'-'+v.day;}
-function getTime(){var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Addis_Ababa',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date());var v={};p.forEach(function(x){v[x.type]=x.value;});var hour=Number(v.hour);var ethHour=((hour+5)%12)+1;var period=(hour>=6&&hour<12)?'ጠዋት':(hour>=12&&hour<18)?'ቀን':'ማታ';return ethHour+':'+v.minute+':'+v.second+' '+period;}
-function updateClock(){var p=todayEth();document.getElementById('clock').textContent=MONTHS[p.month-1]+' '+p.day+' '+p.year+' ዓ.ም. | '+getTime();}
-setInterval(updateClock,1000);updateClock();
+
+function getDate(){
+  var p=new Intl.DateTimeFormat('en-GB',{
+    timeZone:'Africa/Addis_Ababa',
+    year:'numeric',
+    month:'2-digit',
+    day:'2-digit'
+  }).formatToParts(new Date());
+
+  var v={};
+  p.forEach(function(x){v[x.type]=x.value;});
+  return v.year+'-'+v.month+'-'+v.day;
+}
+
+function getTime(){
+  var p=new Intl.DateTimeFormat('en-GB',{
+    timeZone:'Africa/Addis_Ababa',
+    hour:'2-digit',
+    minute:'2-digit',
+    second:'2-digit',
+    hourCycle:'h23'
+  }).formatToParts(new Date());
+
+  var v={};
+  p.forEach(function(x){v[x.type]=x.value;});
+
+  var hour=Number(v.hour);
+  var ethHour=((hour+5)%12)+1;
+  var period=(hour>=6&&hour<12)?'ጠዋት':(hour>=12&&hour<18)?'ቀን':'ማታ';
+
+  return ethHour+':'+v.minute+':'+v.second+' '+period;
+}
+
+function updateClock(){
+  var p=todayEth();
+  document.getElementById('clock').textContent=
+    MONTHS[p.month-1]+' '+p.day+' '+p.year+' ዓ.ም. | '+getTime();
+}
+
+setInterval(updateClock,1000);
+updateClock();
 
 // ============================================
 // PROGRAM / MEMBER CACHE / CONNECTION
 // ============================================
-function selectedProgram(){return document.getElementById('programSelect').value;}
-function selectedSubprogram(){return document.getElementById('subprogramSelect').value;}
+function selectedProgram(){
+  return document.getElementById('programSelect').value;
+}
+
+function selectedSubprogram(){
+  return document.getElementById('subprogramSelect').value;
+}
+
 function populateSubprogramOptions(){
-  var program=selectedProgram();var list=(programConfig.subprograms&&programConfig.subprograms[program])||[];
-  var wrap=document.getElementById('subprogramWrap');var select=document.getElementById('subprogramSelect');var old=select.value;
+  var program=selectedProgram();
+  var list=getSubprogramOptions(program);
+
+  var wrap=document.getElementById('subprogramWrap');
+  var select=document.getElementById('subprogramSelect');
+  var old=select.value;
+
   select.innerHTML='<option value="">-- Select Subprogram --</option>';
-  list.forEach(function(name){var option=document.createElement('option');option.value=name;option.textContent=name;select.appendChild(option);});
-  wrap.classList.toggle('hidden',list.length===0);
-  if(list.indexOf(old)>=0)select.value=old;else select.value='';
+
+  list.forEach(function(name){
+    var option=document.createElement('option');
+    option.value=name;
+    option.textContent=name;
+    select.appendChild(option);
+  });
+
+  wrap.classList.toggle('hidden',!requiresSubprogram(program));
+
+  if(list.indexOf(old)>=0){
+    select.value=old;
+  }else{
+    select.value='';
+  }
 }
+
 function updateProgramStatus(){
-  populateSubprogramOptions();var program=selectedProgram();var subprogram=selectedSubprogram();
-  if(!program){setStatus('programStatus','Please select a program before attendance.',false);return;}
-  var list=(programConfig.subprograms&&programConfig.subprograms[program])||[];
-  if(list.length&&!subprogram){setStatus('programStatus','Select a subprogram for '+program+'.',false);return;}
-  setStatus('programStatus','Selected: '+program+(subprogram?' — '+subprogram:''),true);
+  populateSubprogramOptions();
+  validateProgramSelection();
 }
+
 async function loadProgramConfig(){
   if(navigator.onLine&&currentSession){
-    try{var result=await api('programConfig',{});programConfig={programs:result.programs||[],subprograms:result.subprograms||{},allSubprograms:result.allSubprograms||[]};localStorage.setItem('tse_program_config',JSON.stringify(programConfig));}
-    catch(error){if(!programConfig.subprograms)setStatus('programAdminStatus','Could not load subprograms: '+error.message.replace(/^AUTH:\s*/,''),false);}
+    try{
+      var result=await api('programConfig',{});
+
+      programConfig={
+        programs:result.programs||[],
+        subprograms:result.subprograms||{},
+        allSubprograms:result.allSubprograms||[]
+      };
+
+      localStorage.setItem('tse_program_config',JSON.stringify(programConfig));
+    }catch(error){
+      if(!programConfig.subprograms){
+        setStatus('programAdminStatus','Could not load subprograms: '+error.message.replace(/^AUTH:\s*/,''),false);
+      }
+    }
   }
-  populateSubprogramOptions();updateProgramStatus();updateReportSubprogramOptions();
-  if(currentSession&&currentSession.role==='admin')renderProgramSubprogramAdmin();
+
+  populateSubprogramOptions();
+  validateProgramSelection();
+  updateReportSubprogramOptions();
+
+  if(currentSession&&currentSession.role==='admin'){
+    renderProgramSubprogramAdmin();
+  }
 }
+
 function renderProgramSubprogramAdmin(){
-  var box=document.getElementById('programSubprogramList');if(!box)return;box.innerHTML='';
+  var box=document.getElementById('programSubprogramList');
+  if(!box)return;
+
+  box.innerHTML='';
+
   var items=programConfig.allSubprograms||[];
+
   items.forEach(function(item){
-    var div=document.createElement('div');div.className='admin-subprogram';
-    var title=document.createElement('strong');title.textContent=item.program+' → '+item.subprogram;div.appendChild(title);
-    var status=document.createElement('div');status.className='small';status.textContent='Status: '+item.status;div.appendChild(status);
-    var edit=document.createElement('button');edit.type='button';edit.className='secondary';edit.textContent='Rename';edit.onclick=function(){editSubprogram(item.program,item.subprogram);};div.appendChild(edit);
-    var toggle=document.createElement('button');toggle.type='button';toggle.className=item.status==='ACTIVE'?'danger':'secondary';toggle.textContent=item.status==='ACTIVE'?'Disable':'Activate';toggle.onclick=function(){changeSubprogramStatus(item.program,item.subprogram,item.status==='ACTIVE'?'DISABLED':'ACTIVE');};div.appendChild(toggle);box.appendChild(div);
+    var div=document.createElement('div');
+    div.className='admin-subprogram';
+
+    var title=document.createElement('strong');
+    title.textContent=item.program+' → '+item.subprogram;
+    div.appendChild(title);
+
+    var status=document.createElement('div');
+    status.className='small';
+    status.textContent='Status: '+item.status;
+    div.appendChild(status);
+
+    var edit=document.createElement('button');
+    edit.type='button';
+    edit.className='secondary';
+    edit.textContent='Rename';
+    edit.onclick=function(){
+      editSubprogram(item.program,item.subprogram);
+    };
+    div.appendChild(edit);
+
+    var toggle=document.createElement('button');
+    toggle.type='button';
+    toggle.className=item.status==='ACTIVE'?'danger':'secondary';
+    toggle.textContent=item.status==='ACTIVE'?'Disable':'Activate';
+    toggle.onclick=function(){
+      changeSubprogramStatus(
+        item.program,
+        item.subprogram,
+        item.status==='ACTIVE'?'DISABLED':'ACTIVE'
+      );
+    };
+    div.appendChild(toggle);
+
+    box.appendChild(div);
   });
+
   if(!items.length)box.textContent='No subprograms found.';
 }
+
 function updateReportSubprogramOptions(){
-  var select=document.getElementById('reportSubprogram');if(!select)return;var program=document.getElementById('reportProgram').value;var old=select.value;
+  var select=document.getElementById('reportSubprogram');
+  if(!select)return;
+
+  var program=document.getElementById('reportProgram').value;
+  var old=select.value;
+
   select.innerHTML='<option value="all">All Subprograms</option>';
+
+  var all={};
+
   if(program==='all'){
-    var all={};Object.keys(programConfig.subprograms||{}).forEach(function(key){(programConfig.subprograms[key]||[]).forEach(function(name){all[name]=true;});});
-    Object.keys(all).forEach(function(name){var o=document.createElement('option');o.value=name;o.textContent=name;select.appendChild(o);});
+    Object.keys(programConfig.subprograms||{}).forEach(function(key){
+      (programConfig.subprograms[key]||[]).forEach(function(name){
+        all[name]=true;
+      });
+    });
+
+    Object.keys(FIXED_SUBPROGRAMS).forEach(function(key){
+      FIXED_SUBPROGRAMS[key].forEach(function(name){
+        all[name]=true;
+      });
+    });
   }else{
-    ((programConfig.subprograms&&programConfig.subprograms[program])||[]).forEach(function(name){var o=document.createElement('option');o.value=name;o.textContent=name;select.appendChild(o);});
+    getSubprogramOptions(program).forEach(function(name){
+      all[name]=true;
+    });
   }
-  if(Array.from(select.options).some(function(o){return o.value===old;}))select.value=old;
+
+  Object.keys(all).forEach(function(name){
+    var option=document.createElement('option');
+    option.value=name;
+    option.textContent=name;
+    select.appendChild(option);
+  });
+
+  if(Array.from(select.options).some(function(option){
+    return option.value===old;
+  })){
+    select.value=old;
+  }
 }
+
 document.getElementById('reportProgram').addEventListener('change',updateReportSubprogramOptions);
 
 function updateConnection(){
-  setStatus('connection',navigator.onLine?'Online – connected to the internet.':'Offline – attendance will be saved on this device.',navigator.onLine);
+  setStatus(
+    'connection',
+    navigator.onLine
+      ?'Online – connected to the internet.'
+      :'Offline – attendance will be saved on this device.',
+    navigator.onLine
+  );
 }
-window.addEventListener('online',function(){updateConnection();if(currentSession){loadMembers().then(syncPending);loadSelectedRecords();loadProgramConfig();}});
+
+window.addEventListener('online',function(){
+  updateConnection();
+  if(currentSession){
+    loadMembers().then(syncPending);
+    loadSelectedRecords();
+    loadProgramConfig();
+  }
+});
+
 window.addEventListener('offline',updateConnection);
-function showMemberStatus(){setStatus('memberStatus','Members saved on this device: '+members.length,members.length>0);}
+
+function showMemberStatus(){
+  setStatus('memberStatus','Members saved on this device: '+members.length,members.length>0);
+}
+
 async function loadMembers(){
-  if(!currentSession||!navigator.onLine){showMemberStatus();return;}
+  if(!currentSession||!navigator.onLine){
+    showMemberStatus();
+    return;
+  }
+
   try{
     var result=await api('members',{});
-    if(Array.isArray(result.members)){members=result.members;saveMembersLocal();}
+    if(Array.isArray(result.members)){
+      members=result.members;
+      saveMembersLocal();
+    }
     showMemberStatus();
-  }catch(error){setStatus('memberStatus','Could not refresh members. Saved list: '+members.length+'. '+error.message.replace(/^AUTH:\s*/,''),false);}
+  }catch(error){
+    setStatus(
+      'memberStatus',
+      'Could not refresh members. Saved list: '+members.length+'. '+error.message.replace(/^AUTH:\s*/,''),
+      false
+    );
+  }
 }
+
 function findMember(id){
   var clean=String(id||'').trim();
-  return members.find(function(m){return String(m.id).trim()===clean;})||null;
+  return members.find(function(m){
+    return String(m.id).trim()===clean;
+  })||null;
 }
-/* ============================================
-   ATTENDANCE SAVE / SCAN / OFFLINE SYNC
-============================================ */
-function makeEventId(){return 'tse_'+Date.now()+'_'+Math.random().toString(36).slice(2);}
-function hasPending(record){return record.synced!==true;}
+
+// ============================================
+// ATTENDANCE SAVE / SCAN / OFFLINE SYNC
+// ============================================
+function makeEventId(){
+  return 'tse_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+}
+
+function hasPending(record){
+  return record.synced!==true;
+}
+
 function renderSelectedRecords(){
-  var body=document.getElementById('recordList');body.innerHTML='';
+  var body=document.getElementById('recordList');
+  body.innerHTML='';
+
   selectedRecords.forEach(function(r){
     var tr=document.createElement('tr');
-    [r.id,r.name,r.ethDate||r.date,r.time,r.program,r.subprogram||'',r.synced?'Synced':'Saved locally'].forEach(function(value){
-      var td=document.createElement('td');td.textContent=value==null?'':String(value);tr.appendChild(td);
+
+    [
+      r.id,
+      r.name,
+      r.ethDate||r.date,
+      r.time,
+      r.program,
+      r.subprogram||'',
+      r.synced?'Synced':'Saved locally'
+    ].forEach(function(value){
+      var td=document.createElement('td');
+      td.textContent=value==null?'':String(value);
+      tr.appendChild(td);
     });
+
     body.appendChild(tr);
   });
+
   document.getElementById('todayCount').textContent=selectedRecords.length;
 }
+
 function saveLocalAttendance(member){
-  var program=selectedProgram(),subprogram=selectedSubprogram();
-  var list=(programConfig.subprograms&&programConfig.subprograms[program])||[];
-  if(!program){setStatus('scanMessage','Please select an attendance program.',false);return false;}
-  if(list.length&&!subprogram){setStatus('scanMessage','Please select a subprogram.',false);return false;}
-  if(!member){setStatus('scanMessage','Member ID not found in saved list.',false);return false;}
+  var program=selectedProgram();
+  var subprogram=selectedSubprogram();
+
+  if(!program){
+    setStatus('scanMessage','Please select an attendance program.',false);
+    return false;
+  }
+
+  if(requiresSubprogram(program)&&!subprogram){
+    setStatus('scanMessage','Please select a subprogram before attendance.',false);
+    return false;
+  }
+
+  if(!member){
+    setStatus('scanMessage','Member ID not found in saved list.',false);
+    return false;
+  }
+
   var now=new Date();
-  var date=getDate(),time=getTime();
+  var date=getDate();
+  var time=getTime();
   var eth=todayEth();
   var ethDate=eth.year+'-'+MONTHS[eth.month-1]+'-'+eth.day;
+
+  // Duplicate is checked by member + Ethiopian date + program + subprogram.
+  // This allows the same member to attend different subprograms on the same day.
   var duplicate=records.some(function(r){
-    return String(r.id)===String(member.id)&&r.ethDate===ethDate&&r.program===program;
+    return String(r.id)===String(member.id) &&
+      r.ethDate===ethDate &&
+      r.program===program &&
+      String(r.subprogram||'')===String(subprogram||'');
   });
-  if(duplicate){setStatus('scanMessage',member.name+' — Already registered for this program today.',false);return false;}
-  var record={id:String(member.id),name:member.name,date:date,time:time,ethDate:ethDate,program:program,subprogram:subprogram||'',eventId:makeEventId(),synced:false,createdAt:now.getTime()};
-  records.push(record);saveLocal();
-  selectedRecords.unshift(record);renderSelectedRecords();
-  setStatus('scanMessage','Attendance saved locally: '+member.name+(subprogram?' — '+subprogram:''),true);
+
+  if(duplicate){
+    setStatus(
+      'scanMessage',
+      member.name+' — Already registered for '+(subprogram||program)+' today.',
+      false
+    );
+    return false;
+  }
+
+  var record={
+    id:String(member.id),
+    name:member.name,
+    date:date,
+    time:time,
+    ethDate:ethDate,
+    program:program,
+    subprogram:subprogram||'',
+    eventId:makeEventId(),
+    synced:false,
+    createdAt:now.getTime()
+  };
+
+  records.push(record);
+  saveLocal();
+
+  selectedRecords.unshift(record);
+  renderSelectedRecords();
+
+  setStatus(
+    'scanMessage',
+    'Attendance saved locally: '+member.name+(subprogram?' — '+subprogram:''),
+    true
+  );
+
   if(navigator.onLine)syncPending();
   return true;
 }
+
 async function registerAttendance(raw){
+  // Program and subprogram are required before both QR and manual attendance.
+  if(!validateProgramSelection()){
+    setStatus('scanMessage','Select the program and required subprogram first.',false);
+    return;
+  }
+
   var id=String(raw||'').trim();
-  if(!id){setStatus('scanMessage','Enter a member ID.',false);return;}
+
+  if(!id){
+    setStatus('scanMessage','Enter a member ID.',false);
+    return;
+  }
+
   var member=findMember(id);
+
   if(!member){
-    if(navigator.onLine){await loadMembers();member=findMember(id);}
-  }
-  if(!member){setStatus('scanMessage','Member ID not found in saved list. Refresh the member list while online.',false);return;}
-  saveLocalAttendance(member);
-}
-async function manualAttendance(){
-  await registerAttendance(document.getElementById('manualId').value);
-  document.getElementById('manualId').value='';
-}
-async function startScanner(){
-  if(!currentSession){setStatus('scanMessage','Please sign in first.',false);return;}
-  if(!selectedProgram()){setStatus('scanMessage','Select an attendance program first.',false);return;}
-  var subList=(programConfig.subprograms&&programConfig.subprograms[selectedProgram()])||[];
-  if(subList.length&&!selectedSubprogram()){setStatus('scanMessage','Select a subprogram first.',false);return;}
-  if(scannerRunning)return;
-  if(typeof Html5Qrcode==='undefined'){setStatus('scanMessage','QR scanner library is unavailable. Check internet or reload the app.',false);return;}
-  try{
-    scanner=new Html5Qrcode('reader');
-    await scanner.start({facingMode:'environment'},{fps:10,qrbox:{width:250,height:250}},async function(decodedText){
-      if(scanBusy)return;scanBusy=true;
-      try{
-        var id=String(decodedText||'').trim();
-        // QR payload may contain ID | Name. The ID is the first section.
-        if(id.indexOf('|')>=0)id=id.split('|')[0].trim();
-        await registerAttendance(id);
-      }finally{setTimeout(function(){scanBusy=false;},1300);}
-    },function(){});
-    scannerRunning=true;setStatus('scanMessage','Scanner is running. Point the camera at a member QR code.',true);
-  }catch(error){setStatus('scanMessage','Could not start camera: '+error.message,false);}
-}
-async function stopScanner(){
-  if(scanner&&scannerRunning){
-    try{await scanner.stop();await scanner.clear();}catch(error){}
-  }
-  scannerRunning=false;scanner=null;
-}
-async function syncPending(){
-  if(!currentSession||!navigator.onLine)return;
-  var pending=records.filter(hasPending);
-  if(!pending.length){setStatus('syncStatus','All attendance records are synchronized.',true);return;}
-  setStatus('syncStatus','Syncing '+pending.length+' attendance records...',null);
-  var synced=0;
-  for(var i=0;i<pending.length;i++){
-    var record=pending[i];
-    try{
-      var result=await api('save',{
-        id:record.id,name:record.name,date:record.date,time:record.time,
-        ethDate:record.ethDate,program:record.program,subprogram:record.subprogram||'',
-        eventId:record.eventId,deviceModel:getDeviceModel()
-      });
-      record.synced=true;synced++;saveLocal();
-    }catch(error){
-      if(/duplicate|already registered/i.test(error.message)){record.synced=true;saveLocal();synced++;}
-      else{setStatus('syncStatus','Sync paused: '+error.message.replace(/^AUTH:\s*/,''),false);break;}
+    if(navigator.onLine){
+      await loadMembers();
+      member=findMember(id);
     }
   }
-  setStatus('syncStatus','Synchronized '+synced+' of '+pending.length+' pending records.',synced===pending.length);
+
+  if(!member){
+    setStatus('scanMessage','Member ID not found in saved list. Refresh the member list while online.',false);
+    return;
+  }
+
+  saveLocalAttendance(member);
+}
+
+async function manualAttendance(){
+  if(!validateProgramSelection()){
+    setStatus('scanMessage','Select the program and required subprogram first.',false);
+    return;
+  }
+
+  var id=document.getElementById('manualId').value;
+  await registerAttendance(id);
+  document.getElementById('manualId').value='';
+}
+
+async function startScanner(){
+  if(!currentSession){
+    setStatus('scanMessage','Please sign in first.',false);
+    return;
+  }
+
+  if(!validateProgramSelection()){
+    setStatus('scanMessage','Select the program and required subprogram first.',false);
+    return;
+  }
+
+  if(scannerRunning)return;
+
+  if(typeof Html5Qrcode==='undefined'){
+    setStatus('scanMessage','QR scanner library is unavailable. Check internet or reload the app.',false);
+    return;
+  }
+
+  try{
+    scanner=new Html5Qrcode('reader');
+
+    await scanner.start(
+      {facingMode:'environment'},
+      {fps:10,qrbox:{width:250,height:250}},
+      async function(decodedText){
+        if(scanBusy)return;
+        scanBusy=true;
+
+        try{
+          var id=String(decodedText||'').trim();
+
+          // QR payload may contain ID | Name. The ID is the first section.
+          if(id.indexOf('|')>=0){
+            id=id.split('|')[0].trim();
+          }
+
+          await registerAttendance(id);
+        }finally{
+          setTimeout(function(){scanBusy=false;},1300);
+        }
+      },
+      function(){}
+    );
+
+    scannerRunning=true;
+    setStatus('scanMessage','Scanner is running. Point the camera at a member QR code.',true);
+  }catch(error){
+    setStatus('scanMessage','Could not start camera: '+error.message,false);
+  }
+}
+
+async function stopScanner(){
+  if(scanner&&scannerRunning){
+    try{
+      await scanner.stop();
+      await scanner.clear();
+    }catch(error){}
+  }
+
+  scannerRunning=false;
+  scanner=null;
+}
+
+async function syncPending(){
+  if(!currentSession||!navigator.onLine)return;
+
+  var pending=records.filter(hasPending);
+
+  if(!pending.length){
+    setStatus('syncStatus','All attendance records are synchronized.',true);
+    return;
+  }
+
+  setStatus('syncStatus','Syncing '+pending.length+' attendance records...',null);
+
+  var synced=0;
+
+  for(var i=0;i<pending.length;i++){
+    var record=pending[i];
+
+    try{
+      var result=await api('save',{
+        id:record.id,
+        name:record.name,
+        date:record.date,
+        time:record.time,
+        ethDate:record.ethDate,
+        program:record.program,
+        subprogram:record.subprogram||'',
+        eventId:record.eventId,
+        deviceModel:getDeviceModel()
+      });
+
+      record.synced=true;
+      synced++;
+      saveLocal();
+    }catch(error){
+      if(/duplicate|already registered/i.test(error.message)){
+        record.synced=true;
+        saveLocal();
+        synced++;
+      }else{
+        setStatus('syncStatus','Sync paused: '+error.message.replace(/^AUTH:\s*/,''),false);
+        break;
+      }
+    }
+  }
+
+  setStatus(
+    'syncStatus',
+    'Synchronized '+synced+' of '+pending.length+' pending records.',
+    synced===pending.length
+  );
+
   loadSelectedRecords();
 }
+
 function getDeviceModel(){
   var ua=navigator.userAgent||'';
   var match=ua.match(/SM-[A-Z0-9]+/i);
+
   if(match)return match[0];
   if(/Android/i.test(ua))return 'Android device';
   if(/iPhone/i.test(ua))return 'iPhone';
   if(/iPad/i.test(ua))return 'iPad';
+
   return 'Unknown device';
 }
 
 // ============================================
 // SELECTED DATE / SERVER RECORDS
 // ============================================
-function ethDateString(y,m,d){return y+'-'+MONTHS[m-1]+'-'+d;}
+function ethDateString(y,m,d){
+  return y+'-'+MONTHS[m-1]+'-'+d;
+}
+
 function displaySelectedDate(){
   if(selectedYear==null)return;
+
   var date=ethDateString(selectedYear,selectedMonth,selectedDay);
   document.getElementById('selectedDateLabel').textContent='Selected date: '+date+' ዓ.ም.';
 }
+
 async function loadSelectedRecords(){
   if(!currentSession)return;
-  if(selectedYear==null){var t=todayEth();selectedYear=t.year;selectedMonth=t.month;selectedDay=t.day;}
-  var date=ethDateString(selectedYear,selectedMonth,selectedDay);
-  if(!navigator.onLine){
-    selectedRecords=records.filter(function(r){return r.ethDate===date;});
-    renderSelectedRecords();setStatus('historyStatus','Offline: showing records saved on this device.',false);return;
+
+  if(selectedYear==null){
+    var t=todayEth();
+    selectedYear=t.year;
+    selectedMonth=t.month;
+    selectedDay=t.day;
   }
+
+  var date=ethDateString(selectedYear,selectedMonth,selectedDay);
+
+  if(!navigator.onLine){
+    selectedRecords=records.filter(function(r){
+      return r.ethDate===date;
+    });
+
+    renderSelectedRecords();
+    setStatus('historyStatus','Offline: showing records saved on this device.',false);
+    return;
+  }
+
   try{
     var result=await api('records',{ethDate:date,subprogram:'all'});
     selectedRecords=result.records||[];
-    renderSelectedRecords();setStatus('historyStatus','Loaded '+selectedRecords.length+' records from the server.',true);
+
+    renderSelectedRecords();
+    setStatus('historyStatus','Loaded '+selectedRecords.length+' records from the server.',true);
   }catch(error){
-    selectedRecords=records.filter(function(r){return r.ethDate===date;});
-    renderSelectedRecords();setStatus('historyStatus','Showing locally saved records. '+error.message.replace(/^AUTH:\s*/,''),false);
+    selectedRecords=records.filter(function(r){
+      return r.ethDate===date;
+    });
+
+    renderSelectedRecords();
+    setStatus(
+      'historyStatus',
+      'Showing locally saved records. '+error.message.replace(/^AUTH:\s*/,''),
+      false
+    );
   }
 }
 
@@ -599,45 +1335,122 @@ async function loadSelectedRecords(){
 function ethiopianToGregorian(y,m,d){
   var gYear=y+8;
   var start=new Date(Date.UTC(gYear,8,11));
-  var startEth= getEthParts(new Date(start.getTime()+12*3600000));
-  if(startEth.year!==y){start=new Date(Date.UTC(gYear,8,12));}
+
+  var startEth=getEthParts(new Date(start.getTime()+12*3600000));
+
+  if(startEth.year!==y){
+    start=new Date(Date.UTC(gYear,8,12));
+  }
+
   return new Date(start.getTime()+(m-1)*30*86400000+(d-1)*86400000);
 }
-function gregorianWeekday(y,m,d){return ethiopianToGregorian(y,m,d).getUTCDay();}
+
+function gregorianWeekday(y,m,d){
+  return ethiopianToGregorian(y,m,d).getUTCDay();
+}
+
 function daysInEthMonth(y,m){
   if(m<=12)return 30;
+
   var nextStart=ethiopianToGregorian(y,1,1);
   var thisStart=ethiopianToGregorian(y,13,1);
+
   return Math.round((nextStart-thisStart)/86400000);
 }
+
 function renderCalendar(){
   var today=todayEth();
-  if(viewYear==null){viewYear=today.year;viewMonth=today.month;}
-  if(selectedYear==null){selectedYear=today.year;selectedMonth=today.month;selectedDay=today.day;}
+
+  if(viewYear==null){
+    viewYear=today.year;
+    viewMonth=today.month;
+  }
+
+  if(selectedYear==null){
+    selectedYear=today.year;
+    selectedMonth=today.month;
+    selectedDay=today.day;
+  }
+
   var title=document.getElementById('calendarTitle');
   title.textContent=MONTHS[viewMonth-1]+' '+viewYear+' ዓ.ም.';
-  var grid=document.getElementById('calendarGrid');grid.innerHTML='';
-  WEEKDAYS.forEach(function(day){var el=document.createElement('div');el.className='weekday';el.textContent=day;grid.appendChild(el);});
+
+  var grid=document.getElementById('calendarGrid');
+  grid.innerHTML='';
+
+  WEEKDAYS.forEach(function(day){
+    var el=document.createElement('div');
+    el.className='weekday';
+    el.textContent=day;
+    grid.appendChild(el);
+  });
+
   var first=gregorianWeekday(viewYear,viewMonth,1);
   var count=daysInEthMonth(viewYear,viewMonth);
-  for(var i=0;i<first;i++){var blank=document.createElement('div');grid.appendChild(blank);}
+
+  for(var i=0;i<first;i++){
+    var blank=document.createElement('div');
+    grid.appendChild(blank);
+  }
+
   for(var d=1;d<=count;d++){
-    var btn=document.createElement('button');btn.type='button';btn.className='calendar-day';btn.textContent=d;
-    if(viewYear===today.year&&viewMonth===today.month&&d===today.day)btn.classList.add('today');
-    if(viewYear===selectedYear&&viewMonth===selectedMonth&&d===selectedDay)btn.classList.add('selected');
-    (function(day){btn.addEventListener('click',function(){selectedYear=viewYear;selectedMonth=viewMonth;selectedDay=day;renderCalendar();displaySelectedDate();loadSelectedRecords();});})(d);
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.className='calendar-day';
+    btn.textContent=d;
+
+    if(viewYear===today.year&&viewMonth===today.month&&d===today.day){
+      btn.classList.add('today');
+    }
+
+    if(viewYear===selectedYear&&viewMonth===selectedMonth&&d===selectedDay){
+      btn.classList.add('selected');
+    }
+
+    (function(day){
+      btn.addEventListener('click',function(){
+        selectedYear=viewYear;
+        selectedMonth=viewMonth;
+        selectedDay=day;
+
+        renderCalendar();
+        displaySelectedDate();
+        loadSelectedRecords();
+      });
+    })(d);
+
     grid.appendChild(btn);
   }
 }
+
 function changeMonth(delta){
   viewMonth+=delta;
-  if(viewMonth>13){viewMonth=1;viewYear++;}
-  if(viewMonth<1){viewMonth=13;viewYear--;}
+
+  if(viewMonth>13){
+    viewMonth=1;
+    viewYear++;
+  }
+
+  if(viewMonth<1){
+    viewMonth=13;
+    viewYear--;
+  }
+
   renderCalendar();
 }
+
 function selectToday(){
-  var t=todayEth();viewYear=t.year;viewMonth=t.month;selectedYear=t.year;selectedMonth=t.month;selectedDay=t.day;
-  renderCalendar();displaySelectedDate();loadSelectedRecords();
+  var t=todayEth();
+
+  viewYear=t.year;
+  viewMonth=t.month;
+  selectedYear=t.year;
+  selectedMonth=t.month;
+  selectedDay=t.day;
+
+  renderCalendar();
+  displaySelectedDate();
+  loadSelectedRecords();
 }
 
 // ============================================
@@ -645,45 +1458,137 @@ function selectToday(){
 // ============================================
 async function loadReport(){
   if(!currentSession)return;
+
   var type=document.getElementById('reportType').value;
   var program=document.getElementById('reportProgram').value;
   var subprogram=document.getElementById('reportSubprogram').value;
+
   setStatus('reportStatus','Loading report...',null);
+
   try{
-    var result=await api('report',{type:type,program:program,subprogram:subprogram});
+    var result=await api('report',{
+      type:type,
+      program:program,
+      subprogram:subprogram
+    });
+
     reportRecords=result.records||[];
-    if(program!=='all')reportRecords=reportRecords.filter(function(r){return r.program===program;});
-    if(subprogram!=='all')reportRecords=reportRecords.filter(function(r){return r.subprogram===subprogram;});
+
+    if(program!=='all'){
+      reportRecords=reportRecords.filter(function(r){
+        return r.program===program;
+      });
+    }
+
+    if(subprogram!=='all'){
+      reportRecords=reportRecords.filter(function(r){
+        return r.subprogram===subprogram;
+      });
+    }
+
     renderReport();
     setStatus('reportStatus','Report loaded successfully.',true);
-  }catch(error){reportRecords=[];renderReport();setStatus('reportStatus','Could not load report: '+error.message.replace(/^AUTH:\s*/,''),false);}
+  }catch(error){
+    reportRecords=[];
+    renderReport();
+    setStatus(
+      'reportStatus',
+      'Could not load report: '+error.message.replace(/^AUTH:\s*/,''),
+      false
+    );
+  }
 }
+
 function renderReport(){
-  var body=document.getElementById('reportList');body.innerHTML='';
+  var body=document.getElementById('reportList');
+  body.innerHTML='';
+
   reportRecords.forEach(function(r){
     var tr=document.createElement('tr');
-    [r.id,r.name,r.ethDate||r.date,r.time,r.program,r.subprogram||''].forEach(function(v){var td=document.createElement('td');td.textContent=v==null?'':String(v);tr.appendChild(td);});
+
+    [
+      r.id,
+      r.name,
+      r.ethDate||r.date,
+      r.time,
+      r.program,
+      r.subprogram||''
+    ].forEach(function(v){
+      var td=document.createElement('td');
+      td.textContent=v==null?'':String(v);
+      tr.appendChild(td);
+    });
+
     body.appendChild(tr);
   });
+
   document.getElementById('reportCount').textContent=reportRecords.length;
 }
+
 function downloadCSVRows(rows,filename){
-  var header=['ID','Name','Gregorian Date','Time','Ethiopian Date','Program','Subprogram'];
-  var lines=[header].concat(rows.map(function(r){return [r.id,r.name,r.date,r.time,r.ethDate,r.program,r.subprogram||''];}));
-  var csv=lines.map(function(row){return row.map(function(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"';}).join(',');}).join('\r\n');
+  var header=[
+    'ID',
+    'Name',
+    'Gregorian Date',
+    'Time',
+    'Ethiopian Date',
+    'Program',
+    'Subprogram'
+  ];
+
+  var lines=[header].concat(rows.map(function(r){
+    return [
+      r.id,
+      r.name,
+      r.date,
+      r.time,
+      r.ethDate,
+      r.program,
+      r.subprogram||''
+    ];
+  }));
+
+  var csv=lines.map(function(row){
+    return row.map(function(v){
+      return '"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+    }).join(',');
+  }).join('\r\n');
+
   var blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
-  var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+
+  a.href=url;
+  a.download=filename;
+  a.click();
+
+  URL.revokeObjectURL(url);
 }
-function downloadCSV(){downloadCSVRows(selectedRecords,'TSE-Attendance-Selected-Date.csv');}
-function downloadReportCSV(){downloadCSVRows(reportRecords,'TSE-Attendance-Report.csv');}
+
+function downloadCSV(){
+  downloadCSVRows(selectedRecords,'TSE-Attendance-Selected-Date.csv');
+}
+
+function downloadReportCSV(){
+  downloadCSVRows(reportRecords,'TSE-Attendance-Report.csv');
+}
 
 // ============================================
 // INITIAL STARTUP
 // ============================================
 updateConnection();
+
 (function(){
-  var t=todayEth();viewYear=t.year;viewMonth=t.month;selectedYear=t.year;selectedMonth=t.month;selectedDay=t.day;
-  renderCalendar();displaySelectedDate();
+  var t=todayEth();
+
+  viewYear=t.year;
+  viewMonth=t.month;
+  selectedYear=t.year;
+  selectedMonth=t.month;
+  selectedDay=t.day;
+
+  renderCalendar();
+  displaySelectedDate();
   restoreSession();
 })();
 </script>
