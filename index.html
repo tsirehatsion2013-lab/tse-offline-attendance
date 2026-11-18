@@ -1482,10 +1482,15 @@ function renderReportDatePicker(){
   var title = document.getElementById('reportCalendarTitle');
   var grid = document.getElementById('reportCalendarGrid');
 
-  title.textContent =
-    MONTHS[reportPickerMonth - 1] + ' ' +
-    reportPickerYear + ' ዓ.ም.';
+var monthName = MONTHS[reportPickerMonth - 1] || '';
 
+title.textContent =
+  monthName + ' ' + reportPickerYear + ' ዓ.ም.';
+
+title.style.display = 'block';
+title.style.visibility = 'visible';
+title.style.color = '#ffffff';
+title.style.fontSize = '16px';
   grid.innerHTML = '';
 
   WEEKDAYS.forEach(function(day){
