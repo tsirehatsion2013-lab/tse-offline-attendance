@@ -187,12 +187,23 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
     <div class="report-controls">
       <div>
         <label class="small">Report Type</label>
-        <select id="reportType">
-          <option value="daily">Daily Report</option>
-          <option value="monthly">Monthly Report</option>
-          <option value="threeMonths">3 Months Report</option>
-        </select>
+    <select id="reportType" onchange="toggleReportDateRange()">
+  <option value="daily">Daily Report</option>
+  <option value="monthly">Monthly Report</option>
+  <option value="threeMonths">3 Months Report</option>
+  <option value="range">Date Range Report</option>
+</select>
       </div>
+      <div id="reportDateRange" style="display:none;">
+  <div>
+    <label class="small">Start Date (Ethiopian)</label>
+    <input type="text" id="reportStartDate" placeholder="2019/መስከረም/1">
+  </div>
+  <div>
+    <label class="small">End Date (Ethiopian)</label>
+    <input type="text" id="reportEndDate" placeholder="2019/መስከረም/30">
+  </div>
+</div>
       <div>
         <label class="small">Program</label>
         <select id="reportProgram" onchange="updateReportSubprogramOptions()">
@@ -1459,6 +1470,15 @@ function selectToday(){
 // ============================================
 // REPORTS
 // ============================================
+function toggleReportDateRange(){
+  var type = document.getElementById('reportType').value;
+  var box = document.getElementById('reportDateRange');
+
+  if(box){
+    box.style.display = type === 'range' ? 'grid' : 'none';
+  }
+}
+
 async function loadReport(){
   if(!currentSession)return;
 
@@ -1466,24 +1486,33 @@ async function loadReport(){
   var program=document.getElementById('reportProgram').value;
   var subprogram=document.getElementById('reportSubprogram').value;
 
+  var params={
+    reportType:type,
+    program:program,
+    subprogram:subprogram
+  };
+
   var ethDate=selectedYear+'/'+selectedMonth+'/'+selectedDay;
-  console.log('REPORT DATE:', ethDate);
-console.log('YEAR:', selectedYear);
-console.log('MONTH:', selectedMonth);
-console.log('DAY:', selectedDay);
-  setStatus(
-    'reportStatus',
-    'Loading report for '+ethDate+'...',
-    null
-  );
+
+  if(type==='range'){
+    var startDate=document.getElementById('reportStartDate').value.trim();
+    var endDate=document.getElementById('reportEndDate').value.trim();
+
+    if(!startDate || !endDate){
+      setStatus('reportStatus','Please enter both start and end dates.',false);
+      return;
+    }
+
+    params.startDate=startDate;
+    params.endDate=endDate;
+  }else{
+    params.ethDate=ethDate;
+  }
+
+  setStatus('reportStatus','Loading report...',null);
 
   try{
-    var result=await api('report',{
-      reportType:type,
-      ethDate:ethDate,
-      program:program,
-      subprogram:subprogram
-    });
+    var result=await api('report',params);
 
     reportRecords=result.records||[];
 
@@ -1503,7 +1532,7 @@ console.log('DAY:', selectedDay);
 
     setStatus(
       'reportStatus',
-      'Report loaded successfully for '+ethDate+'.',
+      'Report loaded successfully. Total: '+reportRecords.length,
       true
     );
 
