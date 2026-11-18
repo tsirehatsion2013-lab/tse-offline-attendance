@@ -51,6 +51,59 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 .topbar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .topbar button{width:auto;margin:0;padding:9px 13px}
 @media(max-width:500px){.report-controls,.row2{grid-template-columns:1fr}}
+/* ETHIOPIAN REPORT DATE PICKER */
+
+#reportCalendarBox {
+  margin-top: 12px;
+  padding: 14px;
+  background: var(--card, #172554);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+}
+
+.report-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.report-calendar-header span {
+  font-weight: bold;
+  text-align: center;
+}
+
+.report-calendar-header button {
+  min-width: 40px;
+  padding: 8px;
+}
+
+.report-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.report-calendar-grid .weekday {
+  text-align: center;
+  padding: 7px 0;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.report-calendar-grid .calendar-day {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 2px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.report-calendar-grid .calendar-day:hover {
+  background: #2563eb;
+  color: white;
+}
 </style>
 </head>
 <body>
@@ -194,15 +247,40 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
   <option value="range">Date Range Report</option>
 </select>
       </div>
-      <div id="reportDateRange" style="display:none;">
+     <div id="reportDateRange" style="display:none;">
+
   <div>
     <label class="small">Start Date (Ethiopian)</label>
-    <input type="text" id="reportStartDate" placeholder="2019/መስከረም/1">
+    <input
+      type="text"
+      id="reportStartDate"
+      placeholder="Select Start Date"
+      readonly
+      onclick="openReportDatePicker('start')"
+    >
   </div>
+
   <div>
     <label class="small">End Date (Ethiopian)</label>
-    <input type="text" id="reportEndDate" placeholder="2019/መስከረም/30">
+    <input
+      type="text"
+      id="reportEndDate"
+      placeholder="Select End Date"
+      readonly
+      onclick="openReportDatePicker('end')"
+    >
   </div>
+
+  <div id="reportCalendarBox" style="display:none;">
+    <div class="report-calendar-header">
+      <button type="button" onclick="changeReportPickerMonth(-1)">‹</button>
+      <span id="reportCalendarTitle"></span>
+      <button type="button" onclick="changeReportPickerMonth(1)">›</button>
+    </div>
+
+    <div id="reportCalendarGrid" class="report-calendar-grid"></div>
+  </div>
+
 </div>
       <div>
         <label class="small">Program</label>
@@ -1368,7 +1446,113 @@ function daysInEthMonth(y,m){
 
   return Math.round((nextStart-thisStart)/86400000);
 }
+// ============================================
+// ETHIOPIAN REPORT DATE PICKER
+// ============================================
 
+var reportPickerType = 'start';
+var reportPickerYear = null;
+var reportPickerMonth = null;
+
+function openReportDatePicker(type){
+  reportPickerType = type;
+
+  var inputId = type === 'start'
+    ? 'reportStartDate'
+    : 'reportEndDate';
+
+  var existing = document.getElementById(inputId).value;
+var parsed = existing ? existing.split('/') : [];
+
+if(parsed.length === 3){
+  reportPickerYear = Number(parsed[0]);
+  reportPickerMonth = Number(parsed[1]);
+}else{
+  var today = todayEth();
+  reportPickerYear = today.year;
+  reportPickerMonth = today.month;
+}
+
+  document.getElementById('reportCalendarBox').style.display = 'block';
+
+  renderReportDatePicker();
+}
+
+function renderReportDatePicker(){
+  var title = document.getElementById('reportCalendarTitle');
+  var grid = document.getElementById('reportCalendarGrid');
+
+  title.textContent =
+    MONTHS[reportPickerMonth - 1] + ' ' +
+    reportPickerYear + ' ዓ.ም.';
+
+  grid.innerHTML = '';
+
+  WEEKDAYS.forEach(function(day){
+    var el = document.createElement('div');
+    el.className = 'weekday';
+    el.textContent = day;
+    grid.appendChild(el);
+  });
+
+  var first = gregorianWeekday(
+    reportPickerYear,
+    reportPickerMonth,
+    1
+  );
+
+  var count = daysInEthMonth(
+    reportPickerYear,
+    reportPickerMonth
+  );
+
+  for(var i = 0; i < first; i++){
+    grid.appendChild(document.createElement('div'));
+  }
+
+  for(var d = 1; d <= count; d++){
+    var btn = document.createElement('button');
+
+    btn.type = 'button';
+    btn.className = 'calendar-day';
+    btn.textContent = d;
+
+    (function(day){
+      btn.addEventListener('click',function(){
+        var date =
+          reportPickerYear + '/' +
+          reportPickerMonth + '/' +
+          day;
+
+        var inputId = reportPickerType === 'start'
+          ? 'reportStartDate'
+          : 'reportEndDate';
+
+        document.getElementById(inputId).value = date;
+
+        document.getElementById('reportCalendarBox').style.display = 'none';
+      });
+    })(d);
+
+    grid.appendChild(btn);
+  }
+}
+
+function changeReportPickerMonth(delta){
+  reportPickerMonth += delta;
+
+  if(reportPickerMonth > 13){
+    reportPickerMonth = 1;
+    reportPickerYear++;
+  }
+
+  if(reportPickerMonth < 1){
+    reportPickerMonth = 13;
+    reportPickerYear--;
+  }
+
+  renderReportDatePicker();
+}
 function renderCalendar(){
   var today=todayEth();
 
