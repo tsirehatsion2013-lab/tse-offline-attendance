@@ -192,6 +192,15 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
     <p class="small">Scan the member's personal QR code using your phone camera.</p>
     <button onclick="startScanner()">Start Scanner</button>
     <button class="secondary" onclick="stopScanner()">Stop Scanner</button>
+    <button
+  type="button"
+  id="scannerTorchButton"
+  class="secondary"
+  onclick="toggleScannerTorch()"
+  disabled
+>
+  🔦 Flashlight OFF
+</button>
     <div id="reader"></div>
     <div id="scanMessage" class="status">Ready to scan.</div>
   </div>
@@ -1232,7 +1241,54 @@ async function manualAttendance(){
   await registerAttendance(id);
   document.getElementById('manualId').value='';
 }
+var scannerTorchOn = false;
 
+async function toggleScannerTorch(){
+  if(!scanner || !scannerRunning){
+    setStatus('scanMessage','Start the scanner first.',false);
+    return;
+  }
+
+  try{
+    var capabilities = scanner.getRunningTrackCameraCapabilities();
+
+    if(!capabilities.torch){
+      setStatus(
+        'scanMessage',
+        'Flashlight is not supported by this device or browser.',
+        false
+      );
+      return;
+    }
+
+    scannerTorchOn = !scannerTorchOn;
+
+    await scanner.applyVideoConstraints({
+      advanced: [{torch: scannerTorchOn}]
+    });
+
+    var button = document.getElementById('scannerTorchButton');
+
+    button.textContent = scannerTorchOn
+      ? '🔦 Flashlight ON'
+      : '🔦 Flashlight OFF';
+
+    setStatus(
+      'scanMessage',
+      scannerTorchOn ? 'Flashlight is ON.' : 'Flashlight is OFF.',
+      true
+    );
+
+  }catch(error){
+    scannerTorchOn = false;
+
+    setStatus(
+      'scanMessage',
+      'Could not control flashlight: ' + error.message,
+      false
+    );
+  }
+}
 async function startScanner(){
   if(!currentSession){
     setStatus('scanMessage','Please sign in first.',false);
@@ -1264,7 +1320,6 @@ async function startScanner(){
         try{
           var id=String(decodedText||'').trim();
 
-          // QR payload may contain ID | Name. The ID is the first section.
           if(id.indexOf('|')>=0){
             id=id.split('|')[0].trim();
           }
@@ -1278,79 +1333,61 @@ async function startScanner(){
     );
 
     scannerRunning=true;
+    scannerTorchOn=false;
+
+    var torchButton=document.getElementById('scannerTorchButton');
+
+    if(torchButton){
+      torchButton.disabled=false;
+      torchButton.textContent='🔦 Flashlight OFF';
+    }
+
     setStatus('scanMessage','Scanner is running. Point the camera at a member QR code.',true);
+
   }catch(error){
+    scannerRunning=false;
+    scannerTorchOn=false;
+
+    var torchButton=document.getElementById('scannerTorchButton');
+
+    if(torchButton){
+      torchButton.disabled=true;
+      torchButton.textContent='🔦 Flashlight OFF';
+    }
+
     setStatus('scanMessage','Could not start camera: '+error.message,false);
   }
 }
 
 async function stopScanner(){
-  if(scanner&&scannerRunning){
+  if(scanner && scannerRunning){
     try{
+      if(scannerTorchOn){
+        await scanner.applyVideoConstraints({
+          advanced:[{torch:false}]
+        });
+      }
+
       await scanner.stop();
       await scanner.clear();
+
     }catch(error){}
   }
 
   scannerRunning=false;
+  scannerTorchOn=false;
   scanner=null;
-}
 
-async function syncPending(){
-  if(!currentSession||!navigator.onLine)return;
+  var torchButton=document.getElementById('scannerTorchButton');
 
-  var pending=records.filter(hasPending);
-
-  if(!pending.length){
-    setStatus('syncStatus','All attendance records are synchronized.',true);
-    return;
+  if(torchButton){
+    torchButton.disabled=true;
+    torchButton.textContent='🔦 Flashlight OFF';
   }
 
-  setStatus('syncStatus','Syncing '+pending.length+' attendance records...',null);
-
-  var synced=0;
-
-  for(var i=0;i<pending.length;i++){
-    var record=pending[i];
-
-    try{
-      var result=await api('save',{
-        id:record.id,
-        name:record.name,
-        date:record.date,
-        time:record.time,
-        ethDate:record.ethDate,
-        program:record.program,
-        subprogram:record.subprogram||'',
-        eventId:record.eventId,
-        deviceModel:getDeviceModel()
-      });
-
-      record.synced=true;
-      synced++;
-      saveLocal();
-    }catch(error){
-      if(/duplicate|already registered/i.test(error.message)){
-        record.synced=true;
-        saveLocal();
-        synced++;
-      }else{
-        setStatus('syncStatus','Sync paused: '+error.message.replace(/^AUTH:\s*/,''),false);
-        break;
-      }
-    }
-  }
-
-  setStatus(
-    'syncStatus',
-    'Synchronized '+synced+' of '+pending.length+' pending records.',
-    synced===pending.length
-  );
-
-  loadSelectedRecords();
+  setStatus('scanMessage','Scanner stopped.',true);
 }
-
-function getDeviceModel(){
+  function getDeviceModel(){
   var ua=navigator.userAgent||'';
   var match=ua.match(/SM-[A-Z0-9]+/i);
 
