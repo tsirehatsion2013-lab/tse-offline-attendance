@@ -1467,6 +1467,10 @@ async function loadReport(){
   var subprogram=document.getElementById('reportSubprogram').value;
 
   var ethDate=selectedYear+'/'+selectedMonth+'/'+selectedDay;
+  console.log('REPORT DATE:', ethDate);
+console.log('YEAR:', selectedYear);
+console.log('MONTH:', selectedMonth);
+console.log('DAY:', selectedDay);
   setStatus(
     'reportStatus',
     'Loading report for '+ethDate+'...',
