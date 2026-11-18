@@ -1251,21 +1251,22 @@ async function toggleScannerTorch(){
 
   try{
     var capabilities = scanner.getRunningTrackCameraCapabilities();
+    var torch = capabilities.torchFeature();
 
-    if(!capabilities.torch){
+    if(!torch.isSupported()){
       setStatus(
         'scanMessage',
-        'Flashlight is not supported by this device or browser.',
+        'Flashlight is not supported by this camera or browser.',
         false
       );
       return;
     }
 
-    scannerTorchOn = !scannerTorchOn;
+    var nextState = !scannerTorchOn;
 
-    await scanner.applyVideoConstraints({
-      advanced: [{torch: scannerTorchOn}]
-    });
+    await torch.apply(nextState);
+
+    scannerTorchOn = nextState;
 
     var button = document.getElementById('scannerTorchButton');
 
@@ -1280,8 +1281,6 @@ async function toggleScannerTorch(){
     );
 
   }catch(error){
-    scannerTorchOn = false;
-
     setStatus(
       'scanMessage',
       'Could not control flashlight: ' + error.message,
@@ -1289,7 +1288,7 @@ async function toggleScannerTorch(){
     );
   }
 }
-async function startScanner(){
+  async function startScanner(){
   if(!currentSession){
     setStatus('scanMessage','Please sign in first.',false);
     return;
