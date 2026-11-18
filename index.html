@@ -1456,6 +1456,9 @@ function selectToday(){
 // ============================================
 // REPORTS
 // ============================================
+// ============================================
+// REPORTS
+// ============================================
 async function loadReport(){
   if(!currentSession)return;
 
@@ -1463,11 +1466,22 @@ async function loadReport(){
   var program=document.getElementById('reportProgram').value;
   var subprogram=document.getElementById('reportSubprogram').value;
 
-  setStatus('reportStatus','Loading report...',null);
+  var ethDate=ethDateString(
+    selectedYear,
+    selectedMonth,
+    selectedDay
+  );
+
+  setStatus(
+    'reportStatus',
+    'Loading report for '+ethDate+'...',
+    null
+  );
 
   try{
     var result=await api('report',{
-      type:type,
+      reportType:type,
+      ethDate:ethDate,
       program:program,
       subprogram:subprogram
     });
@@ -1487,10 +1501,17 @@ async function loadReport(){
     }
 
     renderReport();
-    setStatus('reportStatus','Report loaded successfully.',true);
+
+    setStatus(
+      'reportStatus',
+      'Report loaded successfully for '+ethDate+'.',
+      true
+    );
+
   }catch(error){
     reportRecords=[];
     renderReport();
+
     setStatus(
       'reportStatus',
       'Could not load report: '+error.message.replace(/^AUTH:\s*/,''),
@@ -1498,8 +1519,7 @@ async function loadReport(){
     );
   }
 }
-
-function renderReport(){
+  function renderReport(){
   var body=document.getElementById('reportList');
   body.innerHTML='';
 
