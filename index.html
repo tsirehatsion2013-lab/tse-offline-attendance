@@ -1466,12 +1466,7 @@ async function loadReport(){
   var program=document.getElementById('reportProgram').value;
   var subprogram=document.getElementById('reportSubprogram').value;
 
-  var ethDate=ethDateString(
-    selectedYear,
-    selectedMonth,
-    selectedDay
-  );
-
+  var ethDate=selectedYear+'/'+selectedMonth+'/'+selectedDay;
   setStatus(
     'reportStatus',
     'Loading report for '+ethDate+'...',
