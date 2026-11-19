@@ -1301,7 +1301,31 @@ function saveLocalAttendance(member){
   if(navigator.onLine)syncPending();
   return true;
 }
+function extractQrMemberId(raw){
+  var text = String(raw || '').trim();
 
+  // Handle QR formats such as:
+  // 6
+  // 6 | Member Name
+  // https://script.google.com/macros/s/.../exec?id=6
+
+  if(text.indexOf('|') >= 0){
+    text = text.split('|')[0].trim();
+  }
+
+  try {
+    if(/^https?:\/\//i.test(text)){
+      var url = new URL(text);
+      var id = url.searchParams.get('id');
+
+      if(id !== null && id.trim() !== ''){
+        return id.trim();
+      }
+    }
+  } catch(error) {}
+
+  return text;
+}
 async function registerAttendance(raw){
   // Program and subprogram are required before both QR and manual attendance.
   if(!validateProgramSelection()){
