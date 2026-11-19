@@ -1397,10 +1397,14 @@ async function toggleScannerTorch(){
         scanBusy=true;
 
         try{
-          var id=extractQrMemberId(decodedText);
+          
+        alert(
+  "QR RAW: ["+decodedText+"]\n"+
+  "Extracted ID: ["+extractQrMemberId(decodedText)+"]\n"+
+  "Saved Members: "+members.length
+);
 
-await registerAttendance(id);
-        }finally{
+return;}finally{
           setTimeout(function(){scanBusy=false;},1300);
         }
       },
