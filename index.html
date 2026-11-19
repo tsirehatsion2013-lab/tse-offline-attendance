@@ -1083,13 +1083,40 @@ async function loadMembers(){
   }
 }
 
+function normalizeMemberId(id){
+  var value=String(id==null?'':id)
+    .normalize('NFKC')
+    .replace(/[\u200B-\u200D\uFEFF]/g,'')
+    .trim();
+
+  if(/^\d+$/.test(value)){
+    value=value.replace(/^0+(?=\d)/,'');
+  }
+
+  return value;
+}
+
 function findMember(id){
-  var clean=String(id||'').trim();
+  var clean=normalizeMemberId(id);
+
   return members.find(function(m){
-    return String(m.id).trim()===clean;
+    return normalizeMemberId(m.id)===clean;
   })||null;
 }
 
+function extractQrMemberId(decodedText){
+  var text=String(decodedText||'')
+    .normalize('NFKC')
+    .replace(/[\u200B-\u200D\uFEFF]/g,'')
+    .trim();
+
+  // QR format: ID | Member Name
+  if(text.indexOf('|')>=0){
+    text=text.split('|')[0].trim();
+  }
+
+  return normalizeMemberId(text);
+}
 // ============================================
 // ATTENDANCE SAVE / SCAN / OFFLINE SYNC
 // ============================================
@@ -1370,13 +1397,9 @@ async function toggleScannerTorch(){
         scanBusy=true;
 
         try{
-          var id=String(decodedText||'').trim();
+          var id=extractQrMemberId(decodedText);
 
-          if(id.indexOf('|')>=0){
-            id=id.split('|')[0].trim();
-          }
-
-          await registerAttendance(id);
+await registerAttendance(id);
         }finally{
           setTimeout(function(){scanBusy=false;},1300);
         }
