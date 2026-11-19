@@ -476,68 +476,90 @@ async function refreshSessionToken(){
 }
 
 // ============================================
-// SECURE POST BRIDGE TO APPS SCRIPT
 // ============================================
-function securePost(action,params){
-  return new Promise(function(resolve,reject){
-    if(!currentSession||!currentSession.idToken){
-      reject(new Error('Please sign in.'));
-      return;
-    }
+// SECURE POST BRIDGE TO APPS SCRIPT
+// SERIAL REQUEST QUEUE
+// ============================================
 
-    var nonce='tse_'+Date.now()+'_'+(++bridgeCounter)+'_'+Math.random().toString(36).slice(2);
-    var done=false;
-    var form=null;
+var securePostQueue = Promise.resolve();
 
-    var timer=setTimeout(function(){
-      finish(new Error('Server response timed out.'));
-    },30000);
+function securePost(action, params){
+  function sendRequest(){
+    return new Promise(function(resolve, reject){
 
-    function cleanup(){
-      window.removeEventListener('message',onMessage);
-      clearTimeout(timer);
-      if(form&&form.parentNode)form.remove();
-    }
+      if(!currentSession || !currentSession.idToken){
+        reject(new Error('Please sign in.'));
+        return;
+      }
 
-    function finish(error,value){
-      if(done)return;
-      done=true;
-      cleanup();
-      if(error)reject(error);
-      else resolve(value);
-    }
+      var nonce='tse_'+Date.now()+'_'+(++bridgeCounter)+'_'+Math.random().toString(36).slice(2);
+      var done=false;
+      var form=null;
 
-    function onMessage(event){
-      var data=event.data;
-      if(!data||data.type!=='TSE_ATTENDANCE_RESPONSE'||data.nonce!==nonce)return;
-      finish(null,data.result);
-    }
+      var timer=setTimeout(function(){
+        finish(new Error('Server response timed out.'));
+      },30000);
 
-    window.addEventListener('message',onMessage);
+      function cleanup(){
+        window.removeEventListener('message',onMessage);
+        clearTimeout(timer);
+        if(form && form.parentNode)form.remove();
+      }
 
-    form=document.createElement('form');
-    form.method='POST';
-    form.action=API_URL;
-    form.target='tseBridgeFrame';
-    form.style.display='none';
+      function finish(error,value){
+        if(done)return;
+        done=true;
+        cleanup();
 
-    var field=document.createElement('input');
-    field.type='hidden';
-    field.name='payload';
-    field.value=JSON.stringify({
-      action:action,
-      params:params||{},
-      idToken:currentSession.idToken,
-      nonce:nonce
+        if(error)reject(error);
+        else resolve(value);
+      }
+
+      function onMessage(event){
+        var data=event.data;
+
+        if(!data ||
+           data.type!=='TSE_ATTENDANCE_RESPONSE' ||
+           data.nonce!==nonce)return;
+
+        finish(null,data.result);
+      }
+
+      window.addEventListener('message',onMessage);
+
+      form=document.createElement('form');
+      form.method='POST';
+      form.action=API_URL;
+      form.target='tseBridgeFrame';
+      form.style.display='none';
+
+      var field=document.createElement('input');
+      field.type='hidden';
+      field.name='payload';
+
+      field.value=JSON.stringify({
+        action:action,
+        params:params||{},
+        idToken:currentSession.idToken,
+        nonce:nonce
+      });
+
+      form.appendChild(field);
+      document.body.appendChild(form);
+      form.submit();
     });
+  }
 
-    form.appendChild(field);
-    document.body.appendChild(form);
-    form.submit();
-  });
+  var request=securePostQueue.then(sendRequest,sendRequest);
+
+  securePostQueue=request.then(
+    function(){},
+    function(){}
+  );
+
+  return request;
 }
-
-async function api(action,params){
+  async function api(action,params){
   if(!navigator.onLine)throw new Error('You are offline.');
   await refreshSessionToken();
 
