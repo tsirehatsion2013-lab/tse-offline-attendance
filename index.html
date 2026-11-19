@@ -1117,7 +1117,46 @@ function normalizeMemberId(id){
 
   return value;
 }
+function extractQrMemberId(raw){
 
+  var text = String(raw || '')
+    .normalize('NFKC')
+    .replace(/[\u200B-\u200D\uFEFF]/g,'')
+    .trim();
+
+  // Format: ID | Member Name
+  if(text.indexOf('|') >= 0){
+
+    var first = text.split('|')[0].trim();
+
+    if(/^\d+$/.test(first)){
+      return normalizeMemberId(first);
+    }
+  }
+
+  // Remove accidental spaces inside QR URL
+  var clean = text.replace(/\s+/g,'');
+
+  // Extract ID from URL
+  var match = clean.match(/[?&]id=([^&#]+)/i);
+
+  if(match){
+    try{
+      return normalizeMemberId(
+        decodeURIComponent(match[1])
+      );
+    }catch(error){
+      return normalizeMemberId(match[1]);
+    }
+  }
+
+  // Format: ID only
+  if(/^\d+$/.test(clean)){
+    return normalizeMemberId(clean);
+  }
+
+  return '';
+}
 function findMember(id){
   var clean=normalizeMemberId(id);
 
@@ -1126,20 +1165,7 @@ function findMember(id){
   })||null;
 }
 
-function extractQrMemberId(decodedText){
-  var text=String(decodedText||'')
-    .normalize('NFKC')
-    .replace(/[\u200B-\u200D\uFEFF]/g,'')
-    .trim();
-
-  // QR format: ID | Member Name
-  if(text.indexOf('|')>=0){
-    text=text.split('|')[0].trim();
-  }
-
-  return normalizeMemberId(text);
-}
-// ============================================
+  // ============================================
 // ATTENDANCE SAVE / SCAN / OFFLINE SYNC
 // ============================================
 function makeEventId(){
@@ -1444,13 +1470,18 @@ async function toggleScannerTorch(){
 
         try{
           
-        alert(
-  "QR RAW: ["+decodedText+"]\n"+
-  "Extracted ID: ["+extractQrMemberId(decodedText)+"]\n"+
-  "Saved Members: "+members.length
-);
+var memberId = extractQrMemberId(decodedText);
 
-return;}finally{
+if(!memberId){
+  setStatus(
+    'scanMessage',
+    'Invalid QR code. Member ID could not be extracted.',
+    false
+  );
+  return;
+}
+
+await registerAttendance(memberId);}finally{
           setTimeout(function(){scanBusy=false;},1300);
         }
       },
