@@ -1353,36 +1353,37 @@ function extractQrMemberId(raw){
   return text;
 }
 async function registerAttendance(raw){
-  // Program and subprogram are required before both QR and manual attendance.
   if(!validateProgramSelection()){
-    setStatus('scanMessage','Select the program and required subprogram first.',false);
+    setStatus('scanMessage','Select program and subprogram first.',false);
     return;
   }
 
-  var id=String(raw||'').trim();
+  // Extract ID from formats such as "1 | Member Name"
+  var id=extractQrMemberId(raw);
 
   if(!id){
-    setStatus('scanMessage','Enter a member ID.',false);
+    setStatus('scanMessage','Invalid QR code or empty Member ID.',false);
     return;
   }
 
   var member=findMember(id);
 
-  if(!member){
-    if(navigator.onLine){
-      await loadMembers();
-      member=findMember(id);
-    }
+  if(!member && navigator.onLine){
+    await loadMembers();
+    member=findMember(id);
   }
 
   if(!member){
-    setStatus('scanMessage','Member ID not found in saved list. Refresh the member list while online.',false);
+    setStatus(
+      'scanMessage',
+      'Member ID '+id+' not found. Refresh members while online.',
+      false
+    );
     return;
   }
 
   saveLocalAttendance(member);
 }
-
 async function manualAttendance(){
   if(!validateProgramSelection()){
     setStatus('scanMessage','Select the program and required subprogram first.',false);
@@ -1447,14 +1448,14 @@ async function toggleScannerTorch(){
   }
 
   if(!validateProgramSelection()){
-    setStatus('scanMessage','Select the program and required subprogram first.',false);
+    setStatus('scanMessage','Select program and subprogram first.',false);
     return;
   }
 
   if(scannerRunning)return;
 
   if(typeof Html5Qrcode==='undefined'){
-    setStatus('scanMessage','QR scanner library is unavailable. Check internet or reload the app.',false);
+    setStatus('scanMessage','QR scanner library unavailable.',false);
     return;
   }
 
@@ -1463,28 +1464,33 @@ async function toggleScannerTorch(){
 
     await scanner.start(
       {facingMode:'environment'},
-      {fps:10,qrbox:{width:250,height:250}},
+      {
+        fps:10,
+        qrbox:{width:250,height:250}
+      },
+
       async function(decodedText){
         if(scanBusy)return;
+
         scanBusy=true;
 
         try{
-          
-var memberId = extractQrMemberId(decodedText);
+          await registerAttendance(decodedText);
 
-if(!memberId){
-  setStatus(
-    'scanMessage',
-    'Invalid QR code. Member ID could not be extracted.',
-    false
-  );
-  return;
-}
+        }catch(error){
+          setStatus(
+            'scanMessage',
+            'Attendance error: '+error.message,
+            false
+          );
 
-await registerAttendance(memberId);}finally{
-          setTimeout(function(){scanBusy=false;},1300);
+        }finally{
+          setTimeout(function(){
+            scanBusy=false;
+          },1300);
         }
       },
+
       function(){}
     );
 
@@ -1498,24 +1504,24 @@ await registerAttendance(memberId);}finally{
       torchButton.textContent='🔦 Flashlight OFF';
     }
 
-    setStatus('scanMessage','Scanner is running. Point the camera at a member QR code.',true);
+    setStatus(
+      'scanMessage',
+      'Scanner running. Ready to scan members.',
+      true
+    );
 
   }catch(error){
     scannerRunning=false;
-    scannerTorchOn=false;
+    scanner=null;
 
-    var torchButton=document.getElementById('scannerTorchButton');
-
-    if(torchButton){
-      torchButton.disabled=true;
-      torchButton.textContent='🔦 Flashlight OFF';
-    }
-
-    setStatus('scanMessage','Could not start camera: '+error.message,false);
+    setStatus(
+      'scanMessage',
+      'Could not start camera: '+error.message,
+      false
+    );
   }
 }
-
-async function stopScanner(){
+  async function stopScanner(){
   if(scanner && scannerRunning){
     try{
       if(scannerTorchOn){
@@ -1569,6 +1575,33 @@ function displaySelectedDate(){
   document.getElementById('selectedDateLabel').textContent='Selected date: '+date+' ዓ.ም.';
 }
 
+function mergeAttendanceRecords(serverRecords, localRecords){
+  var combined=[];
+  var seen={};
+
+  function addRecord(r){
+    var key=r.eventId
+      ? 'event_'+r.eventId
+      : [
+          r.id,
+          r.ethDate||r.date,
+          r.time,
+          r.program,
+          r.subprogram||''
+        ].join('_');
+
+    if(!seen[key]){
+      seen[key]=true;
+      combined.push(r);
+    }
+  }
+
+  (serverRecords||[]).forEach(addRecord);
+  (localRecords||[]).forEach(addRecord);
+
+  return combined;
+}
+
 async function loadSelectedRecords(){
   if(!currentSession)return;
 
@@ -1579,38 +1612,55 @@ async function loadSelectedRecords(){
     selectedDay=t.day;
   }
 
-  var date=ethDateString(selectedYear,selectedMonth,selectedDay);
+  var date=ethDateString(
+    selectedYear,
+    selectedMonth,
+    selectedDay
+  );
+
+  var localRecords=records.filter(function(r){
+    return r.ethDate===date;
+  });
 
   if(!navigator.onLine){
-    selectedRecords=records.filter(function(r){
-      return r.ethDate===date;
-    });
-
+    selectedRecords=mergeAttendanceRecords([],localRecords);
     renderSelectedRecords();
-    setStatus('historyStatus','Offline: showing records saved on this device.',false);
+    setStatus('historyStatus','Offline: showing saved attendance records.',false);
     return;
   }
 
   try{
-    var result=await api('records',{ethDate:date,subprogram:'all'});
-    selectedRecords=result.records||[];
-
-    renderSelectedRecords();
-    setStatus('historyStatus','Loaded '+selectedRecords.length+' records from the server.',true);
-  }catch(error){
-    selectedRecords=records.filter(function(r){
-      return r.ethDate===date;
+    var result=await api('records',{
+      ethDate:date,
+      subprogram:'all'
     });
 
+    selectedRecords=mergeAttendanceRecords(
+      result.records||[],
+      localRecords
+    );
+
     renderSelectedRecords();
+
     setStatus(
       'historyStatus',
-      'Showing locally saved records. '+error.message.replace(/^AUTH:\s*/,''),
+      'Loaded '+selectedRecords.length+
+      ' attendance records. Local records preserved.',
+      true
+    );
+
+  }catch(error){
+    selectedRecords=mergeAttendanceRecords([],localRecords);
+    renderSelectedRecords();
+
+    setStatus(
+      'historyStatus',
+      'Showing locally saved records. '+
+      error.message.replace(/^AUTH:\s*/,''),
       false
     );
   }
 }
-
 // ============================================
 // ETHIOPIAN CALENDAR VIEW
 // ============================================
