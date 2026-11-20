@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="am">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,102 +8,37 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f1f4f8;color:#172b45;font-family:Arial,sans-serif}
-header{background:#12345a;color:white;padding:22px 15px;text-align:center}
-header h1{margin:0;font-size:23px}
-header p{margin:8px 0 0;font-size:13px}
-#clock{margin-top:12px;font-size:14px;font-weight:bold}
-main{max-width:850px;margin:18px auto;padding:0 12px}
-.card{background:white;border-radius:13px;padding:17px;margin-bottom:14px;box-shadow:0 2px 9px #00000012}
-h2{font-size:17px;margin:0 0 13px}
+header{background:#12345a;color:white;padding:20px 14px;text-align:center}
+header h1{margin:0;font-size:23px}header p{margin:8px 0 0;font-size:13px}
+#clock{margin-top:11px;font-size:14px;font-weight:bold}
+main{max-width:1050px;margin:18px auto;padding:0 12px}
+.card{background:white;border-radius:13px;padding:16px;margin-bottom:14px;box-shadow:0 2px 9px #00000012}
+h2{font-size:17px;margin:0 0 12px}
 button,input,select{width:100%;padding:12px;border-radius:8px;font-size:14px}
 button{border:0;background:#12345a;color:white;font-weight:bold;margin-top:8px;cursor:pointer}
 button.secondary{background:#e5edf6;color:#12345a}
-button.danger{background:#a52828}
-button:disabled{opacity:.4;cursor:not-allowed}
-input,select{border:1px solid #ccd5df;margin:5px 0;background:white}
-.status{padding:10px;border-radius:8px;background:#edf3fa;margin-top:10px;font-size:13px;overflow-wrap:anywhere}
-.good{color:#14733c}
-.bad{color:#b3261e}
-table{width:100%;border-collapse:collapse;font-size:12px}
-td,th{padding:9px 5px;border-bottom:1px solid #e5e9ef;text-align:left;white-space:nowrap}
-.small{font-size:12px;color:#68788b}
+button.danger{background:#a52a2a}button:disabled{opacity:.45}
+input,select{border:1px solid #ccd5df;margin:5px 0;background:white;color:#172b45}
+.status{padding:10px;border-radius:8px;background:#edf3fa;margin-top:9px;font-size:13px;overflow-wrap:anywhere}
+.good{color:#14733c}.bad{color:#b3261e}
+.small{font-size:12px;color:#68788b;line-height:1.5}
 .stat{font-size:25px;font-weight:bold;color:#12345a}
-footer{text-align:center;color:#718096;font-size:12px;padding:20px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+td,th{padding:9px 6px;border-bottom:1px solid #e5e9ef;text-align:left;white-space:nowrap}
 .calendar-head{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:center}
 .calendar-head button{margin:0;padding:10px 5px}
-#calendarTitle{text-align:center;font-weight:bold;font-size:15px}
+#calendarTitle{text-align:center;font-weight:bold;font-size:14px}
 .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
-.calendar-day{padding:10px 2px;margin:0;background:#edf3fa;color:#12345a;font-size:13px;min-height:40px}
-.calendar-day.selected{background:#12345a;color:white}
-.calendar-day.today{border:2px solid #25845a}
+.calendar-day{padding:9px 2px;margin:0;background:#edf3fa;color:#12345a;font-size:13px;min-height:39px}
+.calendar-day.selected{background:#12345a;color:white}.calendar-day.today{border:2px solid #25845a}
 .weekday{font-size:11px;text-align:center;color:#68788b;padding:7px 0;font-weight:bold}
-#selectedDateLabel{font-weight:bold;margin-top:12px}
-.table-wrap{overflow-x:auto}
 .report-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.hidden{display:none!important}
-.login-wrap{max-width:430px;margin:24px auto;padding:0 12px}
-.muted{color:#6b7785;font-size:12px;line-height:1.5}
-.admin-account{border-bottom:1px solid #e5e9ef;padding:10px 0;font-size:13px}
-.admin-account button{width:auto;padding:7px 12px;margin:5px 5px 0 0}
-.admin-subprogram{border-bottom:1px solid #e5e9ef;padding:9px 0;font-size:13px}
-.admin-subprogram button{width:auto;padding:7px 12px;margin:5px 5px 0 0}
-.topbar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.topbar button{width:auto;margin:0;padding:9px 13px}
-@media(max-width:500px){.report-controls,.row2{grid-template-columns:1fr}}
-/* ETHIOPIAN REPORT DATE PICKER */
-
-#reportCalendarBox {
-  margin-top: 12px;
-  padding: 14px;
-  background: var(--card, #172554);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 12px;
-}
-
-.report-calendar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.report-calendar-header span {
-  font-weight: bold;
-  text-align: center;
-}
-
-.report-calendar-header button {
-  min-width: 40px;
-  padding: 8px;
-}
-
-.report-calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 5px;
-}
-
-.report-calendar-grid .weekday {
-  text-align: center;
-  padding: 7px 0;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.report-calendar-grid .calendar-day {
-  width: 100%;
-  min-width: 0;
-  padding: 10px 2px;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.report-calendar-grid .calendar-day:hover {
-  background: #2563eb;
-  color: white;
-}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#reader{width:100%;max-width:520px;margin:12px auto}
+#torchBtn{background:#e5edf6;color:#12345a}
+footer{text-align:center;color:#718096;font-size:12px;padding:20px}
+@media(max-width:520px){.report-controls,.two{grid-template-columns:1fr}.calendar-day{min-height:35px}}
 </style>
 </head>
 <body>
@@ -112,1965 +47,348 @@ footer{text-align:center;color:#718096;font-size:12px;padding:20px}
 <p>ጽርሐ ጽዮን ሰንበት ትምህርት ቤት</p>
 <div id="clock"></div>
 </header>
-
-<div id="loginScreen" class="login-wrap">
-  <div class="card">
-    <h2>Secure Login</h2>
-    <p class="small">Admin: enter your Firebase email. Scanner: enter your assigned username.</p>
-    <form id="loginForm">
-      <input id="loginUsername" autocomplete="username" placeholder="Email or scanner username" required>
-      <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password" required>
-      <button id="loginButton" type="submit">Login</button>
-    </form>
-    <div id="loginStatus" class="status">Internet connection is required for the first login on this device.</div>
-  </div>
+<main>
+<div class="card">
+<h2>System Status</h2>
+<div id="connection" class="status">Checking connection...</div>
+<div id="memberStatus" class="status">Loading members...</div>
+<div id="syncStatus" class="status">Checking records...</div>
 </div>
 
-<main id="appMain" class="hidden">
-  <div class="card">
-    <div class="topbar">
-      <div><strong id="signedInLabel">Signed in</strong><div class="small" id="roleLabel"></div></div>
-      <button class="danger" onclick="logout()">Log Out</button>
-    </div>
-    <div id="connection" class="status">Checking connection...</div>
-    <div id="memberStatus" class="status">Loading members...</div>
-    <div id="syncStatus" class="status">Checking records...</div>
-  </div>
-
-  <section id="adminPanel" class="card hidden">
-    <h2>Admin – Scanner Accounts</h2>
-    <p class="small">Create scanner usernames and passwords. Only Admin can create or disable scanner accounts.</p>
-    <form id="createScannerForm">
-      <input id="newScannerUsername" placeholder="Scanner username (3–30 characters)" required>
-      <input id="newScannerName" placeholder="Scanner display name" required>
-      <input id="newScannerPassword" type="password" placeholder="Temporary password (at least 8 characters)" required>
-      <button id="createScannerButton" type="submit">Create Scanner Account</button>
-    </form>
-    <div id="adminStatus" class="status">Scanner account management</div>
-    <div id="scannerAccounts"></div>
-    <button class="secondary" onclick="loadScannerAccounts()">Refresh Scanner List</button>
-    <hr style="border:0;border-top:1px solid #e5e9ef;margin:18px 0">
-    <h2>Admin – Program Subprograms</h2>
-    <p class="small">Only Admin can add, rename, or disable subprograms. Existing attendance records will not be changed.</p>
-    <form id="subprogramForm">
-      <select id="manageSubprogramProgram" required>
-        <option value="">-- Select Main Program --</option>
-        <option value="መዝሙር ጥናት">መዝሙር ጥናት</option>
-        <option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option>
-        <option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option>
-        <option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option>
-      </select>
-      <input id="newSubprogramName" placeholder="Subprogram name" required maxlength="60">
-      <button id="saveSubprogramButton" type="submit">Add Subprogram</button>
-    </form>
-    <div id="programAdminStatus" class="status">Manage program subprograms</div>
-    <div id="programSubprogramList"></div>
-    <button class="secondary" onclick="loadProgramConfig()">Refresh Subprogram List</button>
-  </section>
-
-  <div class="card">
-    <h2>Attendance Program</h2>
-    <p class="small">Select the program and its subprogram before starting the scanner or registering attendance.</p>
-    <select id="programSelect" onchange="updateProgramStatus()">
-      <option value="">-- Select Program --</option>
-      <option value="መዝሙር ጥናት">መዝሙር ጥናት</option>
-      <option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option>
-      <option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option>
-      <option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option>
-    </select>
-    <div id="subprogramWrap" class="hidden">
-      <label class="small" for="subprogramSelect">Subprogram (Required when applicable)</label>
-      <select id="subprogramSelect" onchange="updateProgramStatus()">
-        <option value="">-- Select Subprogram --</option>
-      </select>
-    </div>
-    <div id="programStatus" class="status">Please select a program.</div>
-  </div>
-
-  <div class="card">
-    <h2>QR Attendance Scanner</h2>
-    <p class="small">Scan the member's personal QR code using your phone camera.</p>
-    <button onclick="startScanner()">Start Scanner</button>
-    <button class="secondary" onclick="stopScanner()">Stop Scanner</button>
-    <button
-  type="button"
-  id="scannerTorchButton"
-  class="secondary"
-  onclick="toggleScannerTorch()"
-  disabled
->
-  🔦 Flashlight OFF
-</button>
-    <div id="reader"></div>
-    <div id="scanMessage" class="status">Ready to scan.</div>
-  </div>
-
-  <div class="card">
-    <h2>Manual Attendance</h2>
-    <input id="manualId" placeholder="Enter Member ID">
-    <button onclick="manualAttendance()">Register Attendance</button>
-  </div>
-
-  <div class="card">
-    <h2>Ethiopian Calendar</h2>
-    <p class="small">Select an Ethiopian date to view attendance from all phones.</p>
-    <div class="calendar-head">
-      <button class="secondary" onclick="changeMonth(-1)">❮ Previous</button>
-      <div id="calendarTitle">Calendar</div>
-      <button class="secondary" onclick="changeMonth(1)">Next ❯</button>
-    </div>
-    <div class="calendar-grid" id="calendarGrid"></div>
-    <button class="secondary" onclick="selectToday()">Go to Today</button>
-    <div id="selectedDateLabel">Selected date:</div>
-    <div id="historyStatus" class="status">Select a date.</div>
-  </div>
-
-  <div class="card">
-    <h2>Selected Date Report</h2>
-    <div class="stat" id="todayCount">0</div>
-    <p class="small">Attendance records for selected date</p>
-    <button onclick="downloadCSV()">Download Selected Date CSV</button>
-  </div>
-
-  <div class="card">
-    <h2>Attendance Records</h2>
-    <p class="small">Records from all connected phones for the selected date.</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>ID</th><th>Name</th><th>Date</th><th>Time</th><th>Program</th><th>Subprogram</th><th>Status</th></tr></thead>
-        <tbody id="recordList"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Daily, Monthly & 3 Months Reports</h2>
-    <p class="small">Reports are generated using the Ethiopian calendar.</p>
-    <div class="report-controls">
-      <div>
-        <label class="small">Report Type</label>
-    <select id="reportType" onchange="toggleReportDateRange()">
-  <option value="daily">Daily Report</option>
-  <option value="monthly">Monthly Report</option>
-  <option value="threeMonths">3 Months Report</option>
-  <option value="range">Date Range Report</option>
+<div class="card">
+<h2>Attendance Program</h2>
+<p class="small">Scan ከማድረግ በፊት ዋና መርሐ ግብርን እና ንዑስ መርሐ ግብርን ይምረጡ።</p>
+<label class="small" for="programSelect">Program Type</label>
+<select id="programSelect" onchange="updateSubprogramOptions()">
+<option value="">-- ዋና መርሐ ግብር ይምረጡ --</option>
+<option value="መዝሙር ጥናት">መዝሙር ጥናት</option>
+<option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option>
+<option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option>
+<option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option>
 </select>
-      </div>
-     <div id="reportDateRange" style="display:none;">
-
-  <div>
-    <label class="small">Start Date (Ethiopian)</label>
-    <input
-      type="text"
-      id="reportStartDate"
-      placeholder="Select Start Date"
-      readonly
-      onclick="openReportDatePicker('start')"
-    >
-  </div>
-
-  <div>
-    <label class="small">End Date (Ethiopian)</label>
-    <input
-      type="text"
-      id="reportEndDate"
-      placeholder="Select End Date"
-      readonly
-      onclick="openReportDatePicker('end')"
-    >
-  </div>
-
-  <div id="reportCalendarBox" style="display:none;">
-    <div class="report-calendar-header">
-      <button type="button" onclick="changeReportPickerMonth(-1)">‹</button>
-      <span id="reportCalendarTitle"></span>
-      <button type="button" onclick="changeReportPickerMonth(1)">›</button>
-    </div>
-
-    <div id="reportCalendarGrid" class="report-calendar-grid"></div>
-  </div>
-
+<label class="small" for="subprogramSelect">Subprogram</label>
+<select id="subprogramSelect" disabled>
+<option value="">-- ንዑስ መርሐ ግብር ይምረጡ --</option>
+</select>
+<div id="programStatus" class="status">Please select a program and subprogram.</div>
 </div>
-      <div>
-        <label class="small">Program</label>
-        <select id="reportProgram" onchange="updateReportSubprogramOptions()">
-          <option value="all">All Programs</option>
-          <option value="መዝሙር ጥናት">መዝሙር ጥናት</option>
-          <option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option>
-          <option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option>
-          <option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option>
-        </select>
-      </div>
-      <div>
-        <label class="small">Subprogram</label>
-        <select id="reportSubprogram">
-          <option value="all">All Subprograms</option>
-        </select>
-      </div>
-    </div>
-    <button onclick="loadReport()">Generate Report</button>
-    <div id="reportStatus" class="status">Choose a report type and generate.</div>
-    <div class="stat" id="reportCount">0</div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>ID</th><th>Name</th><th>Ethiopian Date</th><th>Time</th><th>Program</th><th>Subprogram</th></tr></thead>
-        <tbody id="reportList"></tbody>
-      </table>
-    </div>
-    <button class="secondary" onclick="downloadReportCSV()">Download Report CSV</button>
-  </div>
+
+<div class="card">
+<h2>QR Attendance Scanner</h2>
+<p class="small">የአባሉን የግል QR Code በስልክ ካሜራ ያንብቡ።</p>
+<div class="two">
+<button onclick="startScanner()">Start Scanner</button>
+<button class="secondary" onclick="stopScanner()">Stop Scanner</button>
+</div>
+<button id="torchBtn" onclick="toggleTorch()" disabled>Flashlight: Off</button>
+<div id="reader"></div>
+<div id="scanMessage" class="status">Ready to scan.</div>
+</div>
+
+<div class="card">
+<h2>Manual Attendance</h2>
+<input id="manualId" placeholder="Enter Member ID" inputmode="numeric">
+<button onclick="manualAttendance()">Register Attendance</button>
+</div>
+
+<div class="card">
+<h2>Ethiopian Calendar</h2>
+<p class="small">የኢትዮጵያን ቀን በመምረጥ የዚያን ቀን መዝገብ ይመልከቱ።</p>
+<div class="calendar-head">
+<button class="secondary" onclick="changeMonth(-1)">❮ Previous</button>
+<div id="calendarTitle">Calendar</div>
+<button class="secondary" onclick="changeMonth(1)">Next ❯</button>
+</div>
+<div class="calendar-grid" id="calendarGrid"></div>
+<button class="secondary" onclick="selectToday()">Go to Today</button>
+<div id="selectedDateLabel" class="status">Selected date:</div>
+<div id="historyStatus" class="status">Select a date.</div>
+</div>
+
+<div class="card">
+<h2>Selected Date Attendance</h2>
+<div class="stat" id="todayCount">0</div>
+<p class="small">Records for selected Ethiopian date</p>
+<button onclick="downloadCSV()">Download Selected Date CSV</button>
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>Name</th><th>Date</th><th>Time</th><th>Program</th><th>Subprogram</th><th>Status</th></tr></thead>
+<tbody id="recordList"></tbody></table></div>
+</div>
+
+<div class="card">
+<h2>Daily, Monthly & 3 Months Reports</h2>
+<div class="report-controls">
+<div><label class="small">Report Type</label>
+<select id="reportType"><option value="daily">Daily Report</option><option value="monthly">Monthly Report</option><option value="threeMonths">3 Months Report</option></select></div>
+<div><label class="small">Program</label>
+<select id="reportProgram"><option value="all">All Programs</option><option value="መዝሙር ጥናት">መዝሙር ጥናት</option><option value="ጸሎት መርሐ ግብር">ጸሎት መርሐ ግብር</option><option value="የትምህርት መርሐ ግብር">የትምህርት መርሐ ግብር</option><option value="ሌላ መርሐ ግብር">ሌላ መርሐ ግብር</option></select></div>
+<div><label class="small">Subprogram</label><select id="reportSubprogram"><option value="all">All Subprograms</option></select></div>
+</div>
+<button onclick="loadReport()">Generate Report</button>
+<div id="reportStatus" class="status">Choose report type and generate.</div>
+<div class="stat" id="reportCount">0</div>
+<div class="table-wrap"><table>
+<thead><tr><th>ID</th><th>Name</th><th>Ethiopian Date</th><th>Time</th><th>Program</th><th>Subprogram</th></tr></thead>
+<tbody id="reportList"></tbody></table></div>
+<button class="secondary" onclick="downloadReportCSV()">Download Report CSV</button>
+</div>
 </main>
-
 <footer>TSE Smart Attendance System<br>Information and Internal Communication Department</footer>
-<iframe name="tseBridgeFrame" id="tseBridgeFrame" class="hidden" title="Secure server connection"></iframe>
-<script src="./html5-qrcode.min.js"></script>
 
+<script src="./html5-qrcode.min.js"></script>
 <script>
 'use strict';
-
-// ============================================
-// CONFIGURATION
-// ============================================
-var API_URL = 'https://script.google.com/macros/s/AKfycby2FG7enFwWUUlsvzAOfGE_G8HWErJ3ZQUHVxDuqWnwrEDCN39EpRkUOwyUpjj4Cn4B/exec';
-var FIREBASE_API_KEY = 'AIzaSyCsuzgQOhbj8GX97dkBQMOSSouCSyq-1Ds';
-var FIREBASE_PROJECT_ID = 'tse-smart-attendance';
-var SESSION_KEY = 'tse_secure_session';
-
-var MONTHS = ['መስከረም','ጥቅምት','ኅዳር','ታኅሣሥ','ጥር','የካቲት','መጋቢት','ሚያዝያ','ግንቦት','ሰኔ','ሐምሌ','ነሐሴ','ጳጉሜን'];
-var WEEKDAYS = ['እሑድ','ሰኞ','ማክሰኞ','ረቡዕ','ሐሙስ','ዓርብ','ቅዳሜ'];
-
-// Fixed subprogram choices
-var FIXED_SUBPROGRAMS = {
-  'መዝሙር ጥናት': ['ወረብ','ዝማሬ'],
-  'የትምህርት መርሐ ግብር': [
-    '1ኛ ክፍል','2ኛ ክፍል','3ኛ ክፍል','4ኛ ክፍል',
-    '5ኛ ክፍል','6ኛ ክፍል','7ኛ ክፍል','8ኛ ክፍል',
-    '9ኛ ክፍል','10ኛ ክፍል','11ኛ ክፍል','12ኛ ክፍል'
-  ]
-};
-
-var members = [];
-var records = [];
-var selectedRecords = [];
-var reportRecords = [];
-
-var scanner = null;
-var scannerRunning = false;
-var scanBusy = false;
-
-var viewYear, viewMonth, selectedYear, selectedMonth, selectedDay;
-var currentSession = null;
-var bridgeCounter = 0;
-
-var programConfig = {programs:[],subprograms:{},allSubprograms:[]};
-
-try {
-  programConfig = JSON.parse(localStorage.getItem('tse_program_config') || 'null') || programConfig;
-} catch(e) {}
-
-try { members = JSON.parse(localStorage.getItem('tse_members') || '[]'); } catch(e) { members = []; }
-try { records = JSON.parse(localStorage.getItem('tse_records') || '[]'); } catch(e) { records = []; }
-try { currentSession = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch(e) { currentSession = null; }
-
-function saveLocal(){localStorage.setItem('tse_records',JSON.stringify(records));}
-function saveMembersLocal(){localStorage.setItem('tse_members',JSON.stringify(members));}
-function saveSession(){localStorage.setItem(SESSION_KEY,JSON.stringify(currentSession));}
-function clearSession(){currentSession=null;localStorage.removeItem(SESSION_KEY);}
-
-function setStatus(id,message,good){
-  var el=document.getElementById(id);
-  if(!el)return;
-  el.textContent=message;
-  el.className='status '+(good===true?'good':good===false?'bad':'');
-}
-
-// ============================================
-// SUBPROGRAM RULES
-// ============================================
-function getSubprogramOptions(program){
-  if(FIXED_SUBPROGRAMS[program]){
-    return FIXED_SUBPROGRAMS[program].slice();
-  }
-
-  var list=(programConfig.subprograms&&programConfig.subprograms[program])||[];
-  return list.slice();
-}
-
-function requiresSubprogram(program){
-  return !!FIXED_SUBPROGRAMS[program] ||
-    getSubprogramOptions(program).length>0;
-}
-
-function validateProgramSelection(){
-  var program=selectedProgram();
-  var subprogram=selectedSubprogram();
-
-  if(!program){
-    setStatus('programStatus','Please select a program before attendance.',false);
-    return false;
-  }
-
-  if(requiresSubprogram(program)&&!subprogram){
-    setStatus('programStatus','Select a subprogram for '+program+'.',false);
-    return false;
-  }
-
-  setStatus('programStatus','Selected: '+program+(subprogram?' — '+subprogram:''),true);
-  return true;
-}
-
-// ============================================
-// FIREBASE REST LOGIN + TOKEN REFRESH
-// ============================================
-function firebaseEmail(value){
-  var v=String(value||'').trim().toLowerCase();
-  return v.indexOf('@')>=0?v:v+'@tseattendance.invalid';
-}
-
-async function firebaseLogin(username,password){
-  var url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+encodeURIComponent(FIREBASE_API_KEY);
-  var response=await fetch(url,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({email:firebaseEmail(username),password:password,returnSecureToken:true})
-  });
-  var data=await response.json();
-  if(!response.ok)throw new Error((data.error&&data.error.message)||'Login failed.');
-
-  currentSession={
-    uid:data.localId,
-    email:data.email||'',
-    idToken:data.idToken,
-    refreshToken:data.refreshToken,
-    expiresAt:Date.now()+(Number(data.expiresIn||3600)*1000),
-    role:'',
-    username:'',
-    displayName:''
-  };
-  saveSession();
-}
-
-async function refreshSessionToken(){
-  if(!currentSession||!currentSession.refreshToken)return false;
-  if(!navigator.onLine)return false;
-  if(currentSession.expiresAt>Date.now()+180000)return true;
-
-  var url='https://securetoken.googleapis.com/v1/token?key='+encodeURIComponent(FIREBASE_API_KEY);
-  var body=new URLSearchParams({grant_type:'refresh_token',refresh_token:currentSession.refreshToken});
-
-  var response=await fetch(url,{
-    method:'POST',
-    headers:{'Content-Type':'application/x-www-form-urlencoded'},
-    body:body.toString()
-  });
-
-  var data=await response.json();
-  if(!response.ok)throw new Error((data.error&&data.error.message)||'Session refresh failed.');
-
-  currentSession.idToken=data.id_token;
-  currentSession.refreshToken=data.refresh_token||currentSession.refreshToken;
-  currentSession.expiresAt=Date.now()+(Number(data.expires_in||3600)*1000);
-  currentSession.uid=data.user_id||currentSession.uid;
-  saveSession();
-  return true;
-}
-
-// ============================================
-// ============================================
-// SECURE POST BRIDGE TO APPS SCRIPT
-// SERIAL REQUEST QUEUE
-// ============================================
-
-var securePostQueue = Promise.resolve();
-
-function securePost(action, params){
-  function sendRequest(){
-    return new Promise(function(resolve, reject){
-
-      if(!currentSession || !currentSession.idToken){
-        reject(new Error('Please sign in.'));
-        return;
-      }
-
-      var nonce='tse_'+Date.now()+'_'+(++bridgeCounter)+'_'+Math.random().toString(36).slice(2);
-      var done=false;
-      var form=null;
-
-      var timer=setTimeout(function(){
-        finish(new Error('Server response timed out.'));
-      },30000);
-
-      function cleanup(){
-        window.removeEventListener('message',onMessage);
-        clearTimeout(timer);
-        if(form && form.parentNode)form.remove();
-      }
-
-      function finish(error,value){
-        if(done)return;
-        done=true;
-        cleanup();
-
-        if(error)reject(error);
-        else resolve(value);
-      }
-
-      function onMessage(event){
-        var data=event.data;
-
-        if(!data ||
-           data.type!=='TSE_ATTENDANCE_RESPONSE' ||
-           data.nonce!==nonce)return;
-
-        finish(null,data.result);
-      }
-
-      window.addEventListener('message',onMessage);
-
-      form=document.createElement('form');
-      form.method='POST';
-      form.action=API_URL;
-      form.target='tseBridgeFrame';
-      form.style.display='none';
-
-      var field=document.createElement('input');
-      field.type='hidden';
-      field.name='payload';
-
-      field.value=JSON.stringify({
-        action:action,
-        params:params||{},
-        idToken:currentSession.idToken,
-        nonce:nonce
-      });
-
-      form.appendChild(field);
-      document.body.appendChild(form);
-      form.submit();
-    });
-  }
-
-  var request=securePostQueue.then(sendRequest,sendRequest);
-
-  securePostQueue=request.then(
-    function(){},
-    function(){}
-  );
-
-  return request;
-}
-  async function api(action,params){
-  if(!navigator.onLine)throw new Error('You are offline.');
-  await refreshSessionToken();
-
-  var result=await securePost(action,params||{});
-
-  if(!result||result.success!==true){
-    var message=(result&&result.message)||'Server request failed.';
-    if(/authentication|token|authorized|disabled|session expired/i.test(message)){
-      throw new Error('AUTH: '+message);
-    }
-    throw new Error(message);
-  }
-  return result;
-}
-
-// ============================================
-// LOGIN / LOGOUT / SESSION RESTORE
-// ============================================
-document.getElementById('loginForm').addEventListener('submit',async function(event){
-  event.preventDefault();
-
-  var button=document.getElementById('loginButton');
-  button.disabled=true;
-  setStatus('loginStatus','Signing in...',null);
-
-  try{
-    if(!navigator.onLine)throw new Error('First login on this device requires internet.');
-
-    await firebaseLogin(
-      document.getElementById('loginUsername').value,
-      document.getElementById('loginPassword').value
-    );
-
-    var session=await api('session',{});
-    currentSession.role=session.role;
-    currentSession.username=session.username||'';
-    currentSession.displayName=session.displayName||'';
-    saveSession();
-
-    document.getElementById('loginPassword').value='';
-    enterApp();
-  }catch(error){
-    clearSession();
-    setStatus('loginStatus',error.message.replace(/^AUTH:\s*/,''),false);
-  }finally{
-    button.disabled=false;
-  }
-});
-
-function enterApp(){
-  if(!currentSession)return;
-
-  document.getElementById('loginScreen').classList.add('hidden');
-  document.getElementById('appMain').classList.remove('hidden');
-
-  var label=currentSession.displayName||currentSession.username||currentSession.email||'User';
-  document.getElementById('signedInLabel').textContent='Signed in: '+label;
-  document.getElementById('roleLabel').textContent=currentSession.role==='admin'?'Administrator':'Scanner account';
-
-  document.getElementById('adminPanel').classList.toggle('hidden',currentSession.role!=='admin');
-
-  showMemberStatus();
-  updateConnection();
-  populateSubprogramOptions();
-  updateProgramStatus();
-  updateReportSubprogramOptions();
-  renderCalendar();
-  displaySelectedDate();
-  renderSelectedRecords();
-
-  loadMembers().then(function(){syncPending();});
-  loadProgramConfig();
-  loadSelectedRecords();
-
-  if(currentSession.role==='admin')loadScannerAccounts();
-}
-
-async function restoreSession(){
-  if(!currentSession||!currentSession.refreshToken){
-    clearSession();
-    return;
-  }
-
-  if(!navigator.onLine){
-    if(currentSession.role){
-      enterApp();
-      setStatus('connection','Offline mode: cached login. New records will sync when internet returns.',false);
-    }else{
-      setStatus('loginStatus','Connect to the internet and sign in once on this device.',false);
-    }
-    return;
-  }
-
-  try{
-    await refreshSessionToken();
-    var result=await securePost('session',{});
-
-    if(!result||!result.success){
-      throw new Error((result&&result.message)||'Session not authorized.');
-    }
-
-    currentSession.role=result.role;
-    currentSession.username=result.username||'';
-    currentSession.displayName=result.displayName||'';
-    saveSession();
-    enterApp();
-  }catch(error){
-    if(/AUTH:|not authorized|disabled|expired|invalid|USER_DISABLED|TOKEN_EXPIRED/i.test(error.message)){
-      clearSession();
-      setStatus('loginStatus','Your session is no longer valid. Please sign in again.',false);
-    }else if(currentSession.role){
-      enterApp();
-      setStatus('connection','Could not contact server. Cached offline access is available.',false);
-    }else{
-      setStatus('loginStatus','Could not verify your login. Please sign in again.',false);
-    }
-  }
-}
-
-async function logout(){
-  await stopScanner();
-  clearSession();
-  document.getElementById('appMain').classList.add('hidden');
-  document.getElementById('loginScreen').classList.remove('hidden');
-  setStatus('loginStatus','You have signed out.',true);
-}
-
-// ============================================
-// ADMIN SCANNER MANAGEMENT
-// ============================================
-document.getElementById('createScannerForm').addEventListener('submit',async function(event){
-  event.preventDefault();
-
-  var button=document.getElementById('createScannerButton');
-  button.disabled=true;
-  setStatus('adminStatus','Creating scanner account...',null);
-
-  try{
-    var result=await api('createScanner',{
-      username:document.getElementById('newScannerUsername').value,
-      displayName:document.getElementById('newScannerName').value,
-      password:document.getElementById('newScannerPassword').value
-    });
-
-    setStatus('adminStatus',result.message||'Scanner account created.',true);
-    document.getElementById('createScannerForm').reset();
-    await loadScannerAccounts();
-  }catch(error){
-    setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);
-  }finally{
-    button.disabled=false;
-  }
-});
-
-async function loadScannerAccounts(){
-  if(!currentSession||currentSession.role!=='admin')return;
-
-  try{
-    var result=await api('scannerList',{});
-    var box=document.getElementById('scannerAccounts');
-    box.innerHTML='';
-
-    (result.accounts||[]).forEach(function(account){
-      var div=document.createElement('div');
-      div.className='admin-account';
-
-      var title=document.createElement('strong');
-      title.textContent=account.displayName+' ('+account.username+')';
-      div.appendChild(title);
-
-      var status=document.createElement('div');
-      status.className='small';
-      status.textContent='Status: '+account.status;
-      div.appendChild(status);
-
-      var button=document.createElement('button');
-      button.textContent=account.status==='ACTIVE'?'Disable':'Activate';
-      button.className=account.status==='ACTIVE'?'danger':'secondary';
-      button.onclick=function(){
-        changeScannerStatus(account.uid,account.status==='ACTIVE'?'DISABLED':'ACTIVE');
-      };
-
-      div.appendChild(button);
-      box.appendChild(div);
-    });
-
-    if(!(result.accounts||[]).length)box.textContent='No scanner accounts created yet.';
-  }catch(error){
-    setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);
-  }
-}
-
-async function changeScannerStatus(uid,status){
-  if(!confirm(status==='DISABLED'?'Disable this scanner account?':'Activate this scanner account?'))return;
-
-  try{
-    var result=await api('setScannerStatus',{uid:uid,status:status});
-    setStatus('adminStatus',result.message,true);
-    await loadScannerAccounts();
-  }catch(error){
-    setStatus('adminStatus',error.message.replace(/^AUTH:\s*/,''),false);
-  }
-}
-
-// ============================================
-// ADMIN SUBPROGRAM MANAGEMENT
-// ============================================
-document.getElementById('subprogramForm').addEventListener('submit',async function(event){
-  event.preventDefault();
-  if(!currentSession||currentSession.role!=='admin')return;
-
-  var button=document.getElementById('saveSubprogramButton');
-  button.disabled=true;
-  setStatus('programAdminStatus','Saving subprogram...',null);
-
-  try{
-    var result=await api('saveSubprogram',{
-      program:document.getElementById('manageSubprogramProgram').value,
-      subprogram:document.getElementById('newSubprogramName').value
-    });
-
-    setStatus('programAdminStatus',result.message||'Subprogram saved.',true);
-    document.getElementById('newSubprogramName').value='';
-    await loadProgramConfig();
-  }catch(error){
-    setStatus('programAdminStatus',error.message.replace(/^AUTH:\s*/,''),false);
-  }finally{
-    button.disabled=false;
-  }
-});
-
-async function editSubprogram(program,oldName){
-  var newName=prompt('Enter the new subprogram name:',oldName);
-  if(newName===null)return;
-
-  newName=newName.trim();
-  if(!newName)return;
-
-  try{
-    var result=await api('saveSubprogram',{
-      program:program,
-      subprogram:newName,
-      originalSubprogram:oldName
-    });
-
-    setStatus('programAdminStatus',result.message||'Subprogram updated.',true);
-    await loadProgramConfig();
-  }catch(error){
-    setStatus('programAdminStatus',error.message.replace(/^AUTH:\s*/,''),false);
-  }
-}
-
-async function changeSubprogramStatus(program,name,status){
-  var promptText=status==='DISABLED'?'Disable this subprogram?':'Activate this subprogram?';
-  if(!confirm(promptText))return;
-
-  try{
-    var result=await api('setSubprogramStatus',{
-      program:program,
-      subprogram:name,
-      status:status
-    });
-
-    setStatus('programAdminStatus',result.message||'Subprogram status updated.',true);
-    await loadProgramConfig();
-  }catch(error){
-    setStatus('programAdminStatus',error.message.replace(/^AUTH:\s*/,''),false);
-  }
-}
-
-// ============================================
-// ETHIOPIAN DATE AND TIME
-// ============================================
+var API_URL='https://script.google.com/macros/s/AKfycby2FG7enFwWUUlsvzAOfGE_G8HWErJ3ZQUHVxDuqWnwrEDCN39EpRkUOwyUpjj4Cn4B/exec';
+var ACCESS_KEY='TSE-CHANGE-THIS-KEY';
+var MONTHS=['መስከረም','ጥቅምት','ኅዳር','ታኅሣሥ','ጥር','የካቲት','መጋቢት','ሚያዝያ','ግንቦት','ሰኔ','ሐምሌ','ነሐሴ','ጳጉሜን'];
+var WEEKDAYS=['እሑድ','ሰኞ','ማክሰኞ','ረቡዕ','ሐሙስ','ዓርብ','ቅዳሜ'];
+var PROGRAMS=['መዝሙር ጥናት','ጸሎት መርሐ ግብር','የትምህርት መርሐ ግብር','ሌላ መርሐ ግብር'];
+var members=[],records=[],selectedRecords=[],reportRecords=[];
+try{members=JSON.parse(localStorage.getItem('tse_members')||'[]')}catch(e){members=[]}
+try{records=JSON.parse(localStorage.getItem('tse_records')||'[]')}catch(e){records=[]}
+var scanner=null,scannerRunning=false,scanBusy=false,torchOn=false;
+var viewYear,viewMonth,selectedYear,selectedMonth,selectedDay;
+
+function saveLocal(){localStorage.setItem('tse_records',JSON.stringify(records))}
+function saveMembersLocal(){localStorage.setItem('tse_members',JSON.stringify(members))}
 function getEthParts(date){
-  var parts=new Intl.DateTimeFormat('en-US-u-ca-ethiopic',{
-    timeZone:'Africa/Addis_Ababa',
-    year:'numeric',
-    month:'numeric',
-    day:'numeric'
-  }).formatToParts(date);
-
-  var result={};
-  parts.forEach(function(p){
-    if(p.type==='year')result.year=Number(p.value);
-    if(p.type==='month')result.month=Number(p.value);
-    if(p.type==='day')result.day=Number(p.value);
-  });
-  return result;
+ var parts=new Intl.DateTimeFormat('en-US-u-ca-ethiopic',{timeZone:'Africa/Addis_Ababa',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(date),o={};
+ parts.forEach(function(p){if(p.type==='year'||p.type==='month'||p.type==='day')o[p.type]=Number(p.value)});
+ return o;
 }
-
-function todayEth(){return getEthParts(new Date());}
-function ethKey(y,m,d){return y+'/'+m+'/'+d;}
-
+function todayEth(){return getEthParts(new Date())}
+function ethKey(y,m,d){return Number(y)+'/'+Number(m)+'/'+Number(d)}
 function getDate(){
-  var p=new Intl.DateTimeFormat('en-GB',{
-    timeZone:'Africa/Addis_Ababa',
-    year:'numeric',
-    month:'2-digit',
-    day:'2-digit'
-  }).formatToParts(new Date());
-
-  var v={};
-  p.forEach(function(x){v[x.type]=x.value;});
-  return v.year+'-'+v.month+'-'+v.day;
+ var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Addis_Ababa',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),o={};
+ p.forEach(function(x){o[x.type]=x.value});return o.year+'-'+o.month+'-'+o.day;
 }
-
 function getTime(){
-  var p=new Intl.DateTimeFormat('en-GB',{
-    timeZone:'Africa/Addis_Ababa',
-    hour:'2-digit',
-    minute:'2-digit',
-    second:'2-digit',
-    hourCycle:'h23'
-  }).formatToParts(new Date());
-
-  var v={};
-  p.forEach(function(x){v[x.type]=x.value;});
-
-  var hour=Number(v.hour);
-  var ethHour=((hour+5)%12)+1;
-  var period=(hour>=6&&hour<12)?'ጠዋት':(hour>=12&&hour<18)?'ቀን':'ማታ';
-
-  return ethHour+':'+v.minute+':'+v.second+' '+period;
+ var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Addis_Ababa',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date()),o={};
+ p.forEach(function(x){o[x.type]=x.value});
+ var h=Number(o.hour),eh=((h+5)%12)+1,period=(h>=6&&h<12)?'ጠዋት':(h>=12&&h<18)?'ቀን':'ማታ';
+ return eh+':'+o.minute+':'+o.second+' '+period;
 }
+function updateClock(){var p=todayEth();document.getElementById('clock').textContent=MONTHS[p.month-1]+' '+p.day+' '+p.year+' ዓ.ም. | '+getTime()}
+setInterval(updateClock,1000);updateClock();
 
-function updateClock(){
-  var p=todayEth();
-  document.getElementById('clock').textContent=
-    MONTHS[p.month-1]+' '+p.day+' '+p.year+' ዓ.ም. | '+getTime();
+var jsonpCounter=0;
+function jsonp(params){
+ return new Promise(function(resolve,reject){
+  var script=document.createElement('script'),done=false,cb='tseCallback_'+Date.now()+'_'+(++jsonpCounter),timer;
+  function cleanup(){clearTimeout(timer);script.remove();try{delete window[cb]}catch(e){}}
+  timer=setTimeout(function(){if(!done){done=true;cleanup();reject(new Error('Server response timeout'))}},25000);
+  window[cb]=function(data){if(done)return;done=true;cleanup();resolve(data)};
+  var q=Object.assign({},params,{callback:cb});script.src=API_URL+'?'+new URLSearchParams(q).toString();
+  script.onerror=function(){if(!done){done=true;cleanup();reject(new Error('Connection failed'))}};
+  document.body.appendChild(script);
+ });
 }
-
-setInterval(updateClock,1000);
-updateClock();
-
-// ============================================
-// PROGRAM / MEMBER CACHE / CONNECTION
-// ============================================
-function selectedProgram(){
-  return document.getElementById('programSelect').value;
+function selectedProgram(){return document.getElementById('programSelect').value}
+function selectedSubprogram(){return document.getElementById('subprogramSelect').value}
+function subprogramOptions(program){
+ if(program==='መዝሙር ጥናት')return ['ወረብ','ዝማሬ'];
+ if(program==='የትምህርት መርሐ ግብር')return Array.from({length:12},function(_,i){return (i+1)+'ኛ ክፍል'});
+ if(program==='ጸሎት መርሐ ግብር')return ['መደበኛ ጸሎት'];
+ if(program==='ሌላ መርሐ ግብር')return ['መደበኛ'];
+ return [];
 }
-
-function selectedSubprogram(){
-  return document.getElementById('subprogramSelect').value;
+function updateSubprogramOptions(){
+ var p=selectedProgram(),sel=document.getElementById('subprogramSelect'),opts=subprogramOptions(p);
+ sel.innerHTML='<option value="">-- ንዑስ መርሐ ግብር ይምረጡ --</option>';
+ opts.forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;sel.appendChild(o)});
+ sel.disabled=!opts.length;updateProgramStatus();updateReportSubprograms();
 }
-
-function populateSubprogramOptions(){
-  var program=selectedProgram();
-  var list=getSubprogramOptions(program);
-
-  var wrap=document.getElementById('subprogramWrap');
-  var select=document.getElementById('subprogramSelect');
-  var old=select.value;
-
-  select.innerHTML='<option value="">-- Select Subprogram --</option>';
-
-  list.forEach(function(name){
-    var option=document.createElement('option');
-    option.value=name;
-    option.textContent=name;
-    select.appendChild(option);
-  });
-
-  wrap.classList.toggle('hidden',!requiresSubprogram(program));
-
-  if(list.indexOf(old)>=0){
-    select.value=old;
-  }else{
-    select.value='';
-  }
-}
-
 function updateProgramStatus(){
-  populateSubprogramOptions();
-  validateProgramSelection();
+ var p=selectedProgram(),s=selectedSubprogram(),box=document.getElementById('programStatus');
+ if(!p||!s){box.textContent='Scan ከማድረግ በፊት ዋና እና ንዑስ መርሐ ግብር ይምረጡ።';box.className='status bad'}
+ else{box.textContent='Selected: '+p+' — '+s;box.className='status good'}
 }
-
-async function loadProgramConfig(){
-  if(navigator.onLine&&currentSession){
-    try{
-      var result=await api('programConfig',{});
-
-      programConfig={
-        programs:result.programs||[],
-        subprograms:result.subprograms||{},
-        allSubprograms:result.allSubprograms||[]
-      };
-
-      localStorage.setItem('tse_program_config',JSON.stringify(programConfig));
-    }catch(error){
-      if(!programConfig.subprograms){
-        setStatus('programAdminStatus','Could not load subprograms: '+error.message.replace(/^AUTH:\s*/,''),false);
-      }
-    }
-  }
-
-  populateSubprogramOptions();
-  validateProgramSelection();
-  updateReportSubprogramOptions();
-
-  if(currentSession&&currentSession.role==='admin'){
-    renderProgramSubprogramAdmin();
-  }
+function updateReportSubprograms(){
+ var p=document.getElementById('reportProgram').value,sel=document.getElementById('reportSubprogram'),old=sel.value;
+ sel.innerHTML='<option value="all">All Subprograms</option>';
+ subprogramOptions(p==='all'?'':p).forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;sel.appendChild(o)});
+ if(Array.from(sel.options).some(function(o){return o.value===old}))sel.value=old;
 }
-
-function renderProgramSubprogramAdmin(){
-  var box=document.getElementById('programSubprogramList');
-  if(!box)return;
-
-  box.innerHTML='';
-
-  var items=programConfig.allSubprograms||[];
-
-  items.forEach(function(item){
-    var div=document.createElement('div');
-    div.className='admin-subprogram';
-
-    var title=document.createElement('strong');
-    title.textContent=item.program+' → '+item.subprogram;
-    div.appendChild(title);
-
-    var status=document.createElement('div');
-    status.className='small';
-    status.textContent='Status: '+item.status;
-    div.appendChild(status);
-
-    var edit=document.createElement('button');
-    edit.type='button';
-    edit.className='secondary';
-    edit.textContent='Rename';
-    edit.onclick=function(){
-      editSubprogram(item.program,item.subprogram);
-    };
-    div.appendChild(edit);
-
-    var toggle=document.createElement('button');
-    toggle.type='button';
-    toggle.className=item.status==='ACTIVE'?'danger':'secondary';
-    toggle.textContent=item.status==='ACTIVE'?'Disable':'Activate';
-    toggle.onclick=function(){
-      changeSubprogramStatus(
-        item.program,
-        item.subprogram,
-        item.status==='ACTIVE'?'DISABLED':'ACTIVE'
-      );
-    };
-    div.appendChild(toggle);
-
-    box.appendChild(div);
-  });
-
-  if(!items.length)box.textContent='No subprograms found.';
-}
-
-function updateReportSubprogramOptions(){
-  var select=document.getElementById('reportSubprogram');
-  if(!select)return;
-
-  var program=document.getElementById('reportProgram').value;
-  var old=select.value;
-
-  select.innerHTML='<option value="all">All Subprograms</option>';
-
-  var all={};
-
-  if(program==='all'){
-    Object.keys(programConfig.subprograms||{}).forEach(function(key){
-      (programConfig.subprograms[key]||[]).forEach(function(name){
-        all[name]=true;
-      });
-    });
-
-    Object.keys(FIXED_SUBPROGRAMS).forEach(function(key){
-      FIXED_SUBPROGRAMS[key].forEach(function(name){
-        all[name]=true;
-      });
-    });
-  }else{
-    getSubprogramOptions(program).forEach(function(name){
-      all[name]=true;
-    });
-  }
-
-  Object.keys(all).forEach(function(name){
-    var option=document.createElement('option');
-    option.value=name;
-    option.textContent=name;
-    select.appendChild(option);
-  });
-
-  if(Array.from(select.options).some(function(option){
-    return option.value===old;
-  })){
-    select.value=old;
-  }
-}
-
-document.getElementById('reportProgram').addEventListener('change',updateReportSubprogramOptions);
-
-function updateConnection(){
-  setStatus(
-    'connection',
-    navigator.onLine
-      ?'Online – connected to the internet.'
-      :'Offline – attendance will be saved on this device.',
-    navigator.onLine
-  );
-}
-
-window.addEventListener('online',function(){
-  updateConnection();
-  if(currentSession){
-    loadMembers().then(syncPending);
-    loadSelectedRecords();
-    loadProgramConfig();
-  }
-});
-
-window.addEventListener('offline',updateConnection);
+document.getElementById('reportProgram').addEventListener('change',updateReportSubprograms);
 
 function showMemberStatus(){
-  setStatus('memberStatus','Members saved on this device: '+members.length,members.length>0);
+ var b=document.getElementById('memberStatus');
+ b.textContent=members.length?'Saved members available: '+members.length:'No saved members. Connect to internet to load.';
+ b.className=members.length?'status good':'status bad';
 }
-
 async function loadMembers(){
-  if(!currentSession||!navigator.onLine){
-    showMemberStatus();
-    return;
-  }
-
-  try{
-    var result=await api('members',{});
-    if(Array.isArray(result.members)){
-      members=result.members;
-      saveMembersLocal();
-    }
-    showMemberStatus();
-  }catch(error){
-    setStatus(
-      'memberStatus',
-      'Could not refresh members. Saved list: '+members.length+'. '+error.message.replace(/^AUTH:\s*/,''),
-      false
-    );
-  }
+ showMemberStatus();if(!navigator.onLine)return;
+ var b=document.getElementById('memberStatus');b.textContent='Loading members from server...';b.className='status';
+ try{var r=await jsonp({action:'members',key:ACCESS_KEY});if(!r||!r.success)throw new Error(r&&r.message||'Could not load members');
+ members=(r.members||[]).map(function(m){return {id:String(m.id),name:String(m.name),phone:m.phone||'',gender:m.gender||''}});
+ saveMembersLocal();showMemberStatus()
+ }catch(e){b.textContent='Member loading failed: '+e.message;b.className='status bad'}
 }
-
-function normalizeMemberId(id){
-  var value=String(id==null?'':id)
-    .normalize('NFKC')
-    .replace(/[\u200B-\u200D\uFEFF]/g,'')
-    .trim();
-
-  if(/^\d+$/.test(value)){
-    value=value.replace(/^0+(?=\d)/,'');
-  }
-
-  return value;
+function updateConnection(){var b=document.getElementById('connection');b.textContent=navigator.onLine?'Internet: Online':'Internet: Offline. Records saved on this device.';b.className=navigator.onLine?'status good':'status bad'}
+window.addEventListener('online',function(){updateConnection();loadMembers().then(function(){syncPending();loadSelectedRecords()})});
+window.addEventListener('offline',updateConnection);
+function normalizeId(v){var s=String(v==null?'':v).replace(/[\u200B-\u200D\uFEFF]/g,'').trim();return /^\d+$/.test(s)?String(Number(s)):s}
+function findMember(id){var wanted=normalizeId(id);return members.find(function(m){return normalizeId(m.id)===wanted})||null}
+function makeEventId(){return 'TSE-'+Date.now()+'-'+Math.floor(Math.random()*1000000)}
+function alreadyRegistered(id,date,program,subprogram){return records.some(function(r){return normalizeId(r.id)===normalizeId(id)&&normalizeEthKey(r.ethDate)===date&&r.program===program&&String(r.subprogram||'')===subprogram&&r.status!=='Rejected'})}
+function normalizeEthKey(v){
+ if(!v)return '';var a=String(v).trim().split(/[\/-]/);if(a.length!==3)return '';
+ var y=Number(a[0]),m=a[1],d=Number(a[2]),mi=Number(m);
+ if(!Number.isNaN(mi)&&String(mi)===m)return ethKey(y,mi,d);
+ var idx=MONTHS.indexOf(m);return idx>=0?ethKey(y,idx+1,d):'';
 }
-function extractQrMemberId(raw){
-
-  var text = String(raw || '')
-    .normalize('NFKC')
-    .replace(/[\u200B-\u200D\uFEFF]/g,'')
-    .trim();
-
-  // Format: ID | Member Name
-  if(text.indexOf('|') >= 0){
-
-    var first = text.split('|')[0].trim();
-
-    if(/^\d+$/.test(first)){
-      return normalizeMemberId(first);
-    }
-  }
-
-  // Remove accidental spaces inside QR URL
-  var clean = text.replace(/\s+/g,'');
-
-  // Extract ID from URL
-  var match = clean.match(/[?&]id=([^&#]+)/i);
-
-  if(match){
-    try{
-      return normalizeMemberId(
-        decodeURIComponent(match[1])
-      );
-    }catch(error){
-      return normalizeMemberId(match[1]);
-    }
-  }
-
-  // Format: ID only
-  if(/^\d+$/.test(clean)){
-    return normalizeMemberId(clean);
-  }
-
-  return '';
-}
-function findMember(id){
-  var clean=normalizeMemberId(id);
-
-  return members.find(function(m){
-    return normalizeMemberId(m.id)===clean;
-  })||null;
-}
-
-  // ============================================
-// ATTENDANCE SAVE / SCAN / OFFLINE SYNC
-// ============================================
-function makeEventId(){
-  return 'tse_'+Date.now()+'_'+Math.random().toString(36).slice(2);
-}
-
-function hasPending(record){
-  return record.synced!==true;
-}
-
-function renderSelectedRecords(){
-  var body=document.getElementById('recordList');
-  body.innerHTML='';
-
-  selectedRecords.forEach(function(r){
-    var tr=document.createElement('tr');
-
-    [
-      r.id,
-      r.name,
-      r.ethDate||r.date,
-      r.time,
-      r.program,
-      r.subprogram||'',
-      r.synced?'Synced':'Saved locally'
-    ].forEach(function(value){
-      var td=document.createElement('td');
-      td.textContent=value==null?'':String(value);
-      tr.appendChild(td);
-    });
-
-    body.appendChild(tr);
-  });
-
-  document.getElementById('todayCount').textContent=selectedRecords.length;
-}
-async function syncPending(){
-  if(!navigator.onLine || !currentSession || !currentSession.idToken){
-    return;
-  }
-
-  if(window.tseSyncingPending)return;
-  window.tseSyncingPending=true;
-
-  var syncedCount=0;
-
-  try{
-    var pending=records.filter(function(r){
-      return !r.synced;
-    });
-
-    for(var i=0;i<pending.length;i++){
-      var record=pending[i];
-
-      try{
-        await api('save',{
-          id:String(record.id),
-          name:record.name,
-          date:record.date,
-          time:record.time,
-          ethDate:record.ethDate,
-          program:record.program,
-          subprogram:record.subprogram||'',
-          eventId:record.eventId,
-          deviceModel:getDeviceModel()
-        });
-
-        record.synced=true;
-        saveLocal();
-        syncedCount++;
-
-      }catch(error){
-        console.error('Attendance sync failed:',error);
-        break;
-      }
-    }
-
-    if(syncedCount>0){
-      renderSelectedRecords();
-      setStatus(
-        'scanMessage',
-        syncedCount+' attendance record(s) synced successfully.',
-        true
-      );
-    }
-
-  }finally{
-    window.tseSyncingPending=false;
-  }
-}
-function saveLocalAttendance(member){
-  var program=selectedProgram();
-  var subprogram=selectedSubprogram();
-
-  if(!program){
-    setStatus('scanMessage','Please select an attendance program.',false);
-    return false;
-  }
-
-  if(requiresSubprogram(program)&&!subprogram){
-    setStatus('scanMessage','Please select a subprogram before attendance.',false);
-    return false;
-  }
-
-  if(!member){
-    setStatus('scanMessage','Member ID not found in saved list.',false);
-    return false;
-  }
-
-  var now=new Date();
-  var date=getDate();
-  var time=getTime();
-  var eth=todayEth();
-  var ethDate=eth.year+'-'+MONTHS[eth.month-1]+'-'+eth.day;
-
-  // Duplicate is checked by member + Ethiopian date + program + subprogram.
-  // This allows the same member to attend different subprograms on the same day.
-  var duplicate=records.some(function(r){
-    return String(r.id)===String(member.id) &&
-      r.ethDate===ethDate &&
-      r.program===program &&
-      String(r.subprogram||'')===String(subprogram||'');
-  });
-
-  if(duplicate){
-    setStatus(
-      'scanMessage',
-      member.name+' — Already registered for '+(subprogram||program)+' today.',
-      false
-    );
-    return false;
-  }
-
-  var record={
-    id:String(member.id),
-    name:member.name,
-    date:date,
-    time:time,
-    ethDate:ethDate,
-    program:program,
-    subprogram:subprogram||'',
-    eventId:makeEventId(),
-    synced:false,
-    createdAt:now.getTime()
-  };
-
-  records.push(record);
-  saveLocal();
-
-  selectedRecords.unshift(record);
-  renderSelectedRecords();
-
-  setStatus(
-    'scanMessage',
-    'Attendance saved locally: '+member.name+(subprogram?' — '+subprogram:''),
-    true
-  );
-
-  if(navigator.onLine)syncPending();
-  return true;
-}
-function extractQrMemberId(raw){
-  var text = String(raw || '').trim();
-
-  // Handle QR formats such as:
-  // 6
-  // 6 | Member Name
-  // https://script.google.com/macros/s/.../exec?id=6
-
-  if(text.indexOf('|') >= 0){
-    text = text.split('|')[0].trim();
-  }
-
-  try {
-    if(/^https?:\/\//i.test(text)){
-      var url = new URL(text);
-      var id = url.searchParams.get('id');
-
-      if(id !== null && id.trim() !== ''){
-        return id.trim();
-      }
-    }
-  } catch(error) {}
-
-  return text;
-}
-async function registerAttendance(raw){
-  if(!validateProgramSelection()){
-    setStatus('scanMessage','Select program and subprogram first.',false);
-    return;
-  }
-
-  // Extract ID from formats such as "1 | Member Name"
-  var id=extractQrMemberId(raw);
-
-  if(!id){
-    setStatus('scanMessage','Invalid QR code or empty Member ID.',false);
-    return;
-  }
-
-  var member=findMember(id);
-
-  if(!member && navigator.onLine){
-    await loadMembers();
-    member=findMember(id);
-  }
-
-  if(!member){
-    setStatus(
-      'scanMessage',
-      'Member ID '+id+' not found. Refresh members while online.',
-      false
-    );
-    return;
-  }
-
-  saveLocalAttendance(member);
+function deviceModel(){var ua=navigator.userAgent||'';var m=ua.match(/;\s*([^;()]+)\s+Build\//i);return m?m[1].trim():(/Android/i.test(ua)?'Android device':/iPhone/i.test(ua)?'iPhone':'Unknown device')}
+function showMessage(msg,ok){var b=document.getElementById('scanMessage');b.textContent=msg;b.className=ok?'status good':'status bad'}
+async function registerMember(member){
+ var program=selectedProgram(),subprogram=selectedSubprogram();
+ if(!program||!subprogram){showMessage('ዋና እና ንዑስ መርሐ ግብር ይምረጡ።',false);return}
+ var eth=todayEth(),dateKey=ethKey(eth.year,eth.month,eth.day);
+ if(alreadyRegistered(member.id,dateKey,program,subprogram)){showMessage(member.name+' — '+subprogram+' ዛሬ ተመዝግቧል።',false);return}
+ var nowTime=getTime(),record={id:String(member.id),name:member.name,date:getDate(),time:nowTime,ethDate:dateKey,ethTime:nowTime,program:program,subprogram:subprogram,deviceModel:deviceModel(),eventId:makeEventId(),status:'Pending'};
+ records.unshift(record);saveLocal();showMessage('Attendance saved: '+member.name+' — '+program+' / '+subprogram,true);
+ await syncPending();if(selectedDateKey()===dateKey)loadSelectedRecords();
 }
 async function manualAttendance(){
-  if(!validateProgramSelection()){
-    setStatus('scanMessage','Select the program and required subprogram first.',false);
-    return;
-  }
-
-  var id=document.getElementById('manualId').value;
-  await registerAttendance(id);
-  document.getElementById('manualId').value='';
+ var id=document.getElementById('manualId').value.trim();if(!id){showMessage('Enter a member ID.',false);return}
+ var m=findMember(id);if(!m){showMessage('Member ID not found. Load members online first.',false);return}
+ await registerMember(m);document.getElementById('manualId').value='';
 }
-var scannerTorchOn = false;
-
-async function toggleScannerTorch(){
-  if(!scanner || !scannerRunning){
-    setStatus('scanMessage','Start the scanner first.',false);
-    return;
-  }
-
-  try{
-    var capabilities = scanner.getRunningTrackCameraCapabilities();
-    var torch = capabilities.torchFeature();
-
-    if(!torch.isSupported()){
-      setStatus(
-        'scanMessage',
-        'Flashlight is not supported by this camera or browser.',
-        false
-      );
-      return;
-    }
-
-    var nextState = !scannerTorchOn;
-
-    await torch.apply(nextState);
-
-    scannerTorchOn = nextState;
-
-    var button = document.getElementById('scannerTorchButton');
-
-    button.textContent = scannerTorchOn
-      ? '🔦 Flashlight ON'
-      : '🔦 Flashlight OFF';
-
-    setStatus(
-      'scanMessage',
-      scannerTorchOn ? 'Flashlight is ON.' : 'Flashlight is OFF.',
-      true
-    );
-
-  }catch(error){
-    setStatus(
-      'scanMessage',
-      'Could not control flashlight: ' + error.message,
-      false
-    );
-  }
+function getMemberIdFromQR(raw){
+ var t=String(raw||'').replace(/[\u200B-\u200D\uFEFF]/g,'').trim();if(!t)return '';
+ try{if(/^https?:\/\//i.test(t)){var u=new URL(t);var q=u.searchParams.get('id')||u.searchParams.get('memberId')||u.searchParams.get('ID');if(q)return q.trim()}}catch(e){}
+ // QR cards may contain "1 | Name", "ID: 1", or a plain ID.
+ var pipe=t.indexOf('|');if(pipe>=0)return t.slice(0,pipe).trim();
+ var labeled=t.match(/(?:member\s*id|id)\s*[:=#-]\s*([A-Za-z0-9_-]+)/i);if(labeled)return labeled[1].trim();
+ if(/^[A-Za-z0-9_-]+$/.test(t))return t;
+ return '';
 }
-  async function startScanner(){
-  if(!currentSession){
-    setStatus('scanMessage','Please sign in first.',false);
-    return;
-  }
-
-  if(!validateProgramSelection()){
-    setStatus('scanMessage','Select program and subprogram first.',false);
-    return;
-  }
-
-  if(scannerRunning)return;
-
-  if(typeof Html5Qrcode==='undefined'){
-    setStatus('scanMessage','QR scanner library unavailable.',false);
-    return;
-  }
-
-  try{
-    scanner=new Html5Qrcode('reader');
-
-    await scanner.start(
-      {facingMode:'environment'},
-      {
-        fps:10,
-        qrbox:{width:250,height:250}
-      },
-
-      async function(decodedText){
-        if(scanBusy)return;
-
-        scanBusy=true;
-
-        try{
-          await registerAttendance(decodedText);
-
-        }catch(error){
-          setStatus(
-            'scanMessage',
-            'Attendance error: '+error.message,
-            false
-          );
-
-        }finally{
-          setTimeout(function(){
-            scanBusy=false;
-          },1300);
-        }
-      },
-
-      function(){}
-    );
-
-    scannerRunning=true;
-    scannerTorchOn=false;
-
-    var torchButton=document.getElementById('scannerTorchButton');
-
-    if(torchButton){
-      torchButton.disabled=false;
-      torchButton.textContent='🔦 Flashlight OFF';
-    }
-
-    setStatus(
-      'scanMessage',
-      'Scanner running. Ready to scan members.',
-      true
-    );
-
-  }catch(error){
-    scannerRunning=false;
-    scanner=null;
-
-    setStatus(
-      'scanMessage',
-      'Could not start camera: '+error.message,
-      false
-    );
-  }
-}
-  async function stopScanner(){
-  if(scanner && scannerRunning){
-    try{
-      if(scannerTorchOn){
-        await scanner.applyVideoConstraints({
-          advanced:[{torch:false}]
-        });
-      }
-
-      await scanner.stop();
-      await scanner.clear();
-
-    }catch(error){}
-  }
-
-  scannerRunning=false;
-  scannerTorchOn=false;
-  scanner=null;
-
-  var torchButton=document.getElementById('scannerTorchButton');
-
-  if(torchButton){
-    torchButton.disabled=true;
-    torchButton.textContent='🔦 Flashlight OFF';
-  }
-
-  setStatus('scanMessage','Scanner stopped.',true);
-}
-  function getDeviceModel(){
-  var ua=navigator.userAgent||'';
-  var match=ua.match(/SM-[A-Z0-9]+/i);
-
-  if(match)return match[0];
-  if(/Android/i.test(ua))return 'Android device';
-  if(/iPhone/i.test(ua))return 'iPhone';
-  if(/iPad/i.test(ua))return 'iPad';
-
-  return 'Unknown device';
-}
-
-// ============================================
-// SELECTED DATE / SERVER RECORDS
-// ============================================
-function ethDateString(y,m,d){
-  return y+'-'+MONTHS[m-1]+'-'+d;
-}
-
-function displaySelectedDate(){
-  if(selectedYear==null)return;
-
-  var date=ethDateString(selectedYear,selectedMonth,selectedDay);
-  document.getElementById('selectedDateLabel').textContent='Selected date: '+date+' ዓ.ም.';
-}
-
-function mergeAttendanceRecords(serverRecords, localRecords){
-  var combined=[];
-  var seen={};
-
-  function addRecord(r){
-    var key=r.eventId
-      ? 'event_'+r.eventId
-      : [
-          r.id,
-          r.ethDate||r.date,
-          r.time,
-          r.program,
-          r.subprogram||''
-        ].join('_');
-
-    if(!seen[key]){
-      seen[key]=true;
-      combined.push(r);
-    }
-  }
-
-  (serverRecords||[]).forEach(addRecord);
-  (localRecords||[]).forEach(addRecord);
-
-  return combined;
-}
-
-async function loadSelectedRecords(){
-  if(!currentSession)return;
-
-  if(selectedYear==null){
-    var t=todayEth();
-    selectedYear=t.year;
-    selectedMonth=t.month;
-    selectedDay=t.day;
-  }
-
-  var date=ethDateString(
-    selectedYear,
-    selectedMonth,
-    selectedDay
+async function startScanner(){
+ if(!selectedProgram()||!selectedSubprogram()){showMessage('ከScanner በፊት Program እና Subprogram ይምረጡ።',false);return}
+ if(typeof Html5Qrcode==='undefined'){showMessage('QR scanner library missing: html5-qrcode.min.js.',false);return}
+ if(!members.length){showMessage('Load members online first. Saved members are required.',false);return}
+ if(scannerRunning)return;
+ try{
+  if(!scanner)scanner=new Html5Qrcode('reader',{verbose:false});
+  await scanner.start({facingMode:'environment'},{fps:10,qrbox:{width:240,height:240},aspectRatio:1.0},
+   async function(decoded){
+    if(scanBusy)return;scanBusy=true;
+    try{var id=getMemberIdFromQR(decoded),m=findMember(id);if(!id)showMessage('Could not extract Member ID from QR: '+decoded,false);else if(!m)showMessage('Member ID not found: '+id,false);else await registerMember(m)}
+    catch(e){showMessage('Scanner error: '+e.message,false)}
+    finally{setTimeout(function(){scanBusy=false},1800)}
+   },
+   function(){}
   );
-
-  var localRecords=records.filter(function(r){
-    return r.ethDate===date;
-  });
-
-  if(!navigator.onLine){
-    selectedRecords=mergeAttendanceRecords([],localRecords);
-    renderSelectedRecords();
-    setStatus('historyStatus','Offline: showing saved attendance records.',false);
-    return;
-  }
-
+  scannerRunning=true;document.getElementById('torchBtn').disabled=false;showMessage('Camera started. Scan a member QR code.',true);refreshTorchState()
+ }catch(e){scannerRunning=false;showMessage('Camera could not start. Use HTTPS and allow camera permission. '+e.message,false)}
+}
+async function refreshTorchState(){
+ var b=document.getElementById('torchBtn');if(!scannerRunning||!scanner){b.disabled=true;return}
+ try{var caps=await scanner.getRunningTrackCapabilities();b.disabled=!(caps&&caps.torch)}catch(e){b.disabled=true}
+}
+async function toggleTorch(){
+ if(!scannerRunning||!scanner)return;
+ try{var caps=await scanner.getRunningTrackCapabilities();if(!caps||!caps.torch){showMessage('Flashlight is not supported by this camera/browser.',false);return}
+ torchOn=!torchOn;await scanner.applyVideoConstraints({advanced:[{torch:torchOn}]});
+ document.getElementById('torchBtn').textContent='Flashlight: '+(torchOn?'On':'Off')
+ }catch(e){torchOn=false;showMessage('Could not change flashlight: '+e.message,false)}
+}
+async function stopScanner(){
+ if(scanner&&scannerRunning){try{await scanner.stop();scannerRunning=false;torchOn=false;document.getElementById('torchBtn').disabled=true;document.getElementById('torchBtn').textContent='Flashlight: Off';showMessage('Scanner stopped.',true)}catch(e){showMessage('Scanner could not stop: '+e.message,false)}}
+}
+async function syncPending(){
+ if(!navigator.onLine)return;
+ var box=document.getElementById('syncStatus'),pending=records.filter(function(r){return r.status==='Pending'&&r.program&&r.subprogram});
+ if(!pending.length){box.textContent='All eligible saved records are synchronized.';box.className='status good';return}
+ box.textContent='Synchronizing '+pending.length+' record(s)...';box.className='status';
+ for(var i=0;i<pending.length;i++){
+  var r=pending[i];
   try{
-    var result=await api('records',{
-      ethDate:date,
-      subprogram:'all'
-    });
-
-    selectedRecords=mergeAttendanceRecords(
-      result.records||[],
-      localRecords
-    );
-
-    renderSelectedRecords();
-
-    setStatus(
-      'historyStatus',
-      'Loaded '+selectedRecords.length+
-      ' attendance records. Local records preserved.',
-      true
-    );
-
-  }catch(error){
-    selectedRecords=mergeAttendanceRecords([],localRecords);
-    renderSelectedRecords();
-
-    setStatus(
-      'historyStatus',
-      'Showing locally saved records. '+
-      error.message.replace(/^AUTH:\s*/,''),
-      false
-    );
-  }
-}
-// ============================================
-// ETHIOPIAN CALENDAR VIEW
-// ============================================
-function ethiopianToGregorian(y,m,d){
-  var gYear=y+8;
-  var start=new Date(Date.UTC(gYear,8,11));
-
-  var startEth=getEthParts(new Date(start.getTime()+12*3600000));
-
-  if(startEth.year!==y){
-    start=new Date(Date.UTC(gYear,8,12));
-  }
-
-  return new Date(start.getTime()+(m-1)*30*86400000+(d-1)*86400000);
+   var result=await jsonp({action:'save',key:ACCESS_KEY,id:r.id,name:r.name,date:r.date,time:r.time,ethDate:r.ethDate,ethTime:r.ethTime,program:r.program,subprogram:r.subprogram,deviceModel:r.deviceModel||deviceModel(),eventId:r.eventId});
+   if(result&&result.success){r.status='Synced'}
+   else if(result&&(/Already registered|Already synced/i).test(result.message||'')){r.status='Duplicate'}
+   else{box.textContent=(result&&result.message)||'Sync failed.';box.className='status bad';saveLocal();return}
+   saveLocal()
+  }catch(e){box.textContent='Sync paused. Pending records remain on this phone.';box.className='status bad';saveLocal();return}
+ }
+ box.textContent='Synchronization finished.';box.className='status good';saveLocal()
 }
 
-function gregorianWeekday(y,m,d){
-  return ethiopianToGregorian(y,m,d).getUTCDay();
+function findEthMonthStart(year,month){
+ var start=Date.UTC(year+7,0,1,12);
+ for(var i=0;i<400;i++){var d=new Date(start+i*86400000),p=getEthParts(d);if(p.year===year&&p.month===month&&p.day===1)return d}
+ return null
 }
-
-function daysInEthMonth(y,m){
-  if(m<=12)return 30;
-
-  var nextStart=ethiopianToGregorian(y,1,1);
-  var thisStart=ethiopianToGregorian(y,13,1);
-
-  return Math.round((nextStart-thisStart)/86400000);
-}
-// ============================================
-// ETHIOPIAN REPORT DATE PICKER
-// ============================================
-
-var reportPickerType = 'start';
-var reportPickerYear = null;
-var reportPickerMonth = null;
-
-function openReportDatePicker(type){
-  reportPickerType = type;
-
-  var inputId = type === 'start'
-    ? 'reportStartDate'
-    : 'reportEndDate';
-
-  var existing = document.getElementById(inputId).value;
-var parsed = existing ? existing.split('/') : [];
-
-if(parsed.length === 3){
-  reportPickerYear = Number(parsed[0]);
-  reportPickerMonth = Number(parsed[1]);
-}else{
-  var today = todayEth();
-  reportPickerYear = today.year;
-  reportPickerMonth = today.month;
-}
-
-  document.getElementById('reportCalendarBox').style.display = 'block';
-
-  renderReportDatePicker();
-}
-
-function renderReportDatePicker(){
-  var title = document.getElementById('reportCalendarTitle');
-  var grid = document.getElementById('reportCalendarGrid');
-
-var monthName = MONTHS[reportPickerMonth - 1] || '';
-
-title.textContent =
-  monthName + ' ' + reportPickerYear + ' ዓ.ም.';
-
-title.style.display = 'block';
-title.style.visibility = 'visible';
-title.style.color = '#ffffff';
-title.style.fontSize = '16px';
-  grid.innerHTML = '';
-
-  WEEKDAYS.forEach(function(day){
-    var el = document.createElement('div');
-    el.className = 'weekday';
-    el.textContent = day;
-    grid.appendChild(el);
-  });
-
-  var first = gregorianWeekday(
-    reportPickerYear,
-    reportPickerMonth,
-    1
-  );
-
-  var count = daysInEthMonth(
-    reportPickerYear,
-    reportPickerMonth
-  );
-
-  for(var i = 0; i < first; i++){
-    grid.appendChild(document.createElement('div'));
-  }
-
-  for(var d = 1; d <= count; d++){
-    var btn = document.createElement('button');
-
-    btn.type = 'button';
-    btn.className = 'calendar-day';
-    btn.textContent = d;
-
-    (function(day){
-      btn.addEventListener('click',function(){
-        var date =
-          reportPickerYear + '/' +
-          reportPickerMonth + '/' +
-          day;
-
-        var inputId = reportPickerType === 'start'
-          ? 'reportStartDate'
-          : 'reportEndDate';
-
-        document.getElementById(inputId).value = date;
-
-        document.getElementById('reportCalendarBox').style.display = 'none';
-      });
-    })(d);
-
-    grid.appendChild(btn);
-  }
-}
-
-function changeReportPickerMonth(delta){
-  reportPickerMonth += delta;
-
-  if(reportPickerMonth > 13){
-    reportPickerMonth = 1;
-    reportPickerYear++;
-  }
-
-  if(reportPickerMonth < 1){
-    reportPickerMonth = 13;
-    reportPickerYear--;
-  }
-
-  renderReportDatePicker();
-}
+function selectedDateKey(){return ethKey(selectedYear,selectedMonth,selectedDay)}
+function displaySelectedDate(){document.getElementById('selectedDateLabel').textContent='Selected date: '+selectedDay+' '+MONTHS[selectedMonth-1]+' '+selectedYear+' ዓ.ም.'}
 function renderCalendar(){
-  var today=todayEth();
-
-  if(viewYear==null){
-    viewYear=today.year;
-    viewMonth=today.month;
-  }
-
-  if(selectedYear==null){
-    selectedYear=today.year;
-    selectedMonth=today.month;
-    selectedDay=today.day;
-  }
-
-  var title=document.getElementById('calendarTitle');
-  title.textContent=MONTHS[viewMonth-1]+' '+viewYear+' ዓ.ም.';
-
-  var grid=document.getElementById('calendarGrid');
-  grid.innerHTML='';
-
-  WEEKDAYS.forEach(function(day){
-    var el=document.createElement('div');
-    el.className='weekday';
-    el.textContent=day;
-    grid.appendChild(el);
-  });
-
-  var first=gregorianWeekday(viewYear,viewMonth,1);
-  var count=daysInEthMonth(viewYear,viewMonth);
-
-  for(var i=0;i<first;i++){
-    var blank=document.createElement('div');
-    grid.appendChild(blank);
-  }
-
-  for(var d=1;d<=count;d++){
-    var btn=document.createElement('button');
-    btn.type='button';
-    btn.className='calendar-day';
-    btn.textContent=d;
-
-    if(viewYear===today.year&&viewMonth===today.month&&d===today.day){
-      btn.classList.add('today');
-    }
-
-    if(viewYear===selectedYear&&viewMonth===selectedMonth&&d===selectedDay){
-      btn.classList.add('selected');
-    }
-
-    (function(day){
-      btn.addEventListener('click',function(){
-        selectedYear=viewYear;
-        selectedMonth=viewMonth;
-        selectedDay=day;
-
-        renderCalendar();
-        displaySelectedDate();
-        loadSelectedRecords();
-      });
-    })(d);
-
-    grid.appendChild(btn);
-  }
+ var title=document.getElementById('calendarTitle'),grid=document.getElementById('calendarGrid');title.textContent=MONTHS[viewMonth-1]+' '+viewYear+' ዓ.ም.';grid.innerHTML='';
+ WEEKDAYS.forEach(function(day){var e=document.createElement('div');e.className='weekday';e.textContent=day;grid.appendChild(e)});
+ var first=findEthMonthStart(viewYear,viewMonth);if(!first){grid.textContent='Calendar could not load.';return}
+ var offset=first.getUTCDay(),total=viewMonth===13?5:30;
+ if(viewMonth===13){var next=findEthMonthStart(viewYear+1,1);if(next)total=Math.round((next-first)/86400000)}
+ for(var i=0;i<offset;i++)grid.appendChild(document.createElement('div'));
+ var today=todayEth();
+ for(var d=1;d<=total;d++){var b=document.createElement('button');b.className='calendar-day';b.textContent=d;
+  if(d===selectedDay&&viewYear===selectedYear&&viewMonth===selectedMonth)b.classList.add('selected');
+  if(today.year===viewYear&&today.month===viewMonth&&today.day===d)b.classList.add('today');
+  (function(day){b.onclick=function(){selectedYear=viewYear;selectedMonth=viewMonth;selectedDay=day;displaySelectedDate();renderCalendar();loadSelectedRecords()}})(d);grid.appendChild(b)
+ }
 }
-
-function changeMonth(delta){
-  viewMonth+=delta;
-
-  if(viewMonth>13){
-    viewMonth=1;
-    viewYear++;
-  }
-
-  if(viewMonth<1){
-    viewMonth=13;
-    viewYear--;
-  }
-
-  renderCalendar();
+function changeMonth(n){viewMonth+=n;if(viewMonth>13){viewMonth=1;viewYear++}if(viewMonth<1){viewMonth=13;viewYear--}renderCalendar()}
+function selectToday(){var p=todayEth();viewYear=selectedYear=p.year;viewMonth=selectedMonth=p.month;selectedDay=p.day;displaySelectedDate();renderCalendar();loadSelectedRecords()}
+async function loadSelectedRecords(){
+ var box=document.getElementById('historyStatus'),key=selectedDateKey();displaySelectedDate();
+ if(!navigator.onLine){selectedRecords=records.filter(function(r){return normalizeEthKey(r.ethDate)===key});box.textContent='Offline: showing records saved on this phone only.';box.className='status bad';renderSelectedRecords();return}
+ box.textContent='Loading records from all phones...';box.className='status';
+ try{
+  var result=await jsonp({action:'records',key:ACCESS_KEY,ethDate:key});
+  if(!result||!result.success)throw new Error(result&&result.message||'Could not load records');
+  selectedRecords=result.records||[];
+  records.forEach(function(r){if(normalizeEthKey(r.ethDate)===key&&r.status==='Pending'&&!selectedRecords.some(function(s){return normalizeId(s.id)===normalizeId(r.id)&&normalizeEthKey(s.ethDate)===key&&s.program===r.program&&s.subprogram===r.subprogram}))selectedRecords.push(r)});
+  box.textContent='Showing records from all connected phones.';box.className='status good';renderSelectedRecords()
+ }catch(e){box.textContent='Server records unavailable: '+e.message;box.className='status bad';selectedRecords=records.filter(function(r){return normalizeEthKey(r.ethDate)===key});renderSelectedRecords()}
 }
-
-function selectToday(){
-  var t=todayEth();
-
-  viewYear=t.year;
-  viewMonth=t.month;
-  selectedYear=t.year;
-  selectedMonth=t.month;
-  selectedDay=t.day;
-
-  renderCalendar();
-  displaySelectedDate();
-  loadSelectedRecords();
+function renderSelectedRecords(){
+ var body=document.getElementById('recordList');body.innerHTML='';document.getElementById('todayCount').textContent=selectedRecords.length;
+ selectedRecords.forEach(function(r){var tr=document.createElement('tr');[r.id,r.name,r.ethDate||r.date,r.ethTime||r.time,r.program||'-',r.subprogram||'ያልተመደበ',r.status||'Synced'].forEach(function(v){var td=document.createElement('td');td.textContent=v||'-';tr.appendChild(td)});body.appendChild(tr)});
+ if(!selectedRecords.length){var tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.textContent='No attendance records for this date.';tr.appendChild(td);body.appendChild(tr)}
 }
-
-// ============================================
-// REPORTS
-// ============================================
-// ============================================
-// REPORTS
-// ============================================
-function toggleReportDateRange(){
-  var type = document.getElementById('reportType').value;
-  var box = document.getElementById('reportDateRange');
-
-  if(box){
-    box.style.display = type === 'range' ? 'grid' : 'none';
-  }
+function downloadRowsCSV(rows,filename){
+ var csv=rows.map(function(row){return row.map(function(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'}).join(',')}).join('\n');
+ var blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)
 }
-
+function downloadCSV(){if(!selectedRecords.length){alert('No records available for this date.');return}
+ var rows=[['ID','Name','Ethiopian Date','Ethiopian Time','Program','Subprogram','Status']];
+ selectedRecords.forEach(function(r){rows.push([r.id,r.name,r.ethDate||'',r.ethTime||r.time,r.program||'',r.subprogram||'',r.status||'Synced'])});
+ downloadRowsCSV(rows,'TSE_Attendance_'+selectedDateKey().replace(/\//g,'-')+'.csv')
+}
 async function loadReport(){
-  if(!currentSession)return;
-
-  var type=document.getElementById('reportType').value;
-  var program=document.getElementById('reportProgram').value;
-  var subprogram=document.getElementById('reportSubprogram').value;
-
-  var params={
-    reportType:type,
-    program:program,
-    subprogram:subprogram
-  };
-
-  var ethDate=selectedYear+'/'+selectedMonth+'/'+selectedDay;
-
-  if(type==='range'){
-    var startDate=document.getElementById('reportStartDate').value.trim();
-    var endDate=document.getElementById('reportEndDate').value.trim();
-
-    if(!startDate || !endDate){
-      setStatus('reportStatus','Please enter both start and end dates.',false);
-      return;
-    }
-
-    params.startDate=startDate;
-    params.endDate=endDate;
-  }else{
-    params.ethDate=ethDate;
-  }
-
-  setStatus('reportStatus','Loading report...',null);
-
-  try{
-    var result=await api('report',params);
-
-    reportRecords=result.records||[];
-
-    if(program!=='all'){
-      reportRecords=reportRecords.filter(function(r){
-        return r.program===program;
-      });
-    }
-
-    if(subprogram!=='all'){
-      reportRecords=reportRecords.filter(function(r){
-        return r.subprogram===subprogram;
-      });
-    }
-
-    renderReport();
-
-    setStatus(
-      'reportStatus',
-      'Report loaded successfully. Total: '+reportRecords.length,
-      true
-    );
-
-  }catch(error){
-    reportRecords=[];
-    renderReport();
-
-    setStatus(
-      'reportStatus',
-      'Could not load report: '+error.message.replace(/^AUTH:\s*/,''),
-      false
-    );
-  }
+ var box=document.getElementById('reportStatus'),body=document.getElementById('reportList'),type=document.getElementById('reportType').value,program=document.getElementById('reportProgram').value,subprogram=document.getElementById('reportSubprogram').value;
+ body.innerHTML='';reportRecords=[];
+ if(!navigator.onLine){
+  reportRecords=records.filter(function(r){var p=normalizeEthKey(r.ethDate).split('/'),y=Number(p[0]),m=Number(p[1]),period=type==='daily'?normalizeEthKey(r.ethDate)===selectedDateKey():type==='monthly'?y===selectedYear&&m===selectedMonth:isInThreeMonths(y,m,selectedYear,selectedMonth);return period&&(program==='all'||r.program===program)&&(subprogram==='all'||r.subprogram===subprogram)});
+  box.textContent='Offline: report includes only records saved on this phone.';box.className='status bad';renderReport();return
+ }
+ box.textContent='Generating report...';box.className='status';
+ try{var res=await jsonp({action:'report',key:ACCESS_KEY,reportType:type,ethDate:selectedDateKey(),program:program,subprogram:subprogram});
+  if(!res||!res.success)throw new Error(res&&res.message||'Report failed');
+  reportRecords=res.records||[];box.textContent='Report generated successfully.';box.className='status good';renderReport()
+ }catch(e){box.textContent='Could not generate report: '+e.message;box.className='status bad'}
 }
-  function renderReport(){
-  var body=document.getElementById('reportList');
-  body.innerHTML='';
-
-  reportRecords.forEach(function(r){
-    var tr=document.createElement('tr');
-
-    [
-      r.id,
-      r.name,
-      r.ethDate||r.date,
-      r.time,
-      r.program,
-      r.subprogram||''
-    ].forEach(function(v){
-      var td=document.createElement('td');
-      td.textContent=v==null?'':String(v);
-      tr.appendChild(td);
-    });
-
-    body.appendChild(tr);
-  });
-
-  document.getElementById('reportCount').textContent=reportRecords.length;
+function isInThreeMonths(y,m,by,bm){var a=y*13+m-1,b=by*13+bm-1;return a>=b&&a<b+3}
+function renderReport(){
+ var body=document.getElementById('reportList');body.innerHTML='';document.getElementById('reportCount').textContent=reportRecords.length;
+ reportRecords.forEach(function(r){var tr=document.createElement('tr');[r.id,r.name,r.ethDate||r.date,r.ethTime||r.time,r.program||'-',r.subprogram||'ያልተመደበ'].forEach(function(v){var td=document.createElement('td');td.textContent=v||'-';tr.appendChild(td)});body.appendChild(tr)});
+ if(!reportRecords.length){var tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=6;td.textContent='No records found for this report.';tr.appendChild(td);body.appendChild(tr)}
 }
-
-function downloadCSVRows(rows,filename){
-  var header=[
-    'ID',
-    'Name',
-    'Gregorian Date',
-    'Time',
-    'Ethiopian Date',
-    'Program',
-    'Subprogram'
-  ];
-
-  var lines=[header].concat(rows.map(function(r){
-    return [
-      r.id,
-      r.name,
-      r.date,
-      r.time,
-      r.ethDate,
-      r.program,
-      r.subprogram||''
-    ];
-  }));
-
-  var csv=lines.map(function(row){
-    return row.map(function(v){
-      return '"'+String(v==null?'':v).replace(/"/g,'""')+'"';
-    }).join(',');
-  }).join('\r\n');
-
-  var blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
-  var url=URL.createObjectURL(blob);
-  var a=document.createElement('a');
-
-  a.href=url;
-  a.download=filename;
-  a.click();
-
-  URL.revokeObjectURL(url);
+function downloadReportCSV(){if(!reportRecords.length){alert('Generate a report with records first.');return}
+ var rows=[['ID','Name','Ethiopian Date','Ethiopian Time','Program','Subprogram']];reportRecords.forEach(function(r){rows.push([r.id,r.name,r.ethDate||'',r.ethTime||r.time,r.program||'',r.subprogram||''])});
+ downloadRowsCSV(rows,'TSE_'+document.getElementById('reportType').value+'_Report.csv')
 }
-
-function downloadCSV(){
-  downloadCSVRows(selectedRecords,'TSE-Attendance-Selected-Date.csv');
-}
-
-function downloadReportCSV(){
-  downloadCSVRows(reportRecords,'TSE-Attendance-Report.csv');
-}
-
-// ============================================
-// INITIAL STARTUP
-// ============================================
-updateConnection();
-
-(function(){
-  var t=todayEth();
-
-  viewYear=t.year;
-  viewMonth=t.month;
-  selectedYear=t.year;
-  selectedMonth=t.month;
-  selectedDay=t.day;
-
-  renderCalendar();
-  displaySelectedDate();
-  restoreSession();
-})();
+function registerServiceWorker(){if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(function(e){console.log('Service Worker:',e)})}
+var initial=todayEth();viewYear=selectedYear=initial.year;viewMonth=selectedMonth=initial.month;selectedDay=initial.day;
+updateConnection();showMemberStatus();updateSubprogramOptions();renderCalendar();displaySelectedDate();renderSelectedRecords();registerServiceWorker();
+loadMembers().then(function(){syncPending()});loadSelectedRecords();
 </script>
 </body>
 </html>
